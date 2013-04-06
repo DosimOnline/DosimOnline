@@ -47,12 +47,12 @@ public class EntityDos extends Entity
         if (check("right"))
         {
             g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x + 1, y) == null) {x += 2;}
+            if (collide("Solid", x + 1, y) == null) {x += 4;}
         }
         else if (check("left"))
         {
             g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x - 1, y) == null) {x -= 2;}
+            if (collide("Solid", x - 1, y) == null) {x -= 4;}
         }
         else if (direction == 2) {g.drawImage(dosStanding, x, y);}
         else {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
@@ -81,13 +81,14 @@ public class EntityDos extends Entity
             jump --;
         }
         
-        if (this.x <= 600) {x += 2;}
-        if (this.x >= 3000) {x -= 2;}
+        if (this.x <= 600) {x += 4;}
+        if (this.x >= 4000) {x -= 4;}
         if (WorldPlains.life <= 0) {this.destroy();}
         
         if (collide("Ladder", x, y) == null) {} else
         {
-            if (check("up")) {y -= 3;}
+            if (check("up")) {y -= 4;}
         }
+        if (collide("Solid", x, y - 1) == null) {} else {y += gravity;}
     }
 }
