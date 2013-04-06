@@ -8,13 +8,16 @@ import org.newdawn.slick.SpriteSheet;
 
 public class EntityNazi extends Entity
 {
+    private SpriteSheet naziSheet;
     private Animation naziWalkLeft;
     private Animation naziWalkRight;
+    private float gravity = WorldPlains.gravity;
+    private int isAfterSpawn = 400;
     
     public EntityNazi (float x, float y) throws SlickException
     {
         super (x, y);
-        SpriteSheet naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20, 35);
+        naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20, 35);
         naziWalkLeft = new Animation();
         naziWalkLeft.setAutoUpdate(true);
         naziWalkLeft.addFrame(naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
@@ -39,30 +42,34 @@ public class EntityNazi extends Entity
         if (collide("Dos", x, y) == null) {} else 
         {
             this.destroy();
-            WorldPlains.score -= 1;
+            WorldPlains.life -= 1;
         }
         if (collide("Fireball", x, y) == null) {} else
         {
             this.destroy();
             WorldPlains.score += 1;
         }
+        
+        //Releasing from spawn limitations
+        if (isAfterSpawn > 0) {isAfterSpawn--;}
     }
     
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
         super.render(gc, g);
-        if (collide("Solid", x, y + 4) == null) {y += 4;}
-        
-        if (WorldPlains.dos.x > x)
+        if (isAfterSpawn > 0) {g.drawImage(naziSheet.getSprite(1, 0), x, y);
+        }
+        if (collide("Solid", x, y + gravity) == null) {y += gravity;}
+        if (WorldPlains.dos.x > x && isAfterSpawn == 0)
         {
             if (collide("Solid", x + WorldPlains.naziMoveSpeed, y) == null) {x += WorldPlains.naziMoveSpeed;}
-            else {y -= 4.5;}
+            else {y -= 3;}
             g.drawAnimation(naziWalkRight, x, y);
-        } else
+        } else if (WorldPlains.dos.x < x && isAfterSpawn == 0)
         {
             if (collide("Solid", x - WorldPlains.naziMoveSpeed, y) == null) {x -= WorldPlains.naziMoveSpeed;}
-            else {y -= 4.5;}
+            else {y -= 3;}
             g.drawAnimation(naziWalkLeft, x, y);
         }
     }

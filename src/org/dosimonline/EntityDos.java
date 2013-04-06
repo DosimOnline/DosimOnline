@@ -16,6 +16,7 @@ public class EntityDos extends Entity
     private boolean jumpAllowed = true;
     private float jump;
     public static int direction = 1; //1 is left, 2 is right.
+    private float gravity = WorldPlains.gravity;
     
     public EntityDos (float x, float y) throws SlickException
     {
@@ -43,9 +44,6 @@ public class EntityDos extends Entity
     {
         super.render(gc, g);
         
-        if (pressed("right")) {direction = 2;}
-        else if (pressed("left")) {direction = 1;}
-        
         if (check("right"))
         {
             g.drawAnimation(dosWalkRight, x, y);
@@ -58,6 +56,14 @@ public class EntityDos extends Entity
         }
         else if (direction == 2) {g.drawImage(dosStanding, x, y);}
         else {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
+    }
+    
+    @Override
+    public void update(GameContainer gc, int delta) throws SlickException
+    {
+        super.update(gc, delta);
+        if (pressed("right")) {direction = 2;}
+        else if (pressed("left")) {direction = 1;}
         
         if (jumpAllowed && check("up"))
         {
@@ -66,7 +72,7 @@ public class EntityDos extends Entity
         }
         
         //Gravity
-        if (collide("Solid", x, y + 2) == null) {y += 2;} 
+        if (collide("Solid", x, y + gravity) == null) {y += gravity;} 
         else {jumpAllowed = true;}
         
         if (jump > 0)
@@ -74,11 +80,14 @@ public class EntityDos extends Entity
             y -= 4;
             jump --;
         }
-    }
-    
-    @Override
-    public void update(GameContainer gc, int delta) throws SlickException
-    {
-        super.update(gc, delta);
+        
+        if (this.x <= 600) {x += 2;}
+        if (this.x >= 3000) {x -= 2;}
+        if (WorldPlains.life <= 0) {this.destroy();}
+        
+        if (collide("Ladder", x, y) == null) {} else
+        {
+            if (check("up")) {y -= 3;}
+        }
     }
 }

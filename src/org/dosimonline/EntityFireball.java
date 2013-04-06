@@ -6,6 +6,8 @@ import org.newdawn.slick.SlickException;
 
 public class EntityFireball extends Entity
 {
+    private int shallIDie = 100;
+    
     public EntityFireball(float x, float y) throws SlickException
     {
         super (x, y);
@@ -21,6 +23,8 @@ public class EntityFireball extends Entity
         if (EntityDos.direction == 1) {x -= 20;}
         else {x += 20;}
         if (collide("Solid", x, y) == null) {} else {destroy();}
+        if (shallIDie > 0) {shallIDie--;}
+        if (shallIDie == 0) {destroy();}
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.Random;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
@@ -18,7 +19,10 @@ public class WorldPlains extends World
     private int attackAllowed;
     public static float naziMoveSpeed = 1;
     private int helpDisplayTime = 1000;
-
+    public static float gravity = 2;
+    public static int life = 5;
+    private StructureBuilding building = new StructureBuilding();
+    private int numOfFloors;
     
     public WorldPlains(int id, GameContainer gc)
     {
@@ -29,8 +33,6 @@ public class WorldPlains extends World
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
     {
         super.init(gc, sbg);
-        dos = new EntityDos(1920, 0); add(dos); setCameraOn(dos);
-        add(new EntityWizard(1880, 392));
         
         //We call it "tile" instead of "block" because we don't want too many Minecraft easter eggs.
         for (int x = 0; x < 40; x++)
@@ -38,13 +40,13 @@ public class WorldPlains extends World
             add(new TileGrass(x * 128, 464));
             for (int y = 1; y < 4; y++) {add(new TileDirt(x * 128, 464 + 128 * y));}
         }
-        add(new TileRock(2428, 336));
-        add(new TileRockSlab(2300, 400));
-        add(new TileRockSlab(2556, 400));
-        add(new TileRock(1600, 336));
-        add(new TileRockSlab(1300, 400));
-        for (int y = 0; y < 10; y++) {add(new TileTransparent(4128, y * 128));}
-        for (int y = 0; y < 10; y++) {add(new TileTransparent(600, y * 128));}
+        for (int a = 1, x = 650; a < 5; a++, x += 700)
+        {
+            numOfFloors = random.nextInt(5) + 1;
+            building.add(x, this, 80, numOfFloors);
+        }
+        
+        dos = new EntityDos(1920, 0); add(dos); setCameraOn(dos);
     }
     
     @Override
@@ -55,9 +57,9 @@ public class WorldPlains extends World
         g.setBackground(backgroundColor);
         g.drawString("SCORE: " + score, 20, 20);
         g.drawString("NAZIS' SPEED: " + naziMoveSpeed + "pxl/s", 20, 35);
-        g.drawString("X: " + dos.x, 20, 50);
-        g.drawString("Y: " + dos.y, 20, 65);
-        if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", 500, 300);}
+        for (int a = 0; a < life; a++) {g.drawImage(new Image("org/dosimonline/res/heart.png"),20 + a * 32, 55);}
+        if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", 450, 400);}
+        if (life <= 0) {g.drawString("LOL! U DIED!", 1152 / 2, 896 / 2);}
     }
     
     @Override
