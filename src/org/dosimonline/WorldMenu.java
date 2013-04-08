@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,7 +23,9 @@ public class WorldMenu extends World
     {
         hakotel = new Image("org/dosimonline/res/hakotel.png"); //I won't tell you what kotel is.
         logo = new Image("org/dosimonline/res/logo.png");
-
+        Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation");
+        music.loop();
+        music.setVolume((float)0.15);
     }
     
     @Override
