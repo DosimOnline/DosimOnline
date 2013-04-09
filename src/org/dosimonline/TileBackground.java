@@ -2,13 +2,15 @@ package org.dosimonline;
 import it.randomtower.engine.entity.Entity;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 public class TileBackground extends Entity
 {
     public TileBackground(float x, float y) throws SlickException
     {
         super (x, y);
-        Image image = new Image("org/dosimonline/res/tiles/background.png");
+        SpriteSheet tiles = new SpriteSheet("org/dosimonline/res/tiles.png", 8, 8);
+        Image image = tiles.getSprite(5, 0).getScaledCopy(16);
         setGraphic(image);
     }
 }

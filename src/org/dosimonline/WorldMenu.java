@@ -23,9 +23,9 @@ public class WorldMenu extends World
     {
         hakotel = new Image("org/dosimonline/res/hakotel.png"); //I won't tell you what kotel is.
         logo = new Image("org/dosimonline/res/logo.png");
-        Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation");
+        Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
         music.loop();
-        music.setVolume((float)0.15);
+        music.setVolume((float)0.1);
     }
     
     @Override

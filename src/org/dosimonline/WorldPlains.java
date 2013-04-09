@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class WorldPlains extends World
@@ -23,6 +24,7 @@ public class WorldPlains extends World
     public static int life = 5;
     private StructureBuilding building = new StructureBuilding();
     private int numOfFloors;
+    public static SpriteSheet tiles;
     
     public WorldPlains(int id, GameContainer gc)
     {
@@ -47,6 +49,7 @@ public class WorldPlains extends World
         }
         
         dos = new EntityDos(1920, 0); add(dos); setCameraOn(dos);
+        tiles = new SpriteSheet("org/dosimonline/res/tiles.png", 8, 8);
     }
     
     @Override
