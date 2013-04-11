@@ -65,7 +65,6 @@ public class EntityDos extends Entity
         super.update(gc, delta);
         if (pressed("right")) {direction = 2;}
         else if (pressed("left")) {direction = 1;}
-        if (collide("Solid", x, y) != null) {jumpAllowed = false;}
         
         if (jumpAllowed && check("up"))
         {
