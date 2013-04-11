@@ -74,12 +74,12 @@ public class EntityDos extends Entity
         }
         
         //Gravity
-        if (collide("Solid", x, y + gravity) == null) {y += gravity;} 
+        if (collide("Solid", x, y + gravity) == null) {y += gravity;}
         else {jumpAllowed = true;}
         
         if (jump > 0)
         {
-            y -= 4;
+            y -= gravity + 4;
             jump --;
         }
         
@@ -87,10 +87,8 @@ public class EntityDos extends Entity
         if (this.x >= 4000) {x -= 4;}
         if (WorldPlains.life <= 0) {this.destroy();}
         
-        if (collide("Ladder", x, y) == null) {} else
-        {
-            if (check("up")) {y -= 4;}
-        }
+        if (collide("Ladder", x, y) != null && jump > 0) {jump = 0;}
+        if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity + 4;}}
         if (collide("Solid", x, y - 1) == null) {} else {y += gravity;}
     }
 }

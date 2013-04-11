@@ -27,8 +27,7 @@ public class DosimOnline extends StateBasedGame
         try
         {
             AppGameContainer appgc = new AppGameContainer(new DosimOnline(gamename));
-            appgc.setDisplayMode(1152, 896, false);
-            appgc.setFullscreen(false);
+            appgc.setDisplayMode(1152, 862, false);
             appgc.setShowFPS(false);
             appgc.setTargetFrameRate(200);
             appgc.start();

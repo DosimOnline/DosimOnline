@@ -49,6 +49,19 @@ public class EntityNazi extends Entity
             this.destroy();
             WorldPlains.score += 1;
         }
+        if (WorldPlains.dos.y < y - 10 && collide("Ladder", x, y) != null) {y -= gravity + 4;}
+        if (WorldPlains.dos.y >= y - 10 && collide("Ladder", x, y) != null) 
+        {
+            if (WorldPlains.dos.x > x) {x += WorldPlains.naziMoveSpeed;}
+            else {x -= WorldPlains.naziMoveSpeed;}
+        }
+        
+        if (collide("Solid", x, y - gravity) != null) 
+        {
+            y += gravity;
+            if (WorldPlains.dos.x > x) {x += WorldPlains.naziMoveSpeed;}
+            else {x -= WorldPlains.naziMoveSpeed;}
+        }
         
         //Releasing from spawn limitations
         if (isAfterSpawn > 0) {isAfterSpawn--;}
@@ -58,19 +71,19 @@ public class EntityNazi extends Entity
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
         super.render(gc, g);
-        if (isAfterSpawn > 0) {g.drawImage(naziSheet.getSprite(1, 0), x, y);
-        }
+        if (isAfterSpawn > 0) {g.drawImage(naziSheet.getSprite(1, 0), x, y);}
         if (collide("Solid", x, y + gravity) == null) {y += gravity;}
-        if (WorldPlains.dos.x > x && isAfterSpawn == 0)
+        if (WorldPlains.dos.x > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
         {
             if (collide("Solid", x + WorldPlains.naziMoveSpeed, y) == null) {x += WorldPlains.naziMoveSpeed;}
-            else {y -= 3;}
             g.drawAnimation(naziWalkRight, x, y);
-        } else if (WorldPlains.dos.x < x && isAfterSpawn == 0)
+        }
+        else if (WorldPlains.dos.x < x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
         {
             if (collide("Solid", x - WorldPlains.naziMoveSpeed, y) == null) {x -= WorldPlains.naziMoveSpeed;}
-            else {y -= 3;}
             g.drawAnimation(naziWalkLeft, x, y);
         }
+        else if (WorldPlains.dos.x > x) {g.drawImage(naziSheet.getSprite(1, 0), x, y);}
+        else {g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false), x, y);}
     }
 }

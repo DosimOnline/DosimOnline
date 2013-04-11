@@ -9,8 +9,8 @@ public class TileBackground extends Entity
     public TileBackground(float x, float y) throws SlickException
     {
         super (x, y);
-        SpriteSheet tiles = new SpriteSheet("org/dosimonline/res/tiles.png", 8, 8);
-        Image image = tiles.getSprite(5, 0).getScaledCopy(16);
+        SpriteSheet tiles = new SpriteSheet("org/dosimonline/res/tiles.png", 16, 16);
+        Image image = tiles.getSprite(5, 0).getScaledCopy(8);
         setGraphic(image);
     }
 }

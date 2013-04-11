@@ -20,7 +20,7 @@ public class WorldPlains extends World
     private int attackAllowed;
     public static float naziMoveSpeed = 1;
     private int helpDisplayTime = 1000;
-    public static float gravity = 2;
+    public static float gravity = 4;
     public static int life = 5;
     private StructureBuilding building = new StructureBuilding();
     private int numOfFloors;
@@ -61,6 +61,7 @@ public class WorldPlains extends World
         g.drawString("SCORE: " + score, 20, 20);
         g.drawString("NAZIS' SPEED: " + naziMoveSpeed + "pxl/s", 20, 35);
         for (int a = 0; a < life; a++) {g.drawImage(new Image("org/dosimonline/res/heart.png"),20 + a * 32, 55);}
+        g.drawString("Reload: " + attackAllowed, 20, 80);
         if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", 450, 400);}
         if (life <= 0) {g.drawString("LOL! U DIED!", 1152 / 2, 896 / 2);}
     }
@@ -75,10 +76,10 @@ public class WorldPlains extends World
         if (spawnNazi == 0)
         {
             int naziX = random.nextInt(4100) + 600;
-            add(new EntityNazi(naziX, -300));
+            add(new EntityNazi(naziX, -700));
             spawnNazi = 450;
         }
-        if (gc.getInput().isMousePressed(0) && attackAllowed == 0)
+        if (gc.getInput().isMousePressed(0) && attackAllowed == 0 && life > 0)
         {
             add(new EntityFireball(dos.x, dos.y));
             attackAllowed = 200;

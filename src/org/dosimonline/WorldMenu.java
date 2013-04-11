@@ -25,7 +25,7 @@ public class WorldMenu extends World
         logo = new Image("org/dosimonline/res/logo.png");
         Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
         music.loop();
-        music.setVolume((float)0.1);
+        music.setVolume((float)0.04);
     }
     
     @Override
