@@ -1,5 +1,7 @@
 package org.dosimonline;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -19,6 +21,7 @@ public class DosimOnline extends StateBasedGame
     {
         addState(new WorldMenu(1, gc));
         addState(new WorldPlains(2, gc));
+        addState(new WorldCredits(3, gc));
         enterState(1);
     }
     

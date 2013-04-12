@@ -39,7 +39,24 @@ public class EntityNazi extends Entity
     public void update(GameContainer container, int delta) throws SlickException
     {
         super.update(container, delta);
-        if (collide("Dos", x, y) == null) {} else 
+        //Gravity
+        if (collide("Solid", x, y + gravity) != null) {y -= gravity;} y += gravity;
+        
+        if (WorldPlains.dos.x > x)
+        {
+            if (collide("Solid", x + WorldPlains.naziMoveSpeed, y) != null) 
+            {
+                if (collide("Solid", x + WorldPlains.naziMoveSpeed, y - 10) == null) {x++; y--;}
+            }
+        } else
+        {
+            if (collide("Solid", x - WorldPlains.naziMoveSpeed, y) != null)
+            {
+                if (collide("Solid", x - WorldPlains.naziMoveSpeed, y - 10) == null) {x--; y--;}
+            }
+        }
+        
+        if (collide("Dos", x, y) != null)
         {
             this.destroy();
             WorldPlains.life -= 1;
@@ -72,7 +89,6 @@ public class EntityNazi extends Entity
     {
         super.render(gc, g);
         if (isAfterSpawn > 0) {g.drawImage(naziSheet.getSprite(1, 0), x, y);}
-        if (collide("Solid", x, y + gravity) == null) {y += gravity;}
         if (WorldPlains.dos.x > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
         {
             if (collide("Solid", x + WorldPlains.naziMoveSpeed, y) == null) {x += WorldPlains.naziMoveSpeed;}

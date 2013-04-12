@@ -17,7 +17,6 @@ public class EntityDos extends Entity
     private float jump;
     public static int direction = 1; //1 is left, 2 is right.
     private float gravity = WorldPlains.gravity;
-    private float moveSpeed = 5;
     
     public EntityDos (float x, float y) throws SlickException
     {
@@ -73,7 +72,7 @@ public class EntityDos extends Entity
         }
         
         //Gravity
-        if (collide("Solid", x, y + gravity) == null) {y += gravity;}
+        if (collide("Solid", x, y + gravity) == null) {y += gravity; jumpAllowed = false;} 
         else {jumpAllowed = true;}
         
         if (jump > 0)
@@ -88,6 +87,6 @@ public class EntityDos extends Entity
         
         if (collide("Ladder", x, y) != null && jump > 0) {jump = 0;}
         if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity + 4;}}
-        if (collide("Solid", x, y - 1) == null) {} else {y += gravity;}
+        if (collide("Solid", x, y - 1) != null) {y += gravity;}
     }
 }

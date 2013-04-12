@@ -22,7 +22,6 @@ public class WorldMenu extends World
     public void init(GameContainer gc, StateBasedGame game) throws SlickException
     {
         hakotel = new Image("org/dosimonline/res/hakotel.png"); //I won't tell you what kotel is.
-        logo = new Image("org/dosimonline/res/logo.png");
         Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
         music.loop();
         music.setVolume((float)0.04);
@@ -32,8 +31,8 @@ public class WorldMenu extends World
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
     {
         g.drawImage(hakotel, 0, 0);
-        g.drawImage(logo, 0, 0);
-        g.drawString("Hit \"S\" to start", 550, logo.getHeight() + 50); 
+        g.drawString("Hit \"S\" to start", 550, 1024 / 2 - 50);
+        g.drawString("Hit \"C\" to see credits", 520, 1024 / 2 - 20);
     }
     
     @Override
@@ -45,9 +44,7 @@ public class WorldMenu extends World
             gc.destroy();
         }
 
-        if (gc.getInput().isKeyPressed(Input.KEY_S))
-        {
-            sbg.enterState(2);
-        }
+        if (gc.getInput().isKeyPressed(Input.KEY_S)) {sbg.enterState(2);}
+        if (gc.getInput().isKeyPressed(Input.KEY_C)) {sbg.enterState(3);}
     }
 }
