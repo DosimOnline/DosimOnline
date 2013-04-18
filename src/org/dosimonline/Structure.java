@@ -2,7 +2,7 @@ package org.dosimonline;
 import it.randomtower.engine.World;
 import org.newdawn.slick.SlickException;
 
-public class StructureBuilding
+public class Structure
 {
     public void add (int x, World world, int y) throws SlickException
     {
@@ -11,7 +11,6 @@ public class StructureBuilding
         world.add(new TileRock(x + 384, y + 128));
         world.add(new TileRock(x + 384, y));
         world.add(new TileRock(x, y));
-        world.add(new TileRockCeiling(x, y - 64));
         for (int a = 2; a < 4; a++) {world.add(new TileRockCeiling(x + 128 * a, y - 64));} 
         for (int a = 0; a < 4; a++) {world.add(new TileBackground(x + 128 * a, y + 256));}
         for (int a = 1; a < 3; a++) {world.add(new TileBackground(x + 128 * a, y + 128));}

@@ -22,9 +22,8 @@ public class WorldPlains extends World
     private int helpDisplayTime = 1000;
     public static float gravity = 4;
     public static int life = 5;
-    private StructureBuilding building = new StructureBuilding();
-    private int numOfFloors;
-    public static SpriteSheet tiles;
+    private Structure building = new Structure();
+    private int maxHight = 5 * 448;
     
     public WorldPlains(int id, GameContainer gc)
     {
@@ -42,14 +41,12 @@ public class WorldPlains extends World
             add(new TileGrass(x * 128, 464));
             for (int y = 1; y < 4; y++) {add(new TileDirt(x * 128, 464 + 128 * y));}
         }
-        for (int a = 1, x = 650; a < 5; a++, x += 700)
+        for (int y = 0, x = 650; y < maxHight; y -= 448, x += 700)
         {
-            numOfFloors = random.nextInt(5) + 1;
-            building.add(x, this, 80, numOfFloors);
+            building.add(x, this, y);
         }
         
         dos = new EntityDos(1920, 0); add(dos); setCameraOn(dos);
-        tiles = new SpriteSheet("org/dosimonline/res/tiles.png", 8, 8);
     }
     
     @Override
@@ -79,13 +76,25 @@ public class WorldPlains extends World
             add(new EntityNazi(naziX, -700));
             spawnNazi = 450;
         }
+        naziMoveSpeed += 0.00005;
+        
         if (gc.getInput().isMousePressed(0) && attackAllowed == 0 && life > 0)
         {
             add(new EntityFireball(dos.x, dos.y));
+            EntityFireball.isBomb = false;
             attackAllowed = 200;
         }
+        
+        if (gc.getInput().isMousePressed(1) && attackAllowed == 0 && life > 0)
+        {
+            add(new EntityFireball(dos.x, dos.y));
+            EntityFireball.isBomb = true;
+            attackAllowed = 200;
+        }
+        
         if (attackAllowed > 0) {attackAllowed--;}
-        naziMoveSpeed += 0.00005;
+                
         if (helpDisplayTime > 0) {helpDisplayTime--;}
+        if (dos.x > maxHight + 1024 / 2) {maxHight -= 2000;}
     }
 }

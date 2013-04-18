@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class TileRockCeiling extends Entity
-{   
+{
     public TileRockCeiling (float x, float y) throws SlickException
     {
         super (x, y);

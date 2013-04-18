@@ -24,17 +24,18 @@ public class EntityDos extends Entity
         SpriteSheet dosSheet = new SpriteSheet("org/dosimonline/res/sprites/dos.png", 20, 36);
         dosWalkLeft = new Animation();
         dosWalkLeft.setAutoUpdate(true);
-        for (int a = 1; a <= 3; a++)
-        { dosWalkLeft.addFrame(dosSheet.getSprite(a, 0).getFlippedCopy(true, false), 150); }
+        dosWalkLeft.addFrame(dosSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
+        dosWalkLeft.addFrame(dosSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
         
         dosWalkRight = new Animation();
         dosWalkRight.setAutoUpdate(true);
-        for (int a = 1; a <= 3; a++)
-        { dosWalkRight.addFrame(dosSheet.getSprite(a, 0), 150); }
+        dosWalkRight.addFrame(dosSheet.getSprite(0, 0), 150);
+        dosWalkRight.addFrame(dosSheet.getSprite(1, 0), 150);
         dosStanding = dosSheet.getSprite(0, 0);
         define("right", Input.KEY_D);
         define("left", Input.KEY_A);
         define("up", Input.KEY_W);
+        define("q", Input.KEY_Q);
         setHitBox(0, 0, dosStanding.getWidth(), dosStanding.getHeight());
         addType("Dos");
     }
@@ -44,26 +45,38 @@ public class EntityDos extends Entity
     {
         super.render(gc, g);
         
-        if (check("right"))
+        if (check("right") && direction == 2)
         {
             g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x + 1, y) == null) {x += 4;}
+            if (collide("Solid", x + 4, y) == null) {x += 4;}
         }
-        else if (check("left"))
+        else if (check("left") && direction == 2)
+        {
+            g.drawAnimation(dosWalkRight, x, y);
+            if (collide("Solid", x - 4, y) == null) {x -= 4;}
+        }
+        else if (check("right") && direction == 1)
         {
             g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x - 1, y) == null) {x -= 4;}
+            if (collide("Solid", x + 4, y) == null) {x += 4;}
+        }
+        else if (check("left") && direction == 1)
+        {
+            g.drawAnimation(dosWalkLeft, x, y);
+            if (collide("Solid", x - 4, y) == null) {x -= 4;}
         }
         else if (direction == 2) {g.drawImage(dosStanding, x, y);}
-        else {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
+        else if (direction == 1) {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
     }
     
     @Override
     public void update(GameContainer gc, int delta) throws SlickException
     {
         super.update(gc, delta);
-        if (pressed("right")) {direction = 2;}
-        else if (pressed("left")) {direction = 1;}
+        int mouseX = gc.getInput().getMouseX();
+        
+        if (mouseX > 576) {direction = 2;}
+        else {direction = 1;}
         
         if (jumpAllowed && check("up"))
         {
@@ -72,7 +85,8 @@ public class EntityDos extends Entity
         }
         
         //Gravity
-        if (collide("Solid", x, y + gravity) == null) {y += gravity; jumpAllowed = false;} 
+        if (collide("Solid", x, y + gravity) == null)
+        {y += gravity; jumpAllowed = false;} 
         else {jumpAllowed = true;}
         
         if (jump > 0)
