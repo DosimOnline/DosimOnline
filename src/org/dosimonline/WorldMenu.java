@@ -25,14 +25,15 @@ public class WorldMenu extends World
         Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
         music.loop();
         music.setVolume((float)0.04);
+        gc.setShowFPS(false);
     }
     
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
     {
         g.drawImage(hakotel, 0, 0);
-        g.drawString("Hit \"S\" to start", 550, 1024 / 2 - 50);
-        g.drawString("Hit \"C\" to see credits", 520, 1024 / 2 - 20);
+        g.drawString("Hit \"S\" to start", DosimOnline.dm.getWidth() / 2 - 90, DosimOnline.dm.getHeight() / 2 - 50);
+        g.drawString("Hit \"C\" to see credits", DosimOnline.dm.getWidth() / 2 - 120, DosimOnline.dm.getHeight() / 2 - 20);
     }
     
     @Override

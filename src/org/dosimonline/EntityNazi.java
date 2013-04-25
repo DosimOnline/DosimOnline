@@ -1,5 +1,6 @@
 package org.dosimonline;
 import it.randomtower.engine.entity.Entity;
+import java.util.Random;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,11 +14,13 @@ public class EntityNazi extends Entity
     private Animation naziWalkRight;
     private float gravity = WorldPlains.gravity;
     private int isAfterSpawn = 400;
+    private Random random = new Random();
+    private int shallAddLife = random.nextInt(30);
     
     public EntityNazi (float x, float y) throws SlickException
     {
         super (x, y);
-        naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20, 35);
+        naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20, 55);
         naziWalkLeft = new Animation();
         naziWalkLeft.setAutoUpdate(true);
         naziWalkLeft.addFrame(naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
@@ -29,7 +32,7 @@ public class EntityNazi extends Entity
         naziWalkRight.addFrame(naziSheet.getSprite(1, 0), 150);
         
         addType("Anti Semitic");
-        setHitBox(0, 0, 20, 35);
+        setHitBox(0, 20, 20, 35);
     }
 
     @Override
@@ -65,6 +68,7 @@ public class EntityNazi extends Entity
         {
             this.destroy();
             WorldPlains.score += 1;
+            if (shallAddLife == 0) {WorldPlains.life++;}
         }
         if (WorldPlains.dos.y < y - 10 && collide("Ladder", x, y) != null) {y -= gravity + 4;}
         if (WorldPlains.dos.y >= y - 10 && collide("Ladder", x, y) != null) 

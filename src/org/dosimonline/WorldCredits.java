@@ -22,7 +22,7 @@ public class WorldCredits extends World
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException
     {
         super.update(gc, sbg, delta);
-        if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {sbg.enterState(1);}        
+        if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {sbg.enterState(1);}
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WorldCredits extends World
     {
         super.render(gc, sbg, g);
         g.setBackground(Color.black);
-        g.drawString("Programming: Shptzick, Itay Rabin", 40, 40);
+        g.drawString("Programming: Shptzick", 40, 40);
         g.drawString("Graphics: Tomer Ginzburg", 40, 60);
         g.drawString("Beta (Or shall I say Indev?) testers: Michael Puniansky, Martin Korotkov", 40, 80);
         g.drawString("Music: Makche (Alleviation is played at the background)", 40, 100);

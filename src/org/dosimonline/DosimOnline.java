@@ -1,7 +1,8 @@
 package org.dosimonline;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -10,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class DosimOnline extends StateBasedGame
 {
     public static String gamename = "Dosim Online";
+    public static DisplayMode dm;
     
     public DosimOnline(String gamename)
     {
@@ -25,13 +27,16 @@ public class DosimOnline extends StateBasedGame
         enterState(1);
     }
     
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, LWJGLException
     {
+        dm = Display.getDesktopDisplayMode();
+        Display.setResizable(true);
+        
         try
         {
             AppGameContainer appgc = new AppGameContainer(new DosimOnline(gamename));
-            appgc.setDisplayMode(1152, 862, false);
-            appgc.setShowFPS(false);
+            appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
+            appgc.setFullscreen(true);
             appgc.setTargetFrameRate(200);
             appgc.start();
         } catch (SlickException e)

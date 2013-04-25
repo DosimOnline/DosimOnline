@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class WorldPlains extends World
@@ -18,12 +17,11 @@ public class WorldPlains extends World
     private int spawnNazi;
     public static int score = 0;
     private int attackAllowed;
-    public static float naziMoveSpeed = 1;
-    private int helpDisplayTime = 1000;
-    public static float gravity = 4;
+    public static float naziMoveSpeed = 4;
+    private int helpDisplayTime = 300;
+    public static float gravity = 7;
     public static int life = 5;
     private Structure building = new Structure();
-    private int maxHight = 5 * 448;
     
     public WorldPlains(int id, GameContainer gc)
     {
@@ -36,14 +34,15 @@ public class WorldPlains extends World
         super.init(gc, sbg);
         
         //We call it "tile" instead of "block" because we don't want too many Minecraft easter eggs.
-        for (int x = 0; x < 40; x++)
+        for (int x = -1; x < 60; x++)
         {
             add(new TileGrass(x * 128, 464));
             for (int y = 1; y < 4; y++) {add(new TileDirt(x * 128, 464 + 128 * y));}
         }
-        for (int y = 0, x = 650; y < maxHight; y -= 448, x += 700)
+        for (int a = 0, x = 650; a < 10; a++, x += 700)
         {
-            building.add(x, this, y);
+            int numOfFloors = random.nextInt(10) + 3;
+            building.add(x, this, 80, numOfFloors);
         }
         
         dos = new EntityDos(1920, 0); add(dos); setCameraOn(dos);
@@ -59,7 +58,7 @@ public class WorldPlains extends World
         g.drawString("NAZIS' SPEED: " + naziMoveSpeed + "pxl/s", 20, 35);
         for (int a = 0; a < life; a++) {g.drawImage(new Image("org/dosimonline/res/heart.png"),20 + a * 32, 55);}
         g.drawString("Reload: " + attackAllowed, 20, 80);
-        if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", 450, 400);}
+        if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", DosimOnline.dm.getWidth() / 2 - 100, DosimOnline.dm.getHeight() / 2 - 100);}
         if (life <= 0) {g.drawString("LOL! U DIED!", 1152 / 2, 896 / 2);}
     }
     
@@ -93,8 +92,6 @@ public class WorldPlains extends World
         }
         
         if (attackAllowed > 0) {attackAllowed--;}
-                
-        if (helpDisplayTime > 0) {helpDisplayTime--;}
-        if (dos.x > maxHight + 1024 / 2) {maxHight -= 2000;}
+        if (helpDisplayTime > 0) helpDisplayTime--;
     }
 }

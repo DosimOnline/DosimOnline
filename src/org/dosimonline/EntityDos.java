@@ -1,5 +1,7 @@
 package org.dosimonline;
 import it.randomtower.engine.entity.Entity;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,6 +19,7 @@ public class EntityDos extends Entity
     private float jump;
     public static int direction = 1; //1 is left, 2 is right.
     private float gravity = WorldPlains.gravity;
+    private float moveSpeed = 10;
     
     public EntityDos (float x, float y) throws SlickException
     {
@@ -48,22 +51,22 @@ public class EntityDos extends Entity
         if (check("right") && direction == 2)
         {
             g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x + 4, y) == null) {x += 4;}
+            if (collide("Solid", x + moveSpeed, y) == null) {x += moveSpeed;}
         }
         else if (check("left") && direction == 2)
         {
             g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x - 4, y) == null) {x -= 4;}
+            if (collide("Solid", x - moveSpeed, y) == null) {x -= moveSpeed;}
         }
         else if (check("right") && direction == 1)
         {
             g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x + 4, y) == null) {x += 4;}
+            if (collide("Solid", x + moveSpeed, y) == null) {x += moveSpeed;}
         }
         else if (check("left") && direction == 1)
         {
             g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x - 4, y) == null) {x -= 4;}
+            if (collide("Solid", x - moveSpeed, y) == null) {x -= moveSpeed;}
         }
         else if (direction == 2) {g.drawImage(dosStanding, x, y);}
         else if (direction == 1) {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
@@ -73,15 +76,16 @@ public class EntityDos extends Entity
     public void update(GameContainer gc, int delta) throws SlickException
     {
         super.update(gc, delta);
+        DisplayMode dm = Display.getDesktopDisplayMode();
         int mouseX = gc.getInput().getMouseX();
         
-        if (mouseX > 576) {direction = 2;}
+        if (mouseX > dm.getWidth() / 2) {direction = 2;}
         else {direction = 1;}
         
         if (jumpAllowed && check("up"))
         {
             jumpAllowed = false;
-            if (collide("Solid", x, y - 500) == null) {jump = 80;}
+            if (collide("Solid", x, y) == null) {jump = 50;}
         }
         
         //Gravity
@@ -89,18 +93,18 @@ public class EntityDos extends Entity
         {y += gravity; jumpAllowed = false;} 
         else {jumpAllowed = true;}
         
-        if (jump > 0)
+        if (jump > 0 && collide("Solid", x, y) == null)
         {
-            y -= gravity + 4;
+            y -= gravity * 2;
             jump --;
         }
         
-        if (this.x <= 600) {x += 4;}
-        if (this.x >= 4000) {x -= 4;}
-        if (WorldPlains.life <= 0) {this.destroy();}
+        if (this.x <= 600) {x += moveSpeed;}
+        if (this.x >= 7000) {x -= moveSpeed;}
+        if (WorldPlains.life == 0) {this.destroy();}
         
         if (collide("Ladder", x, y) != null && jump > 0) {jump = 0;}
-        if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity + 4;}}
-        if (collide("Solid", x, y - 1) != null) {y += gravity;}
+        if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity * 2 + 1;}}
+        if (collide("Solid", x, y - (gravity * 2)) != null) {y += gravity * 2 + 1;}
     }
 }
