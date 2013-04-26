@@ -19,7 +19,7 @@ public class WorldPlains extends World
     private int attackAllowed;
     public static float naziMoveSpeed = 4;
     private int helpDisplayTime = 300;
-    public static float gravity = 7;
+    public static float gravity = 12;
     public static int life = 5;
     private Structure building = new Structure();
     
@@ -39,7 +39,7 @@ public class WorldPlains extends World
             add(new TileGrass(x * 128, 464));
             for (int y = 1; y < 4; y++) {add(new TileDirt(x * 128, 464 + 128 * y));}
         }
-        for (int a = 0, x = 650; a < 10; a++, x += 700)
+        for (int a = 0, x = 650; a < 9; a++, x += 700)
         {
             int numOfFloors = random.nextInt(10) + 3;
             building.add(x, this, 80, numOfFloors);
@@ -59,7 +59,11 @@ public class WorldPlains extends World
         for (int a = 0; a < life; a++) {g.drawImage(new Image("org/dosimonline/res/heart.png"),20 + a * 32, 55);}
         g.drawString("Reload: " + attackAllowed, 20, 80);
         if (helpDisplayTime > 0) {g.drawString("ASDW to move, left mouse to shoot", DosimOnline.dm.getWidth() / 2 - 100, DosimOnline.dm.getHeight() / 2 - 100);}
-        if (life <= 0) {g.drawString("LOL! U DIED!", 1152 / 2, 896 / 2);}
+        if (life == 0) 
+        {
+            g.drawString("LOL! U DIED!", DosimOnline.dm.getWidth() / 2 - 10, DosimOnline.dm.getHeight() / 2);
+            g.drawString("Hit \"R\" to restart", DosimOnline.dm.getWidth() / 2 - 20, DosimOnline.dm.getHeight() / 2 + 20);
+        }
     }
     
     @Override
@@ -89,6 +93,17 @@ public class WorldPlains extends World
             add(new EntityFireball(dos.x, dos.y));
             EntityFireball.isBomb = true;
             attackAllowed = 200;
+        }
+        
+        if (life == 0 && gc.getInput().isKeyPressed(Input.KEY_R))
+        {
+            naziMoveSpeed = 4;
+            add(dos);
+            dos.x = 1920;
+            dos.y = 0;
+            score = 0;
+            life = 5;
+            setCameraOn(dos);
         }
         
         if (attackAllowed > 0) {attackAllowed--;}

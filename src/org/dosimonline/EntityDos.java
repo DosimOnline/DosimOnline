@@ -15,6 +15,7 @@ public class EntityDos extends Entity
     private Animation dosWalkLeft;
     private Animation dosWalkRight;
     private Image dosStanding;
+    private Image dosJumping;
     private boolean jumpAllowed = true;
     private float jump;
     public static int direction = 1; //1 is left, 2 is right.
@@ -35,6 +36,7 @@ public class EntityDos extends Entity
         dosWalkRight.addFrame(dosSheet.getSprite(0, 0), 150);
         dosWalkRight.addFrame(dosSheet.getSprite(1, 0), 150);
         dosStanding = dosSheet.getSprite(0, 0);
+        dosJumping = dosSheet.getSprite(2, 0);
         define("right", Input.KEY_D);
         define("left", Input.KEY_A);
         define("up", Input.KEY_W);
@@ -48,28 +50,13 @@ public class EntityDos extends Entity
     {
         super.render(gc, g);
         
-        if (check("right") && direction == 2)
-        {
-            g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x + moveSpeed, y) == null) {x += moveSpeed;}
-        }
-        else if (check("left") && direction == 2)
-        {
-            g.drawAnimation(dosWalkRight, x, y);
-            if (collide("Solid", x - moveSpeed, y) == null) {x -= moveSpeed;}
-        }
-        else if (check("right") && direction == 1)
-        {
-            g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x + moveSpeed, y) == null) {x += moveSpeed;}
-        }
-        else if (check("left") && direction == 1)
-        {
-            g.drawAnimation(dosWalkLeft, x, y);
-            if (collide("Solid", x - moveSpeed, y) == null) {x -= moveSpeed;}
-        }
-        else if (direction == 2) {g.drawImage(dosStanding, x, y);}
-        else if (direction == 1) {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
+        if ((check("left") || check("right")) && direction == 2 && collide("Solid", x, y + 2) != null) {g.drawAnimation(dosWalkRight, x, y);}
+        else if ((check("left") || check("right")) && direction == 1 && collide("Solid", x, y + 2) != null) {g.drawAnimation(dosWalkLeft, x, y);}
+        else if (direction == 1 && collide("Solid", x, y + 2) != null) {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
+        else if (direction == 2 && collide("Solid", x, y + 2) != null) {g.drawImage(dosStanding, x, y);}
+        else if (direction == 1 && collide("Solid", x, y + 2) != null) {g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);}
+        else if (direction == 1) {g.drawImage(dosJumping.getFlippedCopy(true, false), x, y);}
+        else if (direction == 2) {g.drawImage(dosJumping, x, y);}
     }
     
     @Override
@@ -79,32 +66,33 @@ public class EntityDos extends Entity
         DisplayMode dm = Display.getDesktopDisplayMode();
         int mouseX = gc.getInput().getMouseX();
         
+        if (check("right") && collide("Solid", x + moveSpeed, y) == null) {x += moveSpeed;}
+        if (check("left") && collide("Solid", x - moveSpeed, y) == null) {x -= moveSpeed;}
+        
         if (mouseX > dm.getWidth() / 2) {direction = 2;}
         else {direction = 1;}
         
         if (jumpAllowed && check("up"))
         {
             jumpAllowed = false;
-            if (collide("Solid", x, y) == null) {jump = 50;}
+            if (collide("Solid", x, y) == null) {jump = 30;}
         }
+        if (jump > 15) {jump --; if (collide("Solid", x, y) == null){y -= gravity * 2;}}
+        else if (jump > 5) {jump--; if (collide("Solid", x, y) == null) {y -= gravity * 1.5;}}
+        else if (jump > 0) {jump--; if (collide("Solid", x, y) == null) {y -= gravity * 1.15;}}
+        if (collide("Solid", x, y) != null) {jump = 0;}
         
         //Gravity
         if (collide("Solid", x, y + gravity) == null)
         {y += gravity; jumpAllowed = false;} 
         else {jumpAllowed = true;}
         
-        if (jump > 0 && collide("Solid", x, y) == null)
-        {
-            y -= gravity * 2;
-            jump --;
-        }
-        
         if (this.x <= 600) {x += moveSpeed;}
         if (this.x >= 7000) {x -= moveSpeed;}
         if (WorldPlains.life == 0) {this.destroy();}
         
         if (collide("Ladder", x, y) != null && jump > 0) {jump = 0;}
-        if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity * 2 + 1;}}
-        if (collide("Solid", x, y - (gravity * 2)) != null) {y += gravity * 2 + 1;}
+        if (collide("Ladder", x, y) != null) {if (check("up")) {y -= gravity * 2;}}
+        if (collide("Solid", x, y + 36) != null && collide("Solid", x, y + 1) == null) {y++;}
     }
 }

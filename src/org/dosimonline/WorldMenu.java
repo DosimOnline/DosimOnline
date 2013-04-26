@@ -34,6 +34,7 @@ public class WorldMenu extends World
         g.drawImage(hakotel, 0, 0);
         g.drawString("Hit \"S\" to start", DosimOnline.dm.getWidth() / 2 - 90, DosimOnline.dm.getHeight() / 2 - 50);
         g.drawString("Hit \"C\" to see credits", DosimOnline.dm.getWidth() / 2 - 120, DosimOnline.dm.getHeight() / 2 - 20);
+        g.drawString("Hit \"Esc\" to exit", DosimOnline.dm.getWidth() / 2 - 100, DosimOnline.dm.getHeight() / 2 + 10);
     }
     
     @Override
