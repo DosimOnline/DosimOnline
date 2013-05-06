@@ -12,36 +12,36 @@ public class DosimOnline extends StateBasedGame
 {
     public static String gamename = "Dosim Online";
     public static DisplayMode dm;
-    
+
     public DosimOnline(String gamename)
     {
-        super(gamename);
+	   super(gamename);
     }
-    
+
     @Override
     public void initStatesList(GameContainer gc) throws SlickException
     {
-        addState(new WorldMenu(1, gc));
-        addState(new WorldPlains(2, gc));
-        addState(new WorldCredits(3, gc));
-        enterState(1);
+	   addState(new WorldMenu(1, gc));
+	   addState(new WorldPlains(2, gc));
+	   addState(new WorldCredits(3, gc));
+	   enterState(1);
     }
-    
+
     public static void main(String[] args) throws IOException, LWJGLException
     {
-        dm = Display.getDesktopDisplayMode();
-        Display.setResizable(true);
-        
-        try
-        {
-            AppGameContainer appgc = new AppGameContainer(new DosimOnline(gamename));
-            appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
-            appgc.setFullscreen(true);
-            appgc.setTargetFrameRate(200);
-            appgc.start();
-        } catch (SlickException e)
-        {
-            e.printStackTrace();
-        }
+	   dm = Display.getDesktopDisplayMode();
+	   Display.setResizable(true);
+
+	   try
+	   {
+		  AppGameContainer appgc = new AppGameContainer(new DosimOnline(gamename));
+		  appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
+		  appgc.setFullscreen(true);
+		  appgc.setTargetFrameRate(200);
+		  appgc.start();
+	   } catch (SlickException e)
+	   {
+		  e.printStackTrace();
+	   }
     }
 }

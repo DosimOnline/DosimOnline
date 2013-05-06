@@ -1,5 +1,10 @@
 package org.dosimonline;
 import it.randomtower.engine.World;
+import java.util.Random;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,43 +15,121 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class WorldMenu extends World
 {
-    private Image hakotel;
-    private Image logo;
-    
-    public WorldMenu(int id, GameContainer gc)
-    {
-        super(id, gc);
-    }
-    
-    @Override
-    public void init(GameContainer gc, StateBasedGame game) throws SlickException
-    {
-        hakotel = new Image("org/dosimonline/res/hakotel.png"); //I won't tell you what kotel is.
-        Music music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
-        music.loop();
-        music.setVolume((float)0.04);
-        gc.setShowFPS(false);
-    }
-    
-    @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
-    {
-        g.drawImage(hakotel, 0, 0);
-        g.drawString("Hit \"S\" to start", DosimOnline.dm.getWidth() / 2 - 90, DosimOnline.dm.getHeight() / 2 - 50);
-        g.drawString("Hit \"C\" to see credits", DosimOnline.dm.getWidth() / 2 - 120, DosimOnline.dm.getHeight() / 2 - 20);
-        g.drawString("Hit \"Esc\" to exit", DosimOnline.dm.getWidth() / 2 - 100, DosimOnline.dm.getHeight() / 2 + 10);
-    }
-    
-    @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException
-    {
-        if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
-        {
-            gc.exit();
-            gc.destroy();
-        }
+	private Image logo;
+	private Image hakotel;
+	private Music music;
+	private DisplayMode dm = Display.getDesktopDisplayMode();
+	private short heartX = 0;
+	private int br = 224, bg = 224, bb = 224; //Bacground red, green and blue.
+	private Random random = new Random();
+	private int heartY = random.nextInt(dm.getHeight() - 20) + 10;
+	private Image startButton, startButtonHover;
+	private Image creditsButton, creditsButtonHover;
+	private Image exitButton, exitButtonHover;
+	private Image heart;
+	private float volume = 0.1f;
 
-        if (gc.getInput().isKeyPressed(Input.KEY_S)) {sbg.enterState(2);}
-        if (gc.getInput().isKeyPressed(Input.KEY_C)) {sbg.enterState(3);}
-    }
+	public WorldMenu(int id, GameContainer gc)
+	{
+		super(id, gc);
+	}
+
+	@Override
+	public void init(GameContainer gc, StateBasedGame game)
+	 throws SlickException
+	{
+		logo = new Image("org/dosimonline/res/logo.png");
+		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(dm.getWidth(), dm.getHeight());
+
+		startButton = new Image("org/dosimonline/res/buttons/start.png");
+		startButtonHover = new Image("org/dosimonline/res/buttons/startActive.png");
+
+		creditsButton = new Image("org/dosimonline/res/buttons/credits.png");
+		creditsButtonHover = new Image("org/dosimonline/res/buttons/creditsActive.png");
+
+		exitButton = new Image("org/dosimonline/res/buttons/exit.png");
+		exitButtonHover = new Image("org/dosimonline/res/buttons/exitActive.png");
+
+		heart = new Image("org/dosimonline/res/heart.png");
+		music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
+		music.loop();
+		music.setVolume((float) volume);
+		gc.setShowFPS(false);
+	}
+
+	@Override
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
+	{
+		g.drawImage(hakotel, 0, 0);
+		int mouseX = gc.getInput().getMouseX();
+		int mouseY = gc.getInput().getMouseY();
+		g.drawImage(heart, heartX, heartY);
+		g.drawImage(logo, dm.getWidth() - logo.getWidth() - 10, dm.getHeight() / 2 - logo.getHeight() / 2);
+
+		//Buttons stuff
+		if (!(mouseX > 20 && mouseX < 20 + startButton.getWidth() && mouseY > dm.getHeight() / 2 - 20 && mouseY < dm.getHeight() / 2 - 20 + startButton.getHeight()))
+		{
+			g.drawImage(startButton, 20, dm.getHeight() / 2 - 20);
+		} else
+		{
+			g.drawImage(startButtonHover, 20, dm.getHeight() / 2 - 20);
+			if (gc.getInput().isMouseButtonDown(0))
+			{
+				sbg.enterState(2);
+			}
+		}
+		if (!(mouseX > 20 && mouseX < 20 + creditsButton.getWidth() && mouseY > dm.getHeight() / 2 + 20 && mouseY < dm.getHeight() / 2 + 20 + startButton.getHeight()))
+		{
+			g.drawImage(creditsButton, 20, dm.getHeight() / 2 + 20);
+		} else
+		{
+			g.drawImage(creditsButtonHover, 20, dm.getHeight() / 2 + 20);
+			if (gc.getInput().isMouseButtonDown(0))
+			{
+				sbg.enterState(3);
+			}
+		}
+		if (!(mouseX > 20 && mouseX < 20 + exitButton.getWidth() && mouseY > dm.getHeight() / 2 + 60 && mouseY < dm.getHeight() / 2 + 60 + startButton.getHeight()))
+		{
+			g.drawImage(exitButton, 20, dm.getHeight() / 2 + 60);
+		} else
+		{
+			g.drawImage(exitButtonHover, 20, dm.getHeight() / 2 + 60);
+			if (gc.getInput().isMouseButtonDown(0))
+			{
+				gc.destroy();
+			}
+		}
+	}
+
+	@Override
+	public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException
+	{
+		//Traveling heart's stuff
+		if (heartX < dm.getWidth())
+		{
+			heartX++;
+		} else
+		{
+			heartY = random.nextInt(dm.getHeight() - 50) + 10;
+			heartX = -50;
+		}
+		heart.rotate(0.1f);
+
+		if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
+		{
+			gc.exit();
+		}
+
+		if (gc.getInput().isKeyPressed(Input.KEY_UP))
+		{
+			volume += 0.1;
+			music.setVolume(volume);
+		}
+		if (gc.getInput().isKeyPressed(Input.KEY_DOWN))
+		{
+			volume -= 0.1;
+			music.setVolume(volume);
+		}
+	}
 }
