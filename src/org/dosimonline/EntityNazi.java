@@ -13,10 +13,10 @@ public class EntityNazi extends Entity
 	private Animation naziWalkLeft;
 	private Animation naziWalkRight;
 	private float gravity = WorldPlains.gravity;
-	private int isAfterSpawn = 400;
+	private int isAfterSpawn = 600;
 	private Random random = new Random();
 	private int shallAddLife = random.nextInt(30);
-	private float dosX = WorldPlains.dos.x;
+	private float dosX, dosY;
 	public static float moveSpeed = WorldPlains.naziMoveSpeed;
 
 	public EntityNazi(float x, float y) throws SlickException
@@ -48,50 +48,39 @@ public class EntityNazi extends Entity
 	{
 		super.update(container, delta);
 		dosX = WorldPlains.dos.x;
-		moveSpeed += 0.000001;
+		dosY = WorldPlains.dos.y;
+		moveSpeed += 0.00001f;
 
 		//Gravity.
-		if (collide("Solid", x, y + gravity) != null)
-		{
-			y -= gravity;
-		}
-		y += gravity;
+		if (collide("Solid", x, y + gravity) == null && collide("Ladder", x, y) == null) y += gravity;
 
 		//Dos chasing.
-		if (dosX > x && collide("Ladder", x, y) == null)
+		if (isAfterSpawn == 0)
 		{
-			x += moveSpeed;
-		} else if (dosX < x && collide("Ladder", x, y) == null)
-		{
-			x -= moveSpeed;
-		}
-		if (collide("Solid", x - moveSpeed, y) != null)
-		{
-			x += moveSpeed;
-		} else if (collide("Solid", x + moveSpeed, y) != null)
-		{
-			x -= moveSpeed;
-		}
-		if (WorldPlains.dos.y < y + 20 && collide("Ladder", x, y) != null)
-		{
-			y -= gravity + 4;
-		}
-		if (WorldPlains.dos.y >= y - 20 && collide("Ladder", x, y) != null)
-		{
-			if (dosX > x)
+			if (collide("Ladder", x, y) != null)
 			{
-				x += moveSpeed;
-			} else
-			{
-				x -= moveSpeed;
+				if (dosY - 110 > y)
+				{
+					y += gravity;
+					if (dosX > x) x -= moveSpeed;
+					else x += moveSpeed;
+				}
+				if (dosY - 30 < y)
+				{
+					y -= gravity;
+					if (dosX > x) x -= moveSpeed;
+					else x += moveSpeed;
+				}
 			}
+			if (dosX > x && collide("Solid", x + moveSpeed, y) == null) x += moveSpeed;
+			if (dosX < x && collide("Solid", x - moveSpeed, y) == null) x -= moveSpeed;
 		}
-
+		
 		//Scoring.
 		if (collide("Dos", x, y) != null)
 		{
 			this.destroy();
-			WorldPlains.dos.life -= 1;
+			WorldPlains.dos.life--;
 		}
 		if (collide("Fireball", x, y) != null)
 		{
@@ -100,19 +89,6 @@ public class EntityNazi extends Entity
 			if (shallAddLife == 0)
 			{
 				WorldPlains.dos.life++;
-			}
-		}
-
-		//Preventing the Nazi from colliding ceilings while climbing.
-		if (collide("Solid", x, y - gravity) != null && collide("Solid", x, y + gravity) == null)
-		{
-			y += gravity;
-			if (WorldPlains.dos.x > x)
-			{
-				x += moveSpeed;
-			} else
-			{
-				x -= moveSpeed;
 			}
 		}
 
@@ -135,17 +111,9 @@ public class EntityNazi extends Entity
 		super.render(gc, g);
 		if (dosX > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
 		{
-			if (collide("Solid", x + moveSpeed, y) == null)
-			{
-				x += moveSpeed;
-			}
 			g.drawAnimation(naziWalkRight, x, y);
 		} else if (dosX < x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
 		{
-			if (collide("Solid", x - moveSpeed, y) == null)
-			{
-				x -= moveSpeed;
-			}
 			g.drawAnimation(naziWalkLeft, x, y);
 		} else if (dosX > x)
 		{

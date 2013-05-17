@@ -24,6 +24,7 @@ public class WorldPlains extends World
 	private short helpDisplayTime = 300;
 	public static float gravity = 12;
 	private Structure building = new Structure();
+	private int spawnFSM = 1;
 
 	public WorldPlains(int id, GameContainer gc)
 	{
@@ -79,7 +80,7 @@ public class WorldPlains extends World
 			 DosimOnline.dm.getWidth() / 2 - 100,
 			 DosimOnline.dm.getHeight() / 2 - 100);
 		}
-		if (dos.life == 0)
+		if (dos.life <= 0)
 		{
 			g.drawString("LOL! U DIED!", DosimOnline.dm.getWidth() / 2 - 10,
 			 DosimOnline.dm.getHeight() / 2);
@@ -126,10 +127,17 @@ public class WorldPlains extends World
 		if (spawnNazi == 0)
 		{
 			int naziX = random.nextInt(4100) + 600;
-			add(new EntityNazi(naziX, -5200));
+			add(new EntityNazi(naziX, -7000));
 			spawnNazi = 450;
 		}
 		naziMoveSpeed += 0.00005;
+		
+		if (spawnFSM <= 0)
+		{			
+			add(new EntityFlyingSpaghettiMonster(1920, -500));
+			spawnFSM = 4000;
+		}
+		spawnFSM--;
 
 		if (dos.life == 0 && gc.getInput().isKeyPressed(Input.KEY_R))
 		{
@@ -147,7 +155,7 @@ public class WorldPlains extends World
 		{
 			helpDisplayTime--;
 		}
-
+		
 		if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
 		{
 			sbg.enterState(1);

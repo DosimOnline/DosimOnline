@@ -65,7 +65,7 @@ public class EntityDos extends Entity
 		} else if (direction == 2 && collide("Solid", x, y + gravity) != null)
 		{
 			g.drawImage(dosStanding, x, y);
-		}else if (direction == 1)
+		} else if (direction == 1)
 		{
 			g.drawImage(dosJumping.getFlippedCopy(true, false), x, y);
 		} else if (direction == 2)
@@ -78,6 +78,8 @@ public class EntityDos extends Entity
 	public void update(GameContainer gc, int delta) throws SlickException
 	{
 		super.update(gc, delta);
+
+		//Dos's direction (Only graphical).
 		if (gc.getInput().getMouseX() > DosimOnline.dm.getWidth() / 2)
 		{
 			direction = 2;
@@ -86,6 +88,7 @@ public class EntityDos extends Entity
 			direction = 1;
 		}
 
+		//Movement.
 		if (check("right") && collide("Solid", x + moveSpeed, y) == null)
 		{
 			x += moveSpeed;
@@ -94,6 +97,7 @@ public class EntityDos extends Entity
 			x -= moveSpeed;
 		}
 
+		//Jumping.
 		if (jumpAllowed && check("up"))
 		{
 			jumpAllowed = false;
@@ -102,7 +106,7 @@ public class EntityDos extends Entity
 				jump = 30;
 			}
 		}
-		if (jump > 15)
+		if (jump > 15)	//This part smoothes the jump.
 		{
 			jump--;
 			if (collide("Solid", x, y) == null)
@@ -123,7 +127,7 @@ public class EntityDos extends Entity
 			{
 				y -= gravity * 1.15;
 			}
-		}
+		}				//No more jump smoothing!
 		if (collide("Solid", x, y) != null)
 		{
 			jump = 0;
@@ -138,7 +142,8 @@ public class EntityDos extends Entity
 		{
 			jumpAllowed = true;
 		}
-
+		
+		//Preventing from exiting world bounds.
 		if (this.x <= 600)
 		{
 			x += moveSpeed;
@@ -147,15 +152,20 @@ public class EntityDos extends Entity
 		{
 			x -= moveSpeed;
 		}
+		
+		//Death.
 		if (life == 0)
 		{
 			this.destroy();
 		}
-
+		
+		//Preventing from the dos to launch when touching a ladder and jumping.
 		if (collide("Ladder", x, y) != null && jump > 0)
 		{
 			jump = 0;
 		}
+		
+		//Climbing.
 		if (collide("Ladder", x, y) != null)
 		{
 			if (check("up"))
@@ -163,15 +173,17 @@ public class EntityDos extends Entity
 				y -= gravity * 2;
 			}
 		}
+		
+		//Soft landing.
 		if (collide("Solid", x, y + 36) != null && collide("Solid", x, y + 1) == null)
 		{
 			y++;
 		}
-
+		
+		//Poopee.
 		if (attackAllowed > 0)
 		{
 			attackAllowed--;
 		}
-
 	}
 }

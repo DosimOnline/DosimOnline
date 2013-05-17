@@ -26,8 +26,8 @@ public class WorldMenu extends World
 	private Image startButton, startButtonHover;
 	private Image creditsButton, creditsButtonHover;
 	private Image exitButton, exitButtonHover;
+	private Image settingsButton, settingsButtonHover;
 	private Image heart;
-	private float volume = 0.1f;
 
 	public WorldMenu(int id, GameContainer gc)
 	{
@@ -49,11 +49,13 @@ public class WorldMenu extends World
 
 		exitButton = new Image("org/dosimonline/res/buttons/exit.png");
 		exitButtonHover = new Image("org/dosimonline/res/buttons/exitActive.png");
+		
+		settingsButton = new Image("org/dosimonline/res/buttons/settings.png");
+		settingsButtonHover = new Image("org/dosimonline/res/buttons/settingsActive.png");
 
 		heart = new Image("org/dosimonline/res/heart.png");
 		music = new Music("org/dosimonline/res/audio/Makche-Alleviation.ogg");
-		music.loop();
-		music.setVolume((float) volume);
+		music.loop(1, 0.5f);
 		gc.setShowFPS(false);
 	}
 
@@ -89,12 +91,23 @@ public class WorldMenu extends World
 				sbg.enterState(3);
 			}
 		}
-		if (!(mouseX > 20 && mouseX < 20 + exitButton.getWidth() && mouseY > dm.getHeight() / 2 + 60 && mouseY < dm.getHeight() / 2 + 60 + startButton.getHeight()))
+		if (!(mouseX > 20 && mouseX < 20 + settingsButton.getWidth() && mouseY > dm.getHeight() / 2 + 60 && mouseY < dm.getHeight() / 2 + 60 + startButton.getHeight()))
 		{
-			g.drawImage(exitButton, 20, dm.getHeight() / 2 + 60);
+			g.drawImage(settingsButton, 20, dm.getHeight() / 2 + 60);
 		} else
 		{
-			g.drawImage(exitButtonHover, 20, dm.getHeight() / 2 + 60);
+			g.drawImage(settingsButtonHover, 20, dm.getHeight() / 2 + 60);
+			if (gc.getInput().isMouseButtonDown(0))
+			{
+				sbg.enterState(4);
+			}
+		}
+		if (!(mouseX > 20 && mouseX < 20 + exitButton.getWidth() && mouseY > dm.getHeight() / 2 + 100 && mouseY < dm.getHeight() / 2 + 100 + startButton.getHeight()))
+		{
+			g.drawImage(exitButton, 20, dm.getHeight() / 2 + 100);
+		} else
+		{
+			g.drawImage(exitButtonHover, 20, dm.getHeight() / 2 + 100);
 			if (gc.getInput().isMouseButtonDown(0))
 			{
 				gc.destroy();
@@ -119,17 +132,6 @@ public class WorldMenu extends World
 		if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
 		{
 			gc.exit();
-		}
-
-		if (gc.getInput().isKeyPressed(Input.KEY_UP))
-		{
-			volume += 0.1;
-			music.setVolume(volume);
-		}
-		if (gc.getInput().isKeyPressed(Input.KEY_DOWN))
-		{
-			volume -= 0.1;
-			music.setVolume(volume);
 		}
 	}
 }

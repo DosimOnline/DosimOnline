@@ -24,6 +24,7 @@ public class DosimOnline extends StateBasedGame
 	   addState(new WorldMenu(1, gc));
 	   addState(new WorldPlains(2, gc));
 	   addState(new WorldCredits(3, gc));
+	   addState(new WorldSettings(4, gc));
 	   enterState(1);
     }
 
@@ -37,7 +38,7 @@ public class DosimOnline extends StateBasedGame
 		  AppGameContainer appgc = new AppGameContainer(new DosimOnline(gamename));
 		  appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
 		  appgc.setFullscreen(true);
-		  appgc.setTargetFrameRate(200);
+		  appgc.setTargetFrameRate(80);
 		  appgc.start();
 	   } catch (SlickException e)
 	   {

@@ -37,15 +37,13 @@ public class EntityFireball extends Entity
 		{
 			x += (int) (direction.getX() * velocity);
 			y += (int) (direction.getY() * velocity);
-		} else
-		{
-			
 		}
-
+		
 		if (collide("Solid", x, y) != null)
 		{
 			destroy();
 		}
+		
 		if (shallIDie > 0)
 		{
 			shallIDie--;
