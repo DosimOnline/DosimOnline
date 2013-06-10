@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.entity.Entity;
 
 import org.lwjgl.opengl.Display;
@@ -13,18 +14,20 @@ public class EntityFireball extends Entity
 	private int shallIDie = 200;
 	private boolean isMine;
 	private Vector2f direction;
-	private int velocity = 20;
+	private int speed = 20;
 
-	public EntityFireball(float x, float y, float targetX, float targetY, boolean isMine) throws SlickException
+	public EntityFireball(float x, float y, float targetX, float targetY,
+			boolean isMine) throws SlickException
 	{
 		super(x, y);
 		setGraphic(new Image("org/dosimonline/res/fireball.png"));
 		setHitBox(0, 0, 32, 32);
 		addType("Fireball");
-		
+
 		this.isMine = isMine;
 		DisplayMode dm = Display.getDesktopDisplayMode();
-		direction = new Vector2f(targetX - dm.getWidth() / 2, targetY - dm.getHeight() / 2);
+		direction = new Vector2f(targetX - dm.getWidth() / 2, targetY
+				- dm.getHeight() / 2);
 		direction.normalise();
 	}
 
@@ -35,15 +38,15 @@ public class EntityFireball extends Entity
 
 		if (!isMine)
 		{
-			x += (int) (direction.getX() * velocity);
-			y += (int) (direction.getY() * velocity);
+			x += direction.getX() * speed;
+			y += direction.getY() * speed;
 		}
-		
+
 		if (collide("Solid", x, y) != null)
 		{
 			destroy();
 		}
-		
+
 		if (shallIDie > 0)
 		{
 			shallIDie--;

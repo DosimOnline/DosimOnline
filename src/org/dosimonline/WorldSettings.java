@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.World;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -12,7 +13,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public class WorldSettings extends World
 {
 	private Image hakotel;
-	private Image plus, plusActive, minus, minusActive, back, backActive;
+	
+	private Button fpsPlus, fpsMinus, musicPlus, musicMinus, back;
+	private int fps;
+	float musicVolume;
+	
 	private DisplayMode dm = Display.getDesktopDisplayMode();
 
 	public WorldSettings(int id, GameContainer gc)
@@ -21,94 +26,83 @@ public class WorldSettings extends World
 	}
 
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
+	public void init(GameContainer gc, StateBasedGame sbg)
+			throws SlickException
 	{
 		super.init(gc, sbg);
-		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(dm.getWidth(), dm.getHeight());
-		plus = new Image("org/dosimonline/res/buttons/plus.png");
-		plusActive = new Image("org/dosimonline/res/buttons/plusActive.png");
-		minus = new Image("org/dosimonline/res/buttons/minus.png");
-		minusActive = new Image("org/dosimonline/res/buttons/minusActive.png");
-		back = new Image("org/dosimonline/res/buttons/back.png");
-		backActive = new Image("org/dosimonline/res/buttons/backActive.png");
+		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
+				dm.getWidth(), dm.getHeight());
+		
+		Image plus = new Image("org/dosimonline/res/buttons/plus.png");
+		Image plusActive = new Image("org/dosimonline/res/buttons/plusActive.png");
+		Image minus = new Image("org/dosimonline/res/buttons/minus.png");
+		Image minusActive = new Image("org/dosimonline/res/buttons/minusActive.png");
+		
+		fpsPlus = new Button(dm.getWidth() / 2 + 50, 42, plus, plusActive);
+		fpsMinus = new Button(dm.getWidth() / 2 - 175, 42, minus, minusActive);
+		musicPlus = new Button(dm.getWidth() / 2 + 50, 100, plus, plusActive);
+		musicMinus = new Button(dm.getWidth() / 2 - 175, 100, minus, minusActive);
+		
+		back = new Button(40, dm.getHeight() - 40, 
+				new Image("org/dosimonline/res/buttons/back.png"),
+				new Image("org/dosimonline/res/buttons/backActive.png"));
+		
+		fps = 80;
+		musicVolume = gc.getMusicVolume();
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
+			throws SlickException
 	{
 		super.render(gc, sbg, g);
-		int mouseX = gc.getInput().getMouseX();
-		int mouseY = gc.getInput().getMouseY();
 
 		g.drawImage(hakotel, 0, 0);
 
-		g.drawString("Target FPS: " + gc.getFPS(), dm.getWidth() / 2 - 100, 50);
-		if (!(mouseX > dm.getWidth() / 2 - 175 && mouseX < dm.getWidth() / 2 - 175 + plus.getWidth() && mouseY > 42 && mouseY < 42 + plus.getHeight()))
-		{
-			g.drawImage(minus, dm.getWidth() / 2 - 175, 42);
-		} else
-		{
-			g.drawImage(minusActive, dm.getWidth() / 2 - 175, 42);
-			if (gc.getInput().isMousePressed(0))
-			{
-				gc.setTargetFrameRate(gc.getFPS() - 5);
-			}
-		}
-		if (!(mouseX > dm.getWidth() / 2 + 50 && mouseX < dm.getWidth() / 2 + 50 + plus.getWidth() && mouseY > 42 && mouseY < 42 + plus.getHeight()))
-		{
-			g.drawImage(plus, dm.getWidth() / 2 + 50, 42);
-		} else
-		{
-			g.drawImage(plusActive, dm.getWidth() / 2 + 50, 42);
-			if (gc.getInput().isMousePressed(0))
-			{
-				gc.setTargetFrameRate(gc.getFPS() + 5);
-			}
-		}
-
-		g.drawString("Music volume: " + Math.round(gc.getMusicVolume() * 10), dm.getWidth() / 2 - 110, 108);
-		if (!(mouseX > dm.getWidth() / 2 - 175 && mouseX < dm.getWidth() / 2 - 175 + plus.getWidth() && mouseY > 100 && mouseY < 100 + plus.getHeight()))
-		{
-			g.drawImage(minus, dm.getWidth() / 2 - 175, 100);
-		} else
-		{
-			g.drawImage(minusActive, dm.getWidth() / 2 - 175, 100);
-			if (gc.getInput().isMousePressed(0))
-			{
-				gc.setMusicVolume(gc.getMusicVolume() - 0.1f);
-			}
-		}
-		if (!(mouseX > dm.getWidth() / 2 + 50 && mouseX < dm.getWidth() / 2 + 50 + plus.getWidth() && mouseY > 100 && mouseY < 100 + plus.getHeight()))
-		{
-			g.drawImage(plus, dm.getWidth() / 2 + 50, 100);
-		} else
-		{
-			g.drawImage(plusActive, dm.getWidth() / 2 + 50, 100);
-			if (gc.getInput().isMousePressed(0))
-			{
-				gc.setMusicVolume(gc.getMusicVolume() + 0.1f);
-			}
-		}
-
-		if (!(mouseX > 30 && mouseX < 30 + back.getWidth() && mouseY > dm.getHeight() - 20 - back.getHeight() && mouseY < dm.getHeight() - 20))
-		{
-			g.drawImage(back, 30, dm.getHeight() - 20 - back.getHeight());
-		} else
-		{
-			g.drawImage(backActive, 30, dm.getHeight() - 20 - back.getHeight());
-			if (gc.getInput().isMousePressed(0))
-			{
-				sbg.enterState(1);
-			}
-		}
+		g.drawString("Target FPS: " + fps, dm.getWidth() / 2 - 100, 50);
+		g.drawString("Music volume: " + Math.round(gc.getMusicVolume() * 10),
+				dm.getWidth() / 2 - 110, 108);
+		
+		fpsPlus.render(g);
+		fpsMinus.render(g);
+		musicPlus.render(g);
+		musicMinus.render(g);
+		back.render(g);
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException
+	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+			throws SlickException
 	{
 		super.update(gc, sbg, delta);
 
-		if (gc.getInput().isKeyPressed(Input.KEY_M)) gc.setMusicVolume(0);
-		if (gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) sbg.enterState(1);
+		float oldVolume = musicVolume;
+		
+		fpsPlus.update(gc.getInput());
+		fpsMinus.update(gc.getInput());
+		musicPlus.update(gc.getInput());
+		musicMinus.update(gc.getInput());
+		back.update(gc.getInput());
+		
+		if (fpsPlus.activated())
+			fps += 5;
+		if (fpsMinus.activated())
+			fps -= 5;
+		if (musicPlus.activated())
+			musicVolume += 0.1f;
+		if (musicMinus.activated())
+			musicVolume -= 0.1f;
+		
+
+		if (musicVolume != oldVolume)
+			gc.setMusicVolume(musicVolume);
+		
+		if (gc.getInput().isKeyPressed(Input.KEY_M))
+			gc.setMusicVolume(0);
+		if (back.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
+		{
+			sbg.enterState(1);
+			gc.setTargetFrameRate(fps);
+		}
 	}
 }

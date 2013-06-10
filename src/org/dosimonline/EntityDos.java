@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.entity.Entity;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -18,7 +19,7 @@ public class EntityDos extends Entity
 	private short jump;
 	public static byte direction = 1; // 1 is left, 2 is right.
 	private float gravity = WorldPlains.gravity;
-	private float moveSpeed = 6;
+	private float moveSpeed = 10;  // original value until v0.5: 6
 	public int life;
 	public int score;
 	public short attackAllowed = 0;
@@ -26,12 +27,16 @@ public class EntityDos extends Entity
 	public EntityDos(float x, float y) throws SlickException
 	{
 		super(x, y);
-		SpriteSheet dosSheet = new SpriteSheet("org/dosimonline/res/sprites/dos.png", 20, 36);
+		SpriteSheet dosSheet = new SpriteSheet(
+				"org/dosimonline/res/sprites/dos.png", 20, 36);
 		dosWalkLeft = new Animation();
 		dosWalkLeft.setAutoUpdate(true);
-		dosWalkLeft.addFrame(dosSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
-		dosWalkLeft.addFrame(dosSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
+		dosWalkLeft.addFrame(
+				dosSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
+		dosWalkLeft.addFrame(
+				dosSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
 
+		score = 0;
 		life = 5;
 
 		dosWalkRight = new Animation();
@@ -53,10 +58,12 @@ public class EntityDos extends Entity
 	{
 		super.render(gc, g);
 
-		if ((check("left") || check("right")) && direction == 2 && collide("Solid", x, y + gravity) != null)
+		if ((check("left") || check("right")) && direction == 2
+				&& collide("Solid", x, y + gravity) != null)
 		{
 			g.drawAnimation(dosWalkRight, x, y);
-		} else if ((check("left") || check("right")) && direction == 1 && collide("Solid", x, y + gravity) != null)
+		} else if ((check("left") || check("right")) && direction == 1
+				&& collide("Solid", x, y + gravity) != null)
 		{
 			g.drawAnimation(dosWalkLeft, x, y);
 		} else if (direction == 1 && collide("Solid", x, y + gravity) != null)
@@ -79,7 +86,7 @@ public class EntityDos extends Entity
 	{
 		super.update(gc, delta);
 
-		//Dos's direction (Only graphical).
+		// Dos's direction (Only graphical).
 		if (gc.getInput().getMouseX() > DosimOnline.dm.getWidth() / 2)
 		{
 			direction = 2;
@@ -88,7 +95,7 @@ public class EntityDos extends Entity
 			direction = 1;
 		}
 
-		//Movement.
+		// Movement.
 		if (check("right") && collide("Solid", x + moveSpeed, y) == null)
 		{
 			x += moveSpeed;
@@ -97,7 +104,7 @@ public class EntityDos extends Entity
 			x -= moveSpeed;
 		}
 
-		//Jumping.
+		// Jumping.
 		if (jumpAllowed && check("up"))
 		{
 			jumpAllowed = false;
@@ -106,7 +113,7 @@ public class EntityDos extends Entity
 				jump = 30;
 			}
 		}
-		if (jump > 15)	//This part smoothes the jump.
+		if (jump > 15) // This part smoothes the jump.
 		{
 			jump--;
 			if (collide("Solid", x, y) == null)
@@ -127,7 +134,7 @@ public class EntityDos extends Entity
 			{
 				y -= gravity * 1.15;
 			}
-		}				//No more jump smoothing!
+		} // No more jump smoothing!
 		if (collide("Solid", x, y) != null)
 		{
 			jump = 0;
@@ -142,8 +149,8 @@ public class EntityDos extends Entity
 		{
 			jumpAllowed = true;
 		}
-		
-		//Preventing from exiting world bounds.
+
+		// Preventing from exiting world bounds.
 		if (this.x <= 600)
 		{
 			x += moveSpeed;
@@ -152,20 +159,20 @@ public class EntityDos extends Entity
 		{
 			x -= moveSpeed;
 		}
-		
-		//Death.
+
+		// Death.
 		if (life == 0)
 		{
 			this.destroy();
 		}
-		
-		//Preventing from the dos to launch when touching a ladder and jumping.
+
+		// Preventing from the dos to launch when touching a ladder and jumping.
 		if (collide("Ladder", x, y) != null && jump > 0)
 		{
 			jump = 0;
 		}
-		
-		//Climbing.
+
+		// Climbing.
 		if (collide("Ladder", x, y) != null)
 		{
 			if (check("up"))
@@ -173,14 +180,15 @@ public class EntityDos extends Entity
 				y -= gravity * 2;
 			}
 		}
-		
-		//Soft landing.
-		if (collide("Solid", x, y + 36) != null && collide("Solid", x, y + 1) == null)
+
+		// Soft landing.
+		if (collide("Solid", x, y + 36) != null
+				&& collide("Solid", x, y + 1) == null)
 		{
 			y++;
 		}
-		
-		//Poopee.
+
+		// Poopee.
 		if (attackAllowed > 0)
 		{
 			attackAllowed--;

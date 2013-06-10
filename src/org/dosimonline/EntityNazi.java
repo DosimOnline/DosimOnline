@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.entity.Entity;
 import java.util.Random;
 import org.newdawn.slick.Animation;
@@ -22,11 +23,14 @@ public class EntityNazi extends Entity
 	public EntityNazi(float x, float y) throws SlickException
 	{
 		super(x, y);
-		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20, 55);
+		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
+				55);
 		naziWalkLeft = new Animation();
 		naziWalkLeft.setAutoUpdate(true);
-		naziWalkLeft.addFrame(naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
-		naziWalkLeft.addFrame(naziSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
+		naziWalkLeft.addFrame(
+				naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
+		naziWalkLeft.addFrame(
+				naziSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
 
 		naziWalkRight = new Animation();
 		naziWalkRight.setAutoUpdate(true);
@@ -44,17 +48,20 @@ public class EntityNazi extends Entity
 	}
 
 	@Override
-	public void update(GameContainer container, int delta) throws SlickException
+	public void update(GameContainer container, int delta)
+			throws SlickException
 	{
 		super.update(container, delta);
 		dosX = WorldPlains.dos.x;
 		dosY = WorldPlains.dos.y;
 		moveSpeed += 0.00001f;
 
-		//Gravity.
-		if (collide("Solid", x, y + gravity) == null && collide("Ladder", x, y) == null) y += gravity;
+		// Gravity.
+		if (collide("Solid", x, y + gravity) == null
+				&& collide("Ladder", x, y) == null)
+			y += gravity;
 
-		//Dos chasing.
+		// Dos chasing.
 		if (isAfterSpawn == 0)
 		{
 			if (collide("Ladder", x, y) != null)
@@ -62,21 +69,27 @@ public class EntityNazi extends Entity
 				if (dosY - 110 > y)
 				{
 					y += gravity;
-					if (dosX > x) x -= moveSpeed;
-					else x += moveSpeed;
+					if (dosX > x)
+						x -= moveSpeed;
+					else
+						x += moveSpeed;
 				}
 				if (dosY - 30 < y)
 				{
 					y -= gravity;
-					if (dosX > x) x -= moveSpeed;
-					else x += moveSpeed;
+					if (dosX > x)
+						x -= moveSpeed;
+					else
+						x += moveSpeed;
 				}
 			}
-			if (dosX > x && collide("Solid", x + moveSpeed, y) == null) x += moveSpeed;
-			if (dosX < x && collide("Solid", x - moveSpeed, y) == null) x -= moveSpeed;
+			if (dosX > x && collide("Solid", x + moveSpeed, y) == null)
+				x += moveSpeed;
+			if (dosX < x && collide("Solid", x - moveSpeed, y) == null)
+				x -= moveSpeed;
 		}
-		
-		//Scoring.
+
+		// Scoring.
 		if (collide("Dos", x, y) != null)
 		{
 			this.destroy();
@@ -92,8 +105,9 @@ public class EntityNazi extends Entity
 			}
 		}
 
-		//Soft landing.
-		if (collide("Solid", x, y + 36) != null && collide("Solid", x, y + 1) == null)
+		// Soft landing.
+		if (collide("Solid", x, y + 36) != null
+				&& collide("Solid", x, y + 1) == null)
 		{
 			y++;
 		}
@@ -112,7 +126,8 @@ public class EntityNazi extends Entity
 		if (dosX > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkRight, x, y);
-		} else if (dosX < x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
+		} else if (dosX < x && isAfterSpawn == 0
+				&& collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkLeft, x, y);
 		} else if (dosX > x)
@@ -120,7 +135,8 @@ public class EntityNazi extends Entity
 			g.drawImage(naziSheet.getSprite(1, 0), x, y);
 		} else
 		{
-			g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false), x, y);
+			g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false),
+					x, y);
 		}
 	}
 }

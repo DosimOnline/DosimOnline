@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -10,7 +11,8 @@ public class EntityMeatball extends Entity
 	private Vector2f direction;
 	private int shallDie = 400;
 
-	public EntityMeatball(float x, float y, float targetX, float targetY) throws SlickException
+	public EntityMeatball(float x, float y, float targetX, float targetY)
+			throws SlickException
 	{
 		super(x, y);
 		Image image = new Image("org/dosimonline/res/meatball.png");
@@ -20,7 +22,8 @@ public class EntityMeatball extends Entity
 	}
 
 	@Override
-	public void update(GameContainer container, int delta) throws SlickException
+	public void update(GameContainer container, int delta)
+			throws SlickException
 	{
 		super.update(container, delta);
 
@@ -32,8 +35,9 @@ public class EntityMeatball extends Entity
 			WorldPlains.dos.life--;
 			this.destroy();
 		}
-		
-		if (shallDie <= 0) this.destroy();
+
+		if (shallDie <= 0)
+			this.destroy();
 	}
 
 	@Override

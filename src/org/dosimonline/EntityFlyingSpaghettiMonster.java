@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import it.randomtower.engine.entity.Entity;
 import java.util.Random;
 import org.newdawn.slick.GameContainer;
@@ -24,7 +25,8 @@ public class EntityFlyingSpaghettiMonster extends Entity
 	}
 
 	@Override
-	public void update(GameContainer container, int delta) throws SlickException
+	public void update(GameContainer container, int delta)
+			throws SlickException
 	{
 		super.update(container, delta);
 		shallChangeDirection--;
@@ -32,7 +34,8 @@ public class EntityFlyingSpaghettiMonster extends Entity
 		float dosX = WorldPlains.dos.x;
 		float dosY = WorldPlains.dos.y;
 
-		if (shallAttack <= 0 && dosX > x - 500 && dosX < x + 500 && dosY > y - 500 && dosY < y + 500)
+		if (shallAttack <= 0 && dosX > x - 500 && dosX < x + 500
+				&& dosY > y - 500 && dosY < y + 500)
 		{
 			world.add(new EntityMeatball(x, y, dosX, dosY));
 			shallAttack = 400;
@@ -47,15 +50,16 @@ public class EntityFlyingSpaghettiMonster extends Entity
 		x += direction.getX();
 		y += direction.getX();
 
-		if (collide("Dos", x, y) != null) WorldPlains.dos.life = 0;
-		
+		if (collide("Dos", x, y) != null)
+			WorldPlains.dos.life = 0;
+
 		if (collide("Fireball", x, y) != null)
 		{
 			WorldPlains.dos.score += 10;
 			this.destroy();
 		}
 
-		//Setting bounds.
+		// Setting bounds.
 		if (y <= -3500)
 		{
 			newDirection();
