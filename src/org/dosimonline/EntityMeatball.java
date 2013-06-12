@@ -10,15 +10,21 @@ public class EntityMeatball extends Entity
 {
 	private Vector2f direction;
 	private int shallDie = 400;
+	private EntityDos dos; // Dirty hack for accessing dos.life . the collision stuff should be done in EntityDos
+	private int speed = 20;
 
-	public EntityMeatball(float x, float y, float targetX, float targetY)
+	public EntityMeatball(float x, float y, float targetX, float targetY, EntityDos dos)
 			throws SlickException
 	{
 		super(x, y);
 		Image image = new Image("org/dosimonline/res/meatball.png");
 		setGraphic(image);
 		setHitBox(0, 0, image.getWidth(), image.getHeight());
+		
 		direction = new Vector2f(targetX - x, targetY - y);
+		direction.normalise();
+		
+		this.dos = dos;
 	}
 
 	@Override
@@ -27,12 +33,12 @@ public class EntityMeatball extends Entity
 	{
 		super.update(container, delta);
 
-		x += direction.getX() / 50;
-		y += direction.getY() / 50;
+		x += direction.getX() * speed;
+		y += direction.getY() * speed;
 
 		if (collide("Dos", x, y) != null)
 		{
-			WorldPlains.dos.life--;
+			dos.life--;
 			this.destroy();
 		}
 

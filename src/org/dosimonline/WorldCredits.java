@@ -16,16 +16,15 @@ public class WorldCredits extends World
 	private Button backButton;
 	private Image heart;
 	private DisplayMode dm = Display.getDesktopDisplayMode();
-	
 
 	public WorldCredits(int id, GameContainer gc) throws SlickException
 	{
 		super(id, gc);
 		heart = new Image("org/dosimonline/res/heart.png");
-		
-		backButton = new Button(40, dm.getHeight() - 40,
-				new Image("org/dosimonline/res/buttons/back.png"),
-				new Image("org/dosimonline/res/buttons/backActive.png"));
+
+		backButton = new Button(40, dm.getHeight() - 40, new Image(
+				"org/dosimonline/res/buttons/back.png"), new Image(
+				"org/dosimonline/res/buttons/backActive.png"));
 	}
 
 	@Override
@@ -38,9 +37,9 @@ public class WorldCredits extends World
 		{
 			sbg.enterState(1);
 		}
-		
+
 		backButton.update(gc.getInput());
-		
+
 		if (backButton.activated())
 			sbg.enterState(1);
 	}
@@ -64,7 +63,6 @@ public class WorldCredits extends World
 			g.drawImage(heart, x,
 					DosimOnline.dm.getHeight() - heart.getHeight());
 		}
-		
 
 		backButton.render(g);
 	}

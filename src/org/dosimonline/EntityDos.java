@@ -15,14 +15,15 @@ public class EntityDos extends Entity
 	private Animation dosWalkRight;
 	private Image dosStanding;
 	private Image dosJumping;
+
 	private boolean jumpAllowed = true;
-	private short jump;
-	public static byte direction = 1; // 1 is left, 2 is right.
+	private int jump;
+	public int direction = 1; // 1 is left, 2 is right.
 	private float gravity = WorldPlains.gravity;
-	private float moveSpeed = 10;  // original value until v0.5: 6
+	private float moveSpeed = 10; // original value until v0.5: 6
 	public int life;
 	public int score;
-	public short attackAllowed = 0;
+	public int attackAllowed = 0;
 
 	public EntityDos(float x, float y) throws SlickException
 	{
@@ -62,20 +63,25 @@ public class EntityDos extends Entity
 				&& collide("Solid", x, y + gravity) != null)
 		{
 			g.drawAnimation(dosWalkRight, x, y);
-		} else if ((check("left") || check("right")) && direction == 1
+		}
+		else if ((check("left") || check("right")) && direction == 1
 				&& collide("Solid", x, y + gravity) != null)
 		{
 			g.drawAnimation(dosWalkLeft, x, y);
-		} else if (direction == 1 && collide("Solid", x, y + gravity) != null)
+		}
+		else if (direction == 1 && collide("Solid", x, y + gravity) != null)
 		{
 			g.drawImage(dosStanding.getFlippedCopy(true, false), x, y);
-		} else if (direction == 2 && collide("Solid", x, y + gravity) != null)
+		}
+		else if (direction == 2 && collide("Solid", x, y + gravity) != null)
 		{
 			g.drawImage(dosStanding, x, y);
-		} else if (direction == 1)
+		}
+		else if (direction == 1)
 		{
 			g.drawImage(dosJumping.getFlippedCopy(true, false), x, y);
-		} else if (direction == 2)
+		}
+		else if (direction == 2)
 		{
 			g.drawImage(dosJumping, x, y);
 		}
@@ -90,7 +96,8 @@ public class EntityDos extends Entity
 		if (gc.getInput().getMouseX() > DosimOnline.dm.getWidth() / 2)
 		{
 			direction = 2;
-		} else
+		}
+		else
 		{
 			direction = 1;
 		}
@@ -99,7 +106,8 @@ public class EntityDos extends Entity
 		if (check("right") && collide("Solid", x + moveSpeed, y) == null)
 		{
 			x += moveSpeed;
-		} else if (check("left") && collide("Solid", x - moveSpeed, y) == null)
+		}
+		else if (check("left") && collide("Solid", x - moveSpeed, y) == null)
 		{
 			x -= moveSpeed;
 		}
@@ -120,14 +128,16 @@ public class EntityDos extends Entity
 			{
 				y -= gravity * 2;
 			}
-		} else if (jump > 5)
+		}
+		else if (jump > 5)
 		{
 			jump--;
 			if (collide("Solid", x, y) == null)
 			{
 				y -= gravity * 1.5;
 			}
-		} else if (jump > 0)
+		}
+		else if (jump > 0)
 		{
 			jump--;
 			if (collide("Solid", x, y) == null)
@@ -145,7 +155,8 @@ public class EntityDos extends Entity
 		{
 			y += gravity;
 			jumpAllowed = false;
-		} else
+		}
+		else
 		{
 			jumpAllowed = true;
 		}
@@ -160,11 +171,12 @@ public class EntityDos extends Entity
 			x -= moveSpeed;
 		}
 
+		// THIS SHOULD NOT BE HERE:
 		// Death.
-		if (life == 0)
-		{
-			this.destroy();
-		}
+		// if (life == 0)
+		// {
+		// this.destroy();
+		// }
 
 		// Preventing from the dos to launch when touching a ladder and jumping.
 		if (collide("Ladder", x, y) != null && jump > 0)

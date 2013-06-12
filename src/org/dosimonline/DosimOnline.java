@@ -42,7 +42,8 @@ public class DosimOnline extends StateBasedGame
 			appgc.setFullscreen(true);
 			appgc.setTargetFrameRate(80);
 			appgc.start();
-		} catch (SlickException e)
+		}
+		catch (SlickException e)
 		{
 			e.printStackTrace();
 		}

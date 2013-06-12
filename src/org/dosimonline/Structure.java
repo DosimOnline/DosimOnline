@@ -19,28 +19,29 @@ public class Structure
 			world.add(new TileRock(x + 384, y));
 			world.add(new TileRock(x, y));
 			world.add(new TileRockCeiling(x, y - 64));
-			for (int a = 2; a < 4; a++)
+			for (int i = 2; i < 4; i++)
 			{
-				world.add(new TileRockCeiling(x + 128 * a, y - 64));
+				world.add(new TileRockCeiling(x + 128 * i, y - 64));
 			}
-			for (int a = 0; a < 4; a++)
+			for (int i = 0; i < 4; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y + 256));
+				world.add(new TileBackground(x + 128 * i, y + 256));
 			}
-			for (int a = 1; a < 3; a++)
+			for (int i = 1; i < 3; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y + 128));
+				world.add(new TileBackground(x + 128 * i, y + 128));
 			}
-			for (int a = 1; a < 3; a++)
+			for (int i = 1; i < 3; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y));
+				world.add(new TileBackground(x + 128 * i, y));
 			}
 			world.add(new TileBackground(x + 128, y - 64));
 			world.add(new TileLadder(x + 128, y + 256));
 			world.add(new TileLadder(x + 128, y + 128));
 			world.add(new TileLadder(x + 128, y));
 			world.add(new TileLadder(x + 128, y - 128));
-		} else
+		}
+		else
 		{
 			world.add(new TileBrick(x, y + 128));
 			world.add(new TileBrick(x, y));
@@ -48,21 +49,21 @@ public class Structure
 			world.add(new TileBrick(x + 384, y));
 			world.add(new TileBrick(x, y));
 			world.add(new TileBrickCeiling(x, y - 64));
-			for (int a = 2; a < 4; a++)
+			for (int i = 2; i < 4; i++)
 			{
-				world.add(new TileBrickCeiling(x + 128 * a, y - 64));
+				world.add(new TileBrickCeiling(x + 128 * i, y - 64));
 			}
-			for (int a = 0; a < 4; a++)
+			for (int i = 0; i < 4; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y + 256));
+				world.add(new TileBackground(x + 128 * i, y + 256));
 			}
-			for (int a = 1; a < 3; a++)
+			for (int i = 1; i < 3; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y + 128));
+				world.add(new TileBackground(x + 128 * i, y + 128));
 			}
-			for (int a = 1; a < 3; a++)
+			for (int i = 1; i < 3; i++)
 			{
-				world.add(new TileBackground(x + 128 * a, y));
+				world.add(new TileBackground(x + 128 * i, y));
 			}
 			world.add(new TileBackground(x + 128, y - 64));
 			world.add(new TileLadder(x + 128, y + 256));

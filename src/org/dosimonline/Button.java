@@ -8,7 +8,6 @@ import org.newdawn.slick.Input;
  * @author yashax
  */
 
-
 public class Button
 {
 	private int x;
@@ -28,7 +27,7 @@ public class Button
 		this.image = image;
 		this.hoverImage = hoverImage;
 	}
-	
+
 	public void update(Input input)
 	{
 		int mouseX = input.getMouseX();
@@ -38,7 +37,7 @@ public class Button
 				&& (mouseY >= y && mouseY <= y + image.getHeight());
 
 		pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
-		
+
 		if (hover && pressed)
 			ready = true;
 		else if (hover == false)
@@ -52,13 +51,13 @@ public class Button
 		else
 			g.drawImage(image, x, y);
 	}
-	
+
 	public boolean activated()
 	{
 		boolean active = ready && !pressed;
 		if (active)
 			ready = false;
-		
+
 		return active;
 	}
 }

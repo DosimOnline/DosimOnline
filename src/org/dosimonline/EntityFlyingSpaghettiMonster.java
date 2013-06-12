@@ -14,10 +14,12 @@ public class EntityFlyingSpaghettiMonster extends Entity
 	private int shallChangeDirection = 1;
 	private int shallAttack = 100;
 	private int life = 3;
+	private EntityDos dos;
 
-	public EntityFlyingSpaghettiMonster(float x, float y) throws SlickException
+	public EntityFlyingSpaghettiMonster(float x, float y, EntityDos dos) throws SlickException
 	{
 		super(x, y);
+		this.dos = dos;
 		Image image = new Image("org/dosimonline/res/sprites/fsm.png");
 		setGraphic(image);
 		setHitBox(0, 0, image.getWidth(), image.getHeight());
@@ -31,13 +33,11 @@ public class EntityFlyingSpaghettiMonster extends Entity
 		super.update(container, delta);
 		shallChangeDirection--;
 		shallAttack--;
-		float dosX = WorldPlains.dos.x;
-		float dosY = WorldPlains.dos.y;
 
-		if (shallAttack <= 0 && dosX > x - 500 && dosX < x + 500
-				&& dosY > y - 500 && dosY < y + 500)
+		if (shallAttack <= 0 && dos.x > x - 500 && dos.x < x + 500
+				&& dos.y > y - 500 && dos.y < y + 500)
 		{
-			world.add(new EntityMeatball(x, y, dosX, dosY));
+			world.add(new EntityMeatball(x, y, dos.x, dos.y, dos));
 			shallAttack = 400;
 		}
 
@@ -51,11 +51,14 @@ public class EntityFlyingSpaghettiMonster extends Entity
 		y += direction.getX();
 
 		if (collide("Dos", x, y) != null)
-			WorldPlains.dos.life = 0;
+			dos.life = 0;
 
 		if (collide("Fireball", x, y) != null)
+			--life;
+
+		if (life == 0)
 		{
-			WorldPlains.dos.score += 10;
+			dos.score += 10;
 			this.destroy();
 		}
 

@@ -18,11 +18,15 @@ public class EntityNazi extends Entity
 	private Random random = new Random();
 	private int shallAddLife = random.nextInt(30);
 	private float dosX, dosY;
-	public static float moveSpeed = WorldPlains.naziMoveSpeed;
+	private EntityDos dos;
+	
+	public static float moveSpeed = 4.0f;
 
-	public EntityNazi(float x, float y) throws SlickException
+	public EntityNazi(float x, float y, EntityDos dos) throws SlickException
 	{
 		super(x, y);
+		this.dos = dos;
+		
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
 				55);
 		naziWalkLeft = new Animation();
@@ -52,8 +56,7 @@ public class EntityNazi extends Entity
 			throws SlickException
 	{
 		super.update(container, delta);
-		dosX = WorldPlains.dos.x;
-		dosY = WorldPlains.dos.y;
+
 		moveSpeed += 0.00001f;
 
 		// Gravity.
@@ -93,15 +96,15 @@ public class EntityNazi extends Entity
 		if (collide("Dos", x, y) != null)
 		{
 			this.destroy();
-			WorldPlains.dos.life--;
+			dos.life--;
 		}
 		if (collide("Fireball", x, y) != null)
 		{
 			this.destroy();
-			WorldPlains.dos.score += 1;
+			dos.score += 1;
 			if (shallAddLife == 0)
 			{
-				WorldPlains.dos.life++;
+				dos.life++;
 			}
 		}
 
@@ -126,14 +129,17 @@ public class EntityNazi extends Entity
 		if (dosX > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkRight, x, y);
-		} else if (dosX < x && isAfterSpawn == 0
+		}
+		else if (dosX < x && isAfterSpawn == 0
 				&& collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkLeft, x, y);
-		} else if (dosX > x)
+		}
+		else if (dosX > x)
 		{
 			g.drawImage(naziSheet.getSprite(1, 0), x, y);
-		} else
+		}
+		else
 		{
 			g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false),
 					x, y);

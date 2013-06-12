@@ -1,7 +1,9 @@
 package org.dosimonline;
 
 import it.randomtower.engine.World;
+
 import java.util.Random;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.Color;
@@ -15,20 +17,21 @@ import org.newdawn.slick.state.StateBasedGame;
 public class WorldPlains extends World
 {
 	private Color backgroundColor = new Color(117, 202, 255);
-	public static EntityDos dos;
-	public static EntityNazi nazi;
-	
+	public EntityDos dos;
+
 	private Button backButton;
-	
+
 	private DisplayMode dm = Display.getDesktopDisplayMode();
 	private Random random = new Random();
-	private short spawnNazi;
-	public static float naziMoveSpeed = 4;
-	private short helpDisplayTime = 300;
+	private int spawnNazi;
+	private int helpDisplayTime = 300;
 	public static float gravity = 12;
 	private Structure building = new Structure();
 	private int spawnFSM = 1;
+	
 	private static final int ATTACK_DELAY = 100;
+	private static final int SPAWN_NAZI = 450;
+	private static final int SPAWN_FSM = 4000;
 
 	public WorldPlains(int id, GameContainer gc)
 	{
@@ -40,11 +43,13 @@ public class WorldPlains extends World
 			throws SlickException
 	{
 		super.init(gc, sbg);
-		
-		Image backButtonImage = new Image("org/dosimonline/res/buttons/back.png");
-		
-		backButton = new Button(20, dm.getHeight() - 20 - backButtonImage.getHeight(),
-				backButtonImage, new Image("org/dosimonline/res/buttons/backActive.png"));
+
+		Image backButtonImage = new Image(
+				"org/dosimonline/res/buttons/back.png");
+
+		backButton = new Button(20, dm.getHeight() - 20
+				- backButtonImage.getHeight(), backButtonImage, new Image(
+				"org/dosimonline/res/buttons/backActive.png"));
 
 		// We call it "tile" instead of "block" because we don't want too many
 		// Minecraft easter eggs.
@@ -56,7 +61,7 @@ public class WorldPlains extends World
 				add(new TileDirt(x * 128, 464 + 128 * y));
 			}
 		}
-		for (short a = 0, x = 650; a < 9; a++, x += 700)
+		for (int a = 0, x = 650; a < 9; a++, x += 700)
 		{
 			int numOfFloors = random.nextInt(10) + 3;
 			building.add(x, this, 80, numOfFloors);
@@ -75,11 +80,11 @@ public class WorldPlains extends World
 
 		g.setBackground(backgroundColor);
 		g.drawString("SCORE: " + dos.score, 20, 20);
-		g.drawString("NAZIS' SPEED: " + naziMoveSpeed, 20, 35);
-		for (int a = 0; a < dos.life; a++)
+		g.drawString("NAZIS' SPEED: " + EntityNazi.moveSpeed, 20, 35);
+		for (int i = 0; i < dos.life; i++)
 		{
 			g.drawImage(new Image("org/dosimonline/res/heart.png"),
-					20 + a * 32, 55);
+					20 + i * 32, 55);
 		}
 		g.drawString("Reload: " + dos.attackAllowed, 20, 80);
 		if (helpDisplayTime > 0)
@@ -105,19 +110,22 @@ public class WorldPlains extends World
 			throws SlickException
 	{
 		super.update(gc, sbg, i);
+		
+		Input input = gc.getInput();
 
 		// Shoot
-		if (gc.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)
+		
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
 				&& dos.attackAllowed == 0)
 		{
-			float mouseX = (float) gc.getInput().getMouseX();
-			float mouseY = (float) gc.getInput().getMouseY();
+			float mouseX = (float) input.getMouseX();
+			float mouseY = (float) input.getMouseY();
 			add(new EntityFireball(dos.x, dos.y, mouseX, mouseY, false));
 			dos.attackAllowed = ATTACK_DELAY;
 		}
-		
+
 		// Place mine
-		if (gc.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)
+		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)
 				&& dos.attackAllowed == 0)
 		{
 			add(new EntityFireball(dos.x, dos.y, dos.x, dos.y, true));
@@ -128,30 +136,28 @@ public class WorldPlains extends World
 		{
 			spawnNazi--;
 		}
-		if (spawnNazi == 0)
+		else if (spawnNazi == 0)
 		{
 			int naziX = random.nextInt(4100) + 600;
-			add(new EntityNazi(naziX, -7000));
-			spawnNazi = 450;
+			add(new EntityNazi(naziX, -7000, dos));
+			spawnNazi = SPAWN_NAZI;
 		}
-		naziMoveSpeed += 0.00005;
+		
 
-		if (spawnFSM <= 0)
+		if (spawnFSM > 0)
+			--spawnFSM;
+		else
 		{
-			add(new EntityFlyingSpaghettiMonster(1920, -500));
-			spawnFSM = 4000;
+			add(new EntityFlyingSpaghettiMonster(1920, -500, dos));
+			spawnFSM = SPAWN_FSM;
 		}
-		spawnFSM--;
 
-		if (dos.life == 0 && gc.getInput().isKeyPressed(Input.KEY_R))
+		if (dos.life <= 0 && input.isKeyPressed(Input.KEY_R))
 		{
-			naziMoveSpeed = 4;
+			remove(dos);
+			EntityNazi.moveSpeed = 4;
 			dos = new EntityDos(1920, 0);
 			add(dos);
-	//		dos.x = 1920;
-	//		dos.y = 0;
-	//		dos.score = 0;
-	//		dos.life = 5;
 			setCameraOn(dos);
 		}
 
@@ -160,9 +166,10 @@ public class WorldPlains extends World
 			helpDisplayTime--;
 		}
 
-		backButton.update(gc.getInput());
-		
-		if (backButton.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
+		backButton.update(input);
+
+		if (backButton.activated()
+				|| input.isKeyPressed(Input.KEY_ESCAPE))
 		{
 			sbg.enterState(1);
 		}
