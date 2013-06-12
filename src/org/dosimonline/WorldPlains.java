@@ -28,7 +28,7 @@ public class WorldPlains extends World
 	public static float gravity = 12;
 	private Structure building = new Structure();
 	private int spawnFSM = 1;
-	
+
 	private static final int ATTACK_DELAY = 100;
 	private static final int SPAWN_NAZI = 450;
 	private static final int SPAWN_FSM = 4000;
@@ -110,11 +110,11 @@ public class WorldPlains extends World
 			throws SlickException
 	{
 		super.update(gc, sbg, i);
-		
+
 		Input input = gc.getInput();
 
 		// Shoot
-		
+
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
 				&& dos.attackAllowed == 0)
 		{
@@ -142,7 +142,6 @@ public class WorldPlains extends World
 			add(new EntityNazi(naziX, -7000, dos));
 			spawnNazi = SPAWN_NAZI;
 		}
-		
 
 		if (spawnFSM > 0)
 			--spawnFSM;
@@ -168,8 +167,7 @@ public class WorldPlains extends World
 
 		backButton.update(input);
 
-		if (backButton.activated()
-				|| input.isKeyPressed(Input.KEY_ESCAPE))
+		if (backButton.activated() || input.isKeyPressed(Input.KEY_ESCAPE))
 		{
 			sbg.enterState(1);
 		}

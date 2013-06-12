@@ -51,7 +51,7 @@ public class WorldCredits extends World
 		super.render(gc, sbg, g);
 
 		g.setBackground(Color.black);
-		g.drawString("Programming: Shptzick, Itay Rabin, yashax", 40, 40);
+		g.drawString("Programming: Shpitzick, Itay Rabin, yashax", 40, 40);
 		g.drawString("Graphics: Tomer Ginzburg", 40, 60);
 		g.drawString(
 				"Beta (Or shall I say Indev?) testers: Michael Puniansky, Martin Korotkov",

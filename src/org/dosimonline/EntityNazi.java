@@ -19,14 +19,14 @@ public class EntityNazi extends Entity
 	private int shallAddLife = random.nextInt(30);
 	private float dosX, dosY;
 	private EntityDos dos;
-	
+
 	public static float moveSpeed = 4.0f;
 
 	public EntityNazi(float x, float y, EntityDos dos) throws SlickException
 	{
 		super(x, y);
 		this.dos = dos;
-		
+
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
 				55);
 		naziWalkLeft = new Animation();

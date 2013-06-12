@@ -16,7 +16,8 @@ public class EntityFlyingSpaghettiMonster extends Entity
 	private int life = 3;
 	private EntityDos dos;
 
-	public EntityFlyingSpaghettiMonster(float x, float y, EntityDos dos) throws SlickException
+	public EntityFlyingSpaghettiMonster(float x, float y, EntityDos dos)
+			throws SlickException
 	{
 		super(x, y);
 		this.dos = dos;
