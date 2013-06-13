@@ -27,7 +27,7 @@ public class WorldPlains extends World
 	private int helpDisplayTime = 300;
 	public static float gravity = 12;
 	private Structure building = new Structure();
-	private int spawnFSM = 1;
+	private int spawnFSM;
 
 	private static final int ATTACK_DELAY = 100;
 	private static final int SPAWN_NAZI = 450;
@@ -51,6 +51,13 @@ public class WorldPlains extends World
 				- backButtonImage.getHeight(), backButtonImage, new Image(
 				"org/dosimonline/res/buttons/backActive.png"));
 
+		initialize();
+	}
+	
+	private void initialize() throws SlickException
+	{
+		this.clear();
+		
 		// We call it "tile" instead of "block" because we don't want too many
 		// Minecraft easter eggs.
 		for (int x = -1; x < 60; x++)
@@ -66,10 +73,12 @@ public class WorldPlains extends World
 			int numOfFloors = random.nextInt(10) + 3;
 			building.add(x, this, 80, numOfFloors);
 		}
-
+		
+		spawnFSM = 1;
 		dos = new EntityDos(1920, 0);
 		add(dos);
 		setCameraOn(dos);
+		EntityNazi.moveSpeed = EntityNazi.NAZI_INITIAL_SPEED;
 	}
 
 	@Override
@@ -153,11 +162,7 @@ public class WorldPlains extends World
 
 		if (dos.life <= 0 && input.isKeyPressed(Input.KEY_R))
 		{
-			remove(dos);
-			EntityNazi.moveSpeed = 4;
-			dos = new EntityDos(1920, 0);
-			add(dos);
-			setCameraOn(dos);
+			this.initialize();
 		}
 
 		if (helpDisplayTime > 0)

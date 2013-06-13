@@ -25,6 +25,7 @@ public class WorldCredits extends World
 		backButton = new Button(40, dm.getHeight() - 40, new Image(
 				"org/dosimonline/res/buttons/back.png"), new Image(
 				"org/dosimonline/res/buttons/backActive.png"));
+		
 	}
 
 	@Override

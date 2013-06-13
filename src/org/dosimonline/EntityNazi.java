@@ -20,7 +20,9 @@ public class EntityNazi extends Entity
 	private float dosX, dosY;
 	private EntityDos dos;
 
-	public static float moveSpeed = 4.0f;
+	public static final float NAZI_INITIAL_SPEED = 4.0f;
+	public static float moveSpeed = NAZI_INITIAL_SPEED;
+	
 
 	public EntityNazi(float x, float y, EntityDos dos) throws SlickException
 	{

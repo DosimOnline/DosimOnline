@@ -54,8 +54,12 @@ public class EntityFlyingSpaghettiMonster extends Entity
 		if (collide("Dos", x, y) != null)
 			dos.life = 0;
 
-		if (collide("Fireball", x, y) != null)
+		Entity fireballColl = collide("Fireball", x, y);
+		if (fireballColl != null)
+		{
+			fireballColl.destroy();
 			--life;
+		}
 
 		if (life == 0)
 		{

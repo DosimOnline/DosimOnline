@@ -2,10 +2,8 @@ package org.dosimonline;
 
 import it.randomtower.engine.World;
 import java.util.Random;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -21,7 +19,8 @@ public class WorldMenu extends World
 	private Music music;
 	private DisplayMode dm = Display.getDesktopDisplayMode();
 	private short heartX = 0;
-	private int br = 224, bg = 224, bb = 224; // Bacground red, green and blue.
+	// unused:
+	// private int br = 224, bg = 224, bb = 224; // Bacground red, green and blue.
 	private Random random = new Random();
 	private int heartY = random.nextInt(dm.getHeight() - 20) + 10;
 

@@ -171,13 +171,9 @@ public class EntityDos extends Entity
 			x -= moveSpeed;
 		}
 
-		// THIS SHOULD NOT BE HERE:
-		// Death.
-		// if (life == 0)
-		// {
-		// this.destroy();
-		// }
-
+		if (this.life == 0)
+			this.destroy();
+		
 		// Preventing from the dos to launch when touching a ladder and jumping.
 		if (collide("Ladder", x, y) != null && jump > 0)
 		{
