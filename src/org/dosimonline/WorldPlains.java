@@ -123,7 +123,6 @@ public class WorldPlains extends World
 		Input input = gc.getInput();
 
 		// Shoot
-
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
 				&& dos.attackAllowed == 0)
 		{
