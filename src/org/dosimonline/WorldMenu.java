@@ -1,6 +1,7 @@
 package org.dosimonline;
 
 import it.randomtower.engine.World;
+
 import java.util.Random;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -24,7 +25,8 @@ public class WorldMenu extends World
 	private Random random = new Random();
 	private int heartY = random.nextInt(dm.getHeight() - 20) + 10;
 
-	private Button start, credits, exit, settings;
+	private Button startButton, creditsButton, exitButton, settingsButton;
+	private SettingsManager settings;
 
 	private Image heart;
 
@@ -37,23 +39,26 @@ public class WorldMenu extends World
 	public void init(GameContainer gc, StateBasedGame game)
 			throws SlickException
 	{
+		settings = SettingsManager.getInstance();
+		settings.apply(gc);
+		
 		logo = new Image("org/dosimonline/res/logo.png");
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
 				dm.getWidth(), dm.getHeight());
 
-		start = new Button(20, dm.getHeight() / 2 - 20, new Image(
+		startButton = new Button(20, dm.getHeight() / 2 - 20, new Image(
 				"org/dosimonline/res/buttons/start.png"), new Image(
 				"org/dosimonline/res/buttons/startActive.png"));
 
-		credits = new Button(20, dm.getHeight() / 2 + 20, new Image(
+		creditsButton = new Button(20, dm.getHeight() / 2 + 20, new Image(
 				"org/dosimonline/res/buttons/credits.png"), new Image(
 				"org/dosimonline/res/buttons/creditsActive.png"));
 
-		settings = new Button(20, dm.getHeight() / 2 + 60, new Image(
+		settingsButton = new Button(20, dm.getHeight() / 2 + 60, new Image(
 				"org/dosimonline/res/buttons/settings.png"), new Image(
 				"org/dosimonline/res/buttons/settingsActive.png"));
 
-		exit = new Button(20, dm.getHeight() / 2 + 100, new Image(
+		exitButton = new Button(20, dm.getHeight() / 2 + 100, new Image(
 				"org/dosimonline/res/buttons/exit.png"), new Image(
 				"org/dosimonline/res/buttons/exitActive.png"));
 
@@ -72,10 +77,10 @@ public class WorldMenu extends World
 		g.drawImage(logo, dm.getWidth() - logo.getWidth() - 10, dm.getHeight()
 				/ 2 - logo.getHeight() / 2);
 
-		start.render(g);
-		credits.render(g);
-		settings.render(g);
-		exit.render(g);
+		startButton.render(g);
+		creditsButton.render(g);
+		settingsButton.render(g);
+		exitButton.render(g);
 	}
 
 	@Override
@@ -94,19 +99,19 @@ public class WorldMenu extends World
 		}
 		heart.rotate(0.1f);
 
-		start.update(gc.getInput());
-		credits.update(gc.getInput());
-		settings.update(gc.getInput());
-		exit.update(gc.getInput());
+		startButton.update(gc.getInput());
+		creditsButton.update(gc.getInput());
+		settingsButton.update(gc.getInput());
+		exitButton.update(gc.getInput());
 
-		if (start.activated())
+		if (startButton.activated())
 			sbg.enterState(2);
-		else if (credits.activated())
+		else if (creditsButton.activated())
 			sbg.enterState(3);
-		else if (settings.activated())
+		else if (settingsButton.activated())
 			sbg.enterState(4);
 
-		if (exit.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
+		if (exitButton.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
 		{
 			gc.exit();
 		}

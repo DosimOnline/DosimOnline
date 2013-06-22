@@ -10,8 +10,8 @@ import org.newdawn.slick.Input;
 
 public class Button
 {
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 
 	private Image image;
 	private Image hoverImage;
