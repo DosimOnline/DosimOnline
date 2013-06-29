@@ -9,24 +9,25 @@ import org.newdawn.slick.Graphics;
 
 public abstract class Setting
 {
-	protected String name;
-	protected String settingText;
+	protected String name; // Unique string that represents the setting (will be written to settings file)
+	protected String settingText; // Setting UI text
 	protected int x;
 	protected int y;
-	protected Object value;
-	protected boolean liveApply;
+	private Object value;
+	protected boolean applyImmediately; // Whether to apply the setting immediately or not
 	
-	protected final int SETTING_WIDTH = 333;
-	private ApplySetting applyMethod;
+	public static final int SETTING_WIDTH = 333; // Width of each setting in pixels
+	private ApplySetting applyMethod; // Callback for application of a setting
 	
-	protected Setting(String name, String settingText, int x, int y, Object defaultValue, boolean liveApply, ApplySetting applyMethod)
+	protected Setting(String name, String settingText, int x, int y,
+			Object defaultValue, boolean applyImmediately, ApplySetting applyMethod)
 	{
 		this.name = name;
 		this.settingText = settingText;
 		this.x = x;
 		this.y = y;
 		this.value = defaultValue;
-		this.liveApply = liveApply;
+		this.applyImmediately = applyImmediately;
 		this.applyMethod = applyMethod;
 	}
 	
@@ -37,12 +38,18 @@ public abstract class Setting
 	
 	public abstract void render(Graphics g);
 	public abstract void update(GameContainer gc);
+	
+	public Object getValue()
+	{
+		return this.value;
+	}
+	
+	// Sets the value of the setting.
 	protected void setValue(Object value, GameContainer gc)
 	{
 		this.value = value;
-		if (liveApply && gc != null)
+		if (applyImmediately && gc != null)
 			apply(gc);
-			
 	}
 	
 	public void apply(GameContainer gc)
@@ -57,6 +64,8 @@ public abstract class Setting
 		return name + ":" + value;
 	}
 	
+	// setting is a string in the format "name:value"
+	// this method parses the string and sets the value
 	public boolean setFromString(String setting)
 	{
 		String[] splitted = setting.split(":", 2);

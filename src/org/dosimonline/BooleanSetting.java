@@ -46,6 +46,7 @@ public class BooleanSetting extends Setting
 	{
 		checkbox.render(g);
 
+		// Places the text in the center (according to the width/height of the text)
 		int textX = x + (SETTING_WIDTH - g.getFont().getWidth(settingText)) / 2;
 		int textY = y
 				+ (cbImage.getHeight() - g.getFont().getHeight(settingText))

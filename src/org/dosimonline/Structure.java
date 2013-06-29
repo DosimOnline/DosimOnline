@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 
 public class Structure
 {
-	public void add(int x, World world, int y) throws SlickException
+	public void add(World world, int x, int y) throws SlickException
 	{
 		Random random = new Random();
 		int type = random.nextInt(5);
@@ -73,12 +73,12 @@ public class Structure
 		}
 	}
 
-	public void add(int x, World world, int y, int numOfFloors)
+	public void add(World world, int x, int y, int numOfFloors)
 			throws SlickException
 	{
-		for (int a = 1; a <= numOfFloors; a++, y -= 448)
+		for (int i = 0; i < numOfFloors; i++, y -= 448)
 		{
-			add(x, world, y);
+			add(world, x, y);
 		}
 	}
 }

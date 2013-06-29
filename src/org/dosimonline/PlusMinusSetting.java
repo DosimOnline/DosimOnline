@@ -17,9 +17,9 @@ public class PlusMinusSetting extends Setting
 	private Button plus;
 	private Button minus;
 
-	private float change;
+	private float change; // How the value changes in each change
 
-	private float minValue, maxValue;
+	private float minValue, maxValue; // The limits of the setting
 
 	public PlusMinusSetting(String name, String settingText, int x, int y,
 			float defaultValue, boolean liveApply, ApplySetting applyMethod,
@@ -27,6 +27,7 @@ public class PlusMinusSetting extends Setting
 	{
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
+		// Load images
 		if (plusImage == null)
 			plusImage = new Image("org/dosimonline/res/buttons/plus.png");
 		if (plusActiveImage == null)
@@ -53,8 +54,10 @@ public class PlusMinusSetting extends Setting
 		plus.render(g);
 		minus.render(g);
 
-		String text = settingText + ": " + ((int) ((float) value));
+		String text = settingText + ": " + ((int) ((float) getValue()));
 
+		// Places the text in the center (according to the width/height of the
+		// text)
 		int textX = x
 				+ minusImage.getWidth()
 				+ (SETTING_WIDTH - plusImage.getWidth() - minusImage.getWidth() - g
@@ -72,7 +75,7 @@ public class PlusMinusSetting extends Setting
 		plus.update(gc.getInput());
 		minus.update(gc.getInput());
 
-		float val = ((float) value), newValue;
+		float val = ((float) getValue()), newValue;
 
 		if (plus.activated())
 		{
@@ -88,11 +91,6 @@ public class PlusMinusSetting extends Setting
 		}
 	}
 
-	public float getValue()
-	{
-		return ((float) value);
-	}
-	
 	@Override
 	protected Object parse(String s)
 	{

@@ -1,8 +1,6 @@
 package org.dosimonline;
 
 import it.randomtower.engine.World;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -16,8 +14,6 @@ public class WorldSettings extends World
 	private Button back;
 
 	private SettingsManager settings;
-	
-	private DisplayMode dm = Display.getDesktopDisplayMode();
 
 	public WorldSettings(int id, GameContainer gc)
 	{
@@ -30,11 +26,11 @@ public class WorldSettings extends World
 	{
 		super.init(gc, sbg);
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
-				dm.getWidth(), dm.getHeight());
+				DosimOnline.dm.getWidth(), DosimOnline.dm.getHeight());
 		
 		settings = SettingsManager.getInstance();
 		
-		back = new Button(40, dm.getHeight() - 40, new Image(
+		back = new Button(40, DosimOnline.dm.getHeight() - 40, new Image(
 				"org/dosimonline/res/buttons/back.png"), new Image(
 				"org/dosimonline/res/buttons/backActive.png"));
 	}
@@ -47,10 +43,8 @@ public class WorldSettings extends World
 
 		g.drawImage(hakotel, 0, 0);
 
-		Setting[] settingsArr = settings.getSettings();
-		for (int i = 0; i < settingsArr.length; i++)
-			settingsArr[i].render(g);
-
+		settings.render(g);
+		
 		back.render(g);
 	}
 
@@ -62,9 +56,7 @@ public class WorldSettings extends World
 		
 		back.update(gc.getInput());
 		
-		Setting[] settingsArr = settings.getSettings();
-		for (int i = 0; i < settingsArr.length; i++)
-			settingsArr[i].update(gc);
+		settings.update(gc);
 		
 		if (back.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
 		{

@@ -1,33 +1,37 @@
 package org.dosimonline;
 
 import it.randomtower.engine.entity.Entity;
+
 import java.util.Random;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Vector2f;
 
 public class EntityNazi extends Entity
 {
 	private SpriteSheet naziSheet;
 	private Animation naziWalkLeft;
 	private Animation naziWalkRight;
-	private float gravity = WorldPlains.gravity;
-	private int isAfterSpawn = 600;
-	private Random random = new Random();
-	private int shallAddLife = random.nextInt(30);
-	private float dosX, dosY;
+
 	private EntityDos dos;
 
-	public static final float NAZI_INITIAL_SPEED = 4.0f;
-	public static float moveSpeed = NAZI_INITIAL_SPEED;
-	
+	private float gravity = WorldPlains.gravity;
+	private int isAfterSpawn = 10000; // 10 seconds
+	private int shallAddLife;
 
-	public EntityNazi(float x, float y, EntityDos dos) throws SlickException
+	private static final float NAZI_INITIAL_SPEED = 66.66f;
+	private static float moveSpeed = NAZI_INITIAL_SPEED;
+
+	public EntityNazi(float x, float y) throws SlickException
 	{
 		super(x, y);
-		this.dos = dos;
+
+		dos = null;
+		shallAddLife = new Random().nextInt(30);
 
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
 				55);
@@ -47,6 +51,28 @@ public class EntityNazi extends Entity
 		setHitBox(0, 20, 20, 35);
 	}
 
+	private void findDosToChase()
+	{
+		EntityDos closestDos = null;
+		float closestDosSquaredDis = 0;
+
+		for (Entity entity : world.getEntities())
+		{
+			if (entity instanceof EntityDos)
+			{
+				float distanceSquared = new Vector2f(x, y)
+						.distanceSquared(new Vector2f(entity.x, entity.y));
+				if (distanceSquared > closestDosSquaredDis)
+				{
+					closestDosSquaredDis = distanceSquared;
+					closestDos = (EntityDos) entity;
+				}
+			}
+		}
+
+		this.dos = closestDos;
+	}
+
 	@Override
 	public void destroy()
 	{
@@ -59,8 +85,16 @@ public class EntityNazi extends Entity
 	{
 		super.update(container, delta);
 
-		moveSpeed += 0.00001f;
+		if (dos == null || dos.active == false)
+		{
+			findDosToChase();
+			if (dos == null)
+				this.destroy();
+		}
 
+		moveSpeed += 0.000166f;
+
+		float currentSpeed = moveSpeed * (delta / 1000.0f);
 		// Gravity.
 		if (collide("Solid", x, y + gravity) == null
 				&& collide("Ladder", x, y) == null)
@@ -71,43 +105,46 @@ public class EntityNazi extends Entity
 		{
 			if (collide("Ladder", x, y) != null)
 			{
-				if (dosY - 110 > y)
+				if (dos.y - 110 > y)
 				{
 					y += gravity;
-					if (dosX > x)
-						x -= moveSpeed;
+					if (dos.x > x)
+						x -= currentSpeed;
 					else
-						x += moveSpeed;
+						x += currentSpeed;
 				}
-				if (dosY - 30 < y)
+				if (dos.y - 30 < y)
 				{
 					y -= gravity;
-					if (dosX > x)
-						x -= moveSpeed;
+					if (dos.x > x)
+						x -= currentSpeed;
 					else
-						x += moveSpeed;
+						x += currentSpeed;
 				}
 			}
-			if (dosX > x && collide("Solid", x + moveSpeed, y) == null)
-				x += moveSpeed;
-			if (dosX < x && collide("Solid", x - moveSpeed, y) == null)
-				x -= moveSpeed;
+			if (dos.x > x && collide("Solid", x + currentSpeed, y) == null)
+				x += currentSpeed;
+			if (dos.x < x && collide("Solid", x - currentSpeed, y) == null)
+				x -= currentSpeed;
 		}
 
 		// Scoring.
-		if (collide("Dos", x, y) != null)
+		EntityDos someDos = (EntityDos) collide("Dos", x, y);
+		if (someDos != null)
 		{
+			someDos.life--;
 			this.destroy();
-			dos.life--;
 		}
-		if (collide("Fireball", x, y) != null)
+
+		EntityFireball someFireball = (EntityFireball) collide("Fireball", x, y);
+		if (someFireball != null)
 		{
-			this.destroy();
-			dos.score += 1;
+			someFireball.getShootingDos().score += 1;
 			if (shallAddLife == 0)
 			{
-				dos.life++;
+				someFireball.getShootingDos().life++;
 			}
+			this.destroy();
 		}
 
 		// Soft landing.
@@ -120,7 +157,7 @@ public class EntityNazi extends Entity
 		// Releasing from spawn limitations
 		if (isAfterSpawn > 0)
 		{
-			isAfterSpawn--;
+			isAfterSpawn -= delta;
 		}
 	}
 
@@ -128,16 +165,17 @@ public class EntityNazi extends Entity
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
 		super.render(gc, g);
-		if (dosX > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
+
+		if (dos.x > x && isAfterSpawn == 0 && collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkRight, x, y);
 		}
-		else if (dosX < x && isAfterSpawn == 0
+		else if (dos.x < x && isAfterSpawn == 0
 				&& collide("Ladder", x, y) == null)
 		{
 			g.drawAnimation(naziWalkLeft, x, y);
 		}
-		else if (dosX > x)
+		else if (dos.x > x)
 		{
 			g.drawImage(naziSheet.getSprite(1, 0), x, y);
 		}
@@ -146,5 +184,6 @@ public class EntityNazi extends Entity
 			g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false),
 					x, y);
 		}
+
 	}
 }

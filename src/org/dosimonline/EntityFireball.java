@@ -2,8 +2,6 @@ package org.dosimonline;
 
 import it.randomtower.engine.entity.Entity;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -11,24 +9,34 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class EntityFireball extends Entity
 {
-	private int shallIDie = 200;
-	private boolean isMine;
 	private Vector2f direction;
-	private int speed = 20;
+	private int shallIDie = 3500; // milliseconds
+	private float speed = 1200; // px/s
+	private EntityDos shootingDos;
 
-	public EntityFireball(float x, float y, float targetX, float targetY,
-			boolean isMine) throws SlickException
+	public EntityFireball(float x, float y, float targetX, float targetY, EntityDos shootingDos)
+			throws SlickException
 	{
 		super(x, y);
-		setGraphic(new Image("org/dosimonline/res/fireball.png"));
-		setHitBox(0, 0, 32, 32);
+		
+		Image fireball = new Image("org/dosimonline/res/fireball.png");
+		setGraphic(fireball);
+		setHitBox(0, 0, fireball.getWidth(), fireball.getHeight());
 		addType("Fireball");
+		
+		this.shootingDos = shootingDos;
 
-		this.isMine = isMine;
-		DisplayMode dm = Display.getDesktopDisplayMode();
-		direction = new Vector2f(targetX - dm.getWidth() / 2, targetY
-				- dm.getHeight() / 2);
+		if (x == targetX && y == targetY) // Mine (doesn't move)
+			direction = new Vector2f();
+		else
+			direction = new Vector2f(targetX - x - this.currentImage.getWidth()
+					/ 2, targetY - y - this.currentImage.getWidth() / 2);
 		direction.normalise();
+	}
+	
+	public EntityDos getShootingDos()
+	{
+		return this.shootingDos;
 	}
 
 	@Override
@@ -36,25 +44,18 @@ public class EntityFireball extends Entity
 	{
 		super.update(gc, delta);
 
-		if (!isMine)
-		{
-			x += direction.getX() * speed;
-			y += direction.getY() * speed;
-		}
+		x += direction.getX() * speed * (delta / 1000.0f);
+		y += direction.getY() * speed * (delta / 1000.0f);
 
 		if (collide("Solid", x, y) != null)
 		{
-			destroy();
+			this.destroy();
 		}
 
 		if (shallIDie > 0)
-		{
-			shallIDie--;
-		}
-		if (shallIDie == 0)
-		{
-			destroy();
-		}
+			shallIDie -= delta;
+		else
+			this.destroy();
 	}
 
 	@Override

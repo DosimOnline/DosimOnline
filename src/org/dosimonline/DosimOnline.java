@@ -39,8 +39,6 @@ public class DosimOnline extends StateBasedGame
 			AppGameContainer appgc = new AppGameContainer(new DosimOnline(
 					gamename));
 			appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
-			appgc.setVSync(true);
-			appgc.setFullscreen(true);
 			appgc.start();
 		}
 		catch (SlickException e)

@@ -9,13 +9,11 @@ import org.newdawn.slick.geom.Vector2f;
 public class EntityMeatball extends Entity
 {
 	private Vector2f direction;
-	private int shallDie = 400;
-	private EntityDos dos; // Dirty hack for accessing dos.life . the collision
-							// stuff should be done in EntityDos
-	private int speed = 20;
+	private int shallDie = 6666; // ms
+	private float speed = 800f; // px/s
 
-	public EntityMeatball(float x, float y, float targetX, float targetY,
-			EntityDos dos) throws SlickException
+	public EntityMeatball(float x, float y, float targetX, float targetY)
+			throws SlickException
 	{
 		super(x, y);
 		Image image = new Image("org/dosimonline/res/meatball.png");
@@ -24,8 +22,6 @@ public class EntityMeatball extends Entity
 
 		direction = new Vector2f(targetX - x, targetY - y);
 		direction.normalise();
-
-		this.dos = dos;
 	}
 
 	@Override
@@ -34,15 +30,17 @@ public class EntityMeatball extends Entity
 	{
 		super.update(container, delta);
 
-		x += direction.getX() * speed;
-		y += direction.getY() * speed;
+		x += direction.getX() * speed * (delta / 1000.0f);
+		y += direction.getY() * speed * (delta / 1000.0f);
 
-		if (collide("Dos", x, y) != null)
+		EntityDos someDos = (EntityDos) collide("Dos", x, y);
+		if (someDos != null)
 		{
-			dos.life--;
+			someDos.life--;
 			this.destroy();
 		}
 
+		shallDie -= delta;
 		if (shallDie <= 0)
 			this.destroy();
 	}
