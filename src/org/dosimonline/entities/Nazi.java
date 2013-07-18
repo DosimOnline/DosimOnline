@@ -16,10 +16,12 @@ public class Nazi extends Entity {
 	private Animation naziWalkLeft;
 	private Animation naziWalkRight;
 	private Dos dos;
-	private float gravity = Play.gravity;
+        private float velocityY;
 	private boolean isAfterSpawn = false;
 	private int shallAddLife;
+        private static final float GRAVITY = 1000;
 	private static final float NAZI_INITIAL_SPEED = 66.66f;
+        private static final float CLIMB_SPEED = -500;
 	private static float moveSpeed = NAZI_INITIAL_SPEED;
 
 	public Nazi(float x, float y) throws SlickException {
@@ -83,34 +85,44 @@ public class Nazi extends Entity {
 		moveSpeed += 0.000166f;
 
 		float currentSpeed = moveSpeed * (delta / 1000.0f);
-		// Gravity.
-		if (collide("Solid", x, y + gravity) == null
-			  && collide("Ladder", x, y) == null)
-			y += gravity;
+                // Dos chasing.
+		if (isAfterSpawn) {
+                    if (collide("Ladder", x, y) != null) {
+                        if (dos.y - 180 > y) {
+                            velocityY -= CLIMB_SPEED * (delta / 1000.0f);
+                        }
+                        if (dos.y < y) {
+                            velocityY += CLIMB_SPEED * (delta / 1000.0f);
+                        }
 
-		// Dos chasing.
-		if (isAfterSpawn == true) {
-			if (collide("Ladder", x, y) != null) {
-				if (dos.y - 180 > y) {
-					y += gravity;
-					if (dos.x > x)
-						x -= currentSpeed;
-					else
-						x += currentSpeed;
-				}
-				if (dos.y - 30 < y) {
-					y -= gravity;
-					if (dos.x > x)
-						x -= currentSpeed;
-					else
-						x += currentSpeed;
-				}
-			}
-			if (dos.x > x && collide("Solid", x + currentSpeed, y) == null)
-				x += currentSpeed;
-			if (dos.x < x && collide("Solid", x - currentSpeed, y) == null)
-				x -= currentSpeed;
+                    }
+                    if (dos.x > x && collide("Solid", x + currentSpeed, y) == null)
+                            x += currentSpeed;
+                    if (dos.x < x && collide("Solid", x - currentSpeed, y) == null)
+                            x -= currentSpeed;
 		}
+		// Gravity.
+                float nextY = y + velocityY * (delta / 1000.0f);
+                
+                Entity surface = collide("Solid", x, nextY);
+                Entity ladder = collide("Ladder", x, nextY);
+                if (ladder == null) {
+                    if (surface == null) {
+                        velocityY += GRAVITY * (delta / 1000.0f);
+                    } else  {
+                        velocityY = 0;
+                        nextY = y;
+                    }                
+                }
+                y = nextY;
+                // Soft landing.
+		if (collide("Solid", x, y + 36) != null
+			  && collide("Solid", x, y + 1) == null) {
+			y++;
+			isAfterSpawn = true;
+		}
+                
+
 
 		// Scoring.
 		Dos someDos = (Dos) collide("Dos", x, y);
@@ -126,13 +138,6 @@ public class Nazi extends Entity {
 				someStartOfDavid.getShootingDos().life++;
 			}
 			this.destroy();
-		}
-
-		// Soft landing.
-		if (collide("Solid", x, y + 36) != null
-			  && collide("Solid", x, y + 1) == null) {
-			y++;
-			isAfterSpawn = true;
 		}
 	}
 
