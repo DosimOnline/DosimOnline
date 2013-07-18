@@ -1,0 +1,4 @@
+fps:60.0
+volume:0.0
+vsync:true
+showdebug:false
