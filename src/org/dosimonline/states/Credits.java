@@ -43,7 +43,7 @@ public class Credits extends World {
 
 		g.drawImage(hakotel, 0, 0);
 		Play.drawCenteredString(g,
-			  "Programming: Shpitzick, Itay Rabin, yashax",
+			  "Programming: Shpitzick, Itay Rabin, yashax, Gilnaa",
 			  DosimOnline.dm.getWidth() / 2, 40);
 
 		Play.drawCenteredString(g,

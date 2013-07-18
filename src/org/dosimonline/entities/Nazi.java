@@ -2,7 +2,6 @@ package org.dosimonline.entities;
 import it.randomtower.engine.entity.Entity;
 
 import java.util.Random;
-import org.dosimonline.states.Play;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;

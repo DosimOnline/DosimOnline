@@ -3,16 +3,15 @@ import it.randomtower.engine.World;
 import java.util.Random;
 import org.dosimonline.Button;
 import org.dosimonline.DosimOnline;
+import org.dosimonline.settings.SettingsManager;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Menu extends World {
@@ -32,6 +31,8 @@ public class Menu extends World {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+		SettingsManager.getInstance().apply(gc); // Load the settings and apply them
+		
 		gc.setDefaultFont(DosimOnline.font);
 
 		logo = new Image("org/dosimonline/res/logo.png");

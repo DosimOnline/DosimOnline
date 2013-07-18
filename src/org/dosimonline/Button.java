@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 
 /**
  * @author yashax (and Shpitzick, too!)
@@ -76,5 +75,10 @@ public class Button {
 	
 	public static int getWidth(String text) {
 		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
+	}
+	
+	public int getHeight()
+	{
+		return middle.getHeight();
 	}
 }

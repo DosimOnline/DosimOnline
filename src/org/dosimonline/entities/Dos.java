@@ -24,9 +24,9 @@ public class Dos extends Entity {
 	private float JUMP_SPEED = -500;
 	private float CLIMB_SPEED = -500;
 	private float velocityY;
+	private float accelerationY;
 	private static final float GRAVITY = 1000;
 	private static final int ATTACK_DELAY = 1800;
-	private boolean onHack;
 
 	public Dos(float x, float y) throws SlickException {
 		super(x, y);
@@ -105,50 +105,71 @@ public class Dos extends Entity {
 			x = nextLeftX;
 		}
 
+
 		if (jumpAllowed && check("up")) // Jump
 		{
 			jumpAllowed = false;
 			velocityY = JUMP_SPEED;
-		} else // Update jumpAllowed (true if the dos is standing)
+		}
+		else
+		// Update jumpAllowed (true if the dos is standing)
 		{
 			jumpAllowed = collide("Solid", x, y + 0.5f) != null;
 		}
-
-		boolean collidesWithLadder = collide("Ladder", x, y) != null;
-
-		if (collidesWithLadder) {
-			if (check("up")) {
+		
+		if (collide("Ladder", x, y) != null) // The dos is on ladder
+		{
+			jumpAllowed = false;
+			
+			if (check("up"))
+			{
 				velocityY = CLIMB_SPEED;
-			} else if (onHack == false) // Go down if the dos is not close to the ground!
+				accelerationY = 0;
+			}
+			else
 			{
 				velocityY = -CLIMB_SPEED;
+				accelerationY = 0;
 			}
 		}
-
-		float nextY = y + velocityY * (delta / 1000.0f);
-
-		// Check for collision with the surface after the current move
-		Entity surface = collide("Solid", x, nextY);
-
-		if (jumpAllowed == false && surface == null) // Apply gravity
+		else if (jumpAllowed && check("up")) // Jump
 		{
-			if (!collidesWithLadder) {
-				velocityY += GRAVITY * (delta / 1000.0f);
-			}
-		} else if (jumpAllowed == false) {
-			// Hack: We can't move in the regular way anymore, so make the
-			// velocity smaller until the dos is half pixel above surface
-			onHack = true;
-			velocityY /= 2f;
-			nextY = y; // Do not move!
-		} else { // We are half pixel above the surface!
-			onHack = false;
-			velocityY = 0;
-			nextY = y;
-			jumpAllowed = true;
+			jumpAllowed = false;
+			velocityY = JUMP_SPEED;
 		}
+		else
+		{
+			if (jumpAllowed == false) // Apply gravity
+			{
+				accelerationY = GRAVITY;
+			}
+		}
+		
+		float nextY = y + velocityY * (delta / 1000.0f);
+		
+		if (collide("Solid", x, nextY) != null)
+		{
+			if (velocityY > 0) // The dos is going down
+			{
+				jumpAllowed = true;
+				while (collide("Solid", x, y + 0.5f) == null)
+				{
+					y += 0.5f;
+				}
 
-		y = nextY;
+				accelerationY = 0;
+				velocityY = 0;
+			}
+			else // collision with ceiling
+			{
+				velocityY *= -1;
+			}
+		}
+		else
+		{
+			y = nextY;
+			velocityY += accelerationY * (delta / 1000.0f);
+		}
 
 		if (this.life == 0)
 			this.destroy();

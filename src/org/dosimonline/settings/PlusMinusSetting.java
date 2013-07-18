@@ -3,7 +3,6 @@ import org.dosimonline.Button;
 import org.dosimonline.DosimOnline;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -18,9 +17,8 @@ public class PlusMinusSetting extends Setting {
 	public PlusMinusSetting(String name, String settingText, int x, int y,
 		  float defaultValue, boolean liveApply, ApplySetting applyMethod,
 		  float change, float minValue, float maxValue) throws SlickException {
+		
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
-
-		// Load images
 
 		this.change = change;
 		this.minValue = minValue;
@@ -43,7 +41,7 @@ public class PlusMinusSetting extends Setting {
 			  + DosimOnline.font.getWidth(" - ")
 			  + (SETTING_WIDTH - DosimOnline.font.getWidth("+") - DosimOnline.font.getWidth(" - ")
 			  - g.getFont().getWidth(text)) / 2;
-		int textY = y + (DosimOnline.font.getWidth("+") - DosimOnline.font.getHeight(text))
+		int textY = y + (plus.getHeight() - g.getFont().getHeight(text))
 			  / 2;
 
 		g.drawString(text, textX, textY);
