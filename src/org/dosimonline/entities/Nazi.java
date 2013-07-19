@@ -11,23 +11,26 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Nazi extends Entity {
+    private static final float GRAVITY = 1000;
+	private static final float INITIAL_SPEED = 66.66f;
+        private static final float CLIMB_SPEED = -500;
+        private static final int MAX_VERTICAL_SPEED = 1000;
+        
 	private SpriteSheet naziSheet;
 	private Animation naziWalkLeft;
 	private Animation naziWalkRight;
 	private Dos dos;
         private float velocityY;
-	private boolean isAfterSpawn = false;
-	private int shallAddLife;
-        private static final float GRAVITY = 1000;
-	private static final float NAZI_INITIAL_SPEED = 66.66f;
-        private static final float CLIMB_SPEED = -500;
-	private static float moveSpeed = NAZI_INITIAL_SPEED;
-
+	private boolean spawned;
+	private int lifeAddTimeout;
+        private static float moveSpeed = INITIAL_SPEED;
+	
+        
 	public Nazi(float x, float y) throws SlickException {
 		super(x, y);
 
 		dos = null;
-		shallAddLife = new Random().nextInt(30);
+		lifeAddTimeout = new Random().nextInt(30);
 
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
 			  55);
@@ -43,7 +46,7 @@ public class Nazi extends Entity {
 		naziWalkRight.addFrame(naziSheet.getSprite(0, 0), 150);
 		naziWalkRight.addFrame(naziSheet.getSprite(1, 0), 150);
 
-		addType("Anti Semitic");
+		addType("Anti Semitic"); // Gilnaa: lol wut
 		setHitBox(0, 20, 20, 35);
 	}
 
@@ -85,7 +88,7 @@ public class Nazi extends Entity {
 
 		float currentSpeed = moveSpeed * (delta / 1000.0f);
                 // Dos chasing.
-		if (isAfterSpawn) {
+		if (spawned) {
                     if (collide("Ladder", x, y) != null) {
                         if (dos.y - 180 > y) {
                             velocityY -= CLIMB_SPEED * (delta / 1000.0f);
@@ -108,6 +111,8 @@ public class Nazi extends Entity {
                 if (ladder == null) {
                     if (surface == null) {
                         velocityY += GRAVITY * (delta / 1000.0f);
+                        if(velocityY > MAX_VERTICAL_SPEED)
+                            velocityY = MAX_VERTICAL_SPEED;
                     } else  {
                         velocityY = 0;
                         nextY = y;
@@ -118,7 +123,7 @@ public class Nazi extends Entity {
 		if (collide("Solid", x, y + 36) != null
 			  && collide("Solid", x, y + 1) == null) {
 			y++;
-			isAfterSpawn = true;
+			spawned = true;
 		}
                 
 
@@ -133,7 +138,7 @@ public class Nazi extends Entity {
 		StarOfDavid someStartOfDavid = (StarOfDavid) collide("Semitic Attack", x, y);
 		if (someStartOfDavid != null) {
 			someStartOfDavid.getShootingDos().score += 1;
-			if (shallAddLife == 0) {
+			if (lifeAddTimeout == 0) {
 				someStartOfDavid.getShootingDos().life++;
 			}
 			this.destroy();
@@ -144,9 +149,9 @@ public class Nazi extends Entity {
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		super.render(gc, g);
 
-		if (dos.x > x && isAfterSpawn == true && collide("Ladder", x, y) == null) {
+		if (dos.x > x && spawned == true && collide("Ladder", x, y) == null) {
 			g.drawAnimation(naziWalkRight, x, y);
-		} else if (dos.x < x && isAfterSpawn == true
+		} else if (dos.x < x && spawned == true
 			  && collide("Ladder", x, y) == null) {
 			g.drawAnimation(naziWalkLeft, x, y);
 		} else if (dos.x > x) {

@@ -26,8 +26,6 @@ public class Play extends World {
 	private Image heart;
 	private Random random = new Random();
 	private int spawnNazi;
-	public static float gravity = 12; // Deprecated. still in use because the
-	// nazis still use the old gravity system
 	private Structure building = new Structure();
 	private int helpDisplayTime = 5000;
 	private int spawnFSM;
