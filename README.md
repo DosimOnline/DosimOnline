@@ -1,4 +1,5 @@
-DosimOnline dev branch
+Dosim Online dev branch
 ===========
 
-A branch contains the newest and buggiest version of Dosim Online.
+A branch that contains the newest and buggiest version of Dosim Online.
+Every single change will be pushed to this branch.
