@@ -190,8 +190,8 @@ public class Dos extends Entity {
 		if (canAttack()) {
 			world.add(new StarOfDavid(
 				  // Spawn a Star of David at the center of the dos
-				  x,// - 6, // Dos image width / 2 - Star of David image width / 2
-				  y ,//+ 2, // Dos image height / 2 - Star of David image height / 2
+				  x - 6, // Dos image width / 2 - Star of David image width / 2
+				  y + 2, // Dos image height / 2 - Star of David image height / 2
 				  targetX, targetY, this));
 			attackAllowed = ATTACK_DELAY;
 		}
