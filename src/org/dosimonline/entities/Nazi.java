@@ -83,57 +83,50 @@ public class Nazi extends Entity {
 			if (dos == null)
 				this.destroy();
 		}
-
-		moveSpeed += 0.000166f;
-
-		float currentSpeed = moveSpeed * (delta / 1000.0f);
-                // Dos chasing.
-		if (spawned) {
-                    if (collide("Ladder", x, y) != null) {
-                        if (dos.y - 180 > y) {
-                            velocityY -= CLIMB_SPEED * (delta / 1000.0f);
-                        }
-                        if (dos.y < y) {
-                            velocityY += CLIMB_SPEED * (delta / 1000.0f);
-                        }
-
-                    }
-                    if (dos.x > x && collide("Solid", x + currentSpeed, y) == null)
-                            x += currentSpeed;
-                    if (dos.x < x && collide("Solid", x - currentSpeed, y) == null)
-                            x -= currentSpeed;
-		}
-		// Gravity.
-                float nextY = y + velocityY * (delta / 1000.0f);
                 
-                Entity surface = collide("Solid", x, nextY);
-                Entity ladder = collide("Ladder", x, nextY);
-                if (ladder == null) {
-                    if (surface == null) {
-                        velocityY += GRAVITY * (delta / 1000.0f);
-                        if(velocityY > MAX_VERTICAL_SPEED)
-                            velocityY = MAX_VERTICAL_SPEED;
-                    } else  {
-                        velocityY = 0;
-                        nextY = y;
-                    }                
+                float nextX = x;
+                if (dos.x < x) {
+                    nextX -= INITIAL_SPEED * (delta / 1000f);
+                } else if (dos.x > x) {
+                    nextX += INITIAL_SPEED * (delta / 1000f);
                 }
-                y = nextY;
-                // Soft landing.
-		if (collide("Solid", x, y + 36) != null
-			  && collide("Solid", x, y + 1) == null) {
-			y++;
-			spawned = true;
-		}
+                if(collide("Solid", nextX, y) == null) {
+                    x = nextX;
+                }
                 
+                if(collide("Ladder", x, y) == null) {
+                    // Going up
+                    if(velocityY < 0) {
+                        if(collide("Solid", x, y - velocityY) != null) {
+                            velocityY = 0;
+                        }
+                    }
+                } else {
+                    if (dos.y > y)
+                        velocityY = -CLIMB_SPEED * (delta / 1000f);
+                    else if (dos.y < y)
+                        velocityY = +CLIMB_SPEED * (delta / 1000f);
+                }
+                y += velocityY;
 
-
-		// Scoring.
-		Dos someDos = (Dos) collide("Dos", x, y);
-		if (someDos != null) {
-			someDos.life--;
-			this.destroy();
-		}
+                if(isAirborne()) {
+                    if(velocityY < MAX_VERTICAL_SPEED)
+                        velocityY += 10 * (delta / 1000f);
+                } else {
+                    if(velocityY > 0) {
+                        y = (int)y;
+                        while (collide("Solid", x, y) != null)
+                            y -= 1;
+                    }
+                    velocityY = 0;
+                }
+                
+                // Scoring.
+                Dos someDos = (Dos) collide("Dos", x, y);
+                if (someDos != null) {
+                        someDos.life--;
+                        this.destroy();
+                }
 
 		StarOfDavid someStartOfDavid = (StarOfDavid) collide("Semitic Attack", x, y);
 		if (someStartOfDavid != null) {
@@ -144,7 +137,10 @@ public class Nazi extends Entity {
 			this.destroy();
 		}
 	}
-
+        private boolean isAirborne() {
+            return collide("Solid", x, y) == null && 
+                   collide("Ladder", x, y) == null;
+        }
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		super.render(gc, g);
