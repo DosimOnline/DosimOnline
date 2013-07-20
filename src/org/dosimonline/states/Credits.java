@@ -29,7 +29,7 @@ public class Credits extends World {
 		  throws SlickException {
 		super.update(gc, sbg, delta);
 
-		backButton.update(gc.getInput(), gc);
+		backButton.update(gc.getInput());
 
 		if (backButton.activated()
 			  || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))

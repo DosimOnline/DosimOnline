@@ -79,10 +79,10 @@ public class Menu extends World {
 		}
 		heart.rotate(0.1f);
 
-		startButton.update(gc.getInput(), gc);
-		creditsButton.update(gc.getInput(), gc);
-		settingsButton.update(gc.getInput(), gc);
-		exitButton.update(gc.getInput(), gc);
+		startButton.update(gc.getInput());
+		creditsButton.update(gc.getInput());
+		settingsButton.update(gc.getInput());
+		exitButton.update(gc.getInput());
 
 		if (startButton.activated())
 			sbg.enterState(2);

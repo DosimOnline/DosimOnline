@@ -1,6 +1,5 @@
 package org.dosimonline;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -28,17 +27,16 @@ public class Button {
 		sideActive = new Image("org/dosimonline/res/buttons/sideActive.png");
 		middle = new Image("org/dosimonline/res/buttons/middle.png");
 		middleActive = new Image("org/dosimonline/res/buttons/middleActive.png");
+		
+		font = DosimOnline.font;
 	}
 
-	public void update(Input input, GameContainer gc) {
-
-
+	public void update(Input input) {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
-		font = gc.getDefaultFont();
 
-		hover = (mouseX > x - side.getWidth() && mouseX < x + font.getWidth(text) + side.getWidth())
-			  && (mouseY >= y && mouseY <= y + font.getHeight(text));
+		hover = (mouseX > x && mouseX < x + Button.getWidth(text))
+			  && (mouseY >= y && mouseY <= y + this.getHeight());
 
 		pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
 
@@ -80,5 +78,10 @@ public class Button {
 	public int getHeight()
 	{
 		return middle.getHeight();
+	}
+	
+	public void setText(String text)
+	{
+		this.text = text;
 	}
 }

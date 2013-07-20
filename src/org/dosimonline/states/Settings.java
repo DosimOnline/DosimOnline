@@ -48,7 +48,7 @@ public class Settings extends World {
 		  throws SlickException {
 		super.update(gc, sbg, delta);
 
-		back.update(gc.getInput(), gc);
+		back.update(gc.getInput());
 
 		settings.update(gc);
 

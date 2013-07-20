@@ -1,53 +1,48 @@
 package org.dosimonline;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 /**
  * @author Shpitzick
  */
-public class CheckBox {
-	private Image vImage;
-	private Image image;
-	private Image hover;
-	public boolean on;
-	private boolean active;
-	private int x, y;
-	private Input input;
+public class CheckBox extends Button {
+	private boolean checked;
 
 	public CheckBox(int x, int y, boolean defaultStatus) throws SlickException {
-		this.x = x;
-		this.y = y;
-		on = defaultStatus;
-		vImage = new Image("org/dosimonline/res/buttons/checkboxV.png");
-		image = new Image("org/dosimonline/res/buttons/checkbox.png");
-		hover = new Image("org/dosimonline/res/buttons/checkboxHover.png");
+		super(x, y, ":)");
+		checked = defaultStatus;
+		this.setText(getCheckedString());
 	}
 
 	public void update(Input input) {
-		this.input = input;
-		int mouseX = input.getMouseX();
-		int mouseY = input.getMouseY();
-
-		active = mouseX > x && mouseX < x + image.getWidth()
-			  && mouseY > y && mouseY < y + image.getHeight();
+		super.update(input);
+		
+		if (this.activated())
+		{
+			checked = !checked;
+			this.setText(getCheckedString());
+		}
 	}
 
-	public void render(Graphics g) {
-		if (active)
-			g.drawImage(hover, x, y);
+	private String getCheckedString()
+	{
+		if (checked)
+			return ":)";
 		else
-			g.drawImage(image, x, y);
-
-		if (on)
-			g.drawImage(vImage, x, y);
-
-		if (active && input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
-			on = !on;
+			return "  ";
+	}
+	
+	public void render(Graphics g) {
+		super.render(g);
 	}
 
 	public void setValue(boolean on) {
-		this.on = on;
+		this.checked = on;
+	}
+	
+	public boolean isChecked()
+	{
+		return this.checked;
 	}
 }

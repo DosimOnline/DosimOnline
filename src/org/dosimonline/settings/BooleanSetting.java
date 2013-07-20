@@ -1,15 +1,14 @@
 package org.dosimonline.settings;
+import org.dosimonline.Button;
 import org.dosimonline.CheckBox;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
  * @author yashax
  */
 public class BooleanSetting extends Setting {
-	private static Image cbImage, cbHoverImage, cbVImage; // cb = checkbox
 	private CheckBox checkbox;
 	private boolean oldValue;
 
@@ -18,15 +17,7 @@ public class BooleanSetting extends Setting {
 		  throws SlickException {
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
-		if (cbImage == null)
-			cbImage = new Image("org/dosimonline/res/buttons/checkbox.png");
-		if (cbHoverImage == null)
-			cbHoverImage = new Image(
-				  "org/dosimonline/res/buttons/checkboxHover.png");
-		if (cbVImage == null)
-			cbVImage = new Image("org/dosimonline/res/buttons/checkboxV.png");
-
-		checkbox = new CheckBox(x + SETTING_WIDTH - cbImage.getWidth(), y, defaultValue);
+		checkbox = new CheckBox(x + SETTING_WIDTH - Button.getWidth(":)"), y, defaultValue);
 	}
 
 	@Override
@@ -41,7 +32,7 @@ public class BooleanSetting extends Setting {
 
 		// Places the text in the center (according to the width/height of the text)
 		int textX = x + (SETTING_WIDTH - g.getFont().getWidth(settingText)) / 2;
-		int textY = y + (cbImage.getHeight()
+		int textY = y + (checkbox.getHeight()
 			  - g.getFont().getHeight(settingText)) / 2;
 
 		g.drawString(settingText, textX, textY);
@@ -49,12 +40,12 @@ public class BooleanSetting extends Setting {
 
 	@Override
 	public void update(GameContainer gc) {
-		oldValue = checkbox.on;
+		oldValue = checkbox.isChecked();
 
 		checkbox.update(gc.getInput());
 
-		if (checkbox.on != oldValue)
-			setValue(checkbox.on, gc);
+		if (checkbox.isChecked() != oldValue)
+			setValue(checkbox.isChecked(), gc);
 	}
 
 	@Override

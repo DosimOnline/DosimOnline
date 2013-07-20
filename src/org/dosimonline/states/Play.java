@@ -137,6 +137,8 @@ public class Play extends World {
 				numOfFSMs++;
 		Debug.show("Number of Flying Spaghetti Monsters: " + numOfFSMs);
 
+		Debug.show("Mouse X= " + input.getMouseX());
+		Debug.show("Mouse Y= " + input.getMouseY());
 
 		// Keep the camera inside world bounds
 		if (-camera.x < LEFT_BORDER)
@@ -174,10 +176,7 @@ public class Play extends World {
 		if (helpDisplayTime > 0)
 			helpDisplayTime -= delta;
 
-		if (input.isKeyPressed(Input.KEY_F3))
-			Debug.setVisible(!Debug.isVisible());
-
-		backButton.update(input, gc);
+		backButton.update(input);
 		if (backButton.activated() || input.isKeyPressed(Input.KEY_ESCAPE)) {
 			sbg.enterState(1);
 		}
