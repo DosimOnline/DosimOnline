@@ -50,8 +50,8 @@ public class PlusMinusSetting extends Setting {
 
 	@Override
 	public void update(GameContainer gc) {
-		plus.update(gc.getInput(), gc);
-		minus.update(gc.getInput(), gc);
+		plus.update(gc.getInput());
+		minus.update(gc.getInput());
 
 		float val = ((float) getValue()), newValue;
 

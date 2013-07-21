@@ -12,8 +12,6 @@ public class StarOfDavid extends Entity {
 	private int shallIDie = 3500; // milliseconds
 	private float moveSpeed = 1200; // px/s
 	private Dos shootingDos;
-	public static int imageWidth = 32;
-	public static int imageHeight = 32;
 
 	public StarOfDavid(float x, float y, float targetX, float targetY, Dos shootingDos)
 		  throws SlickException {
@@ -30,8 +28,7 @@ public class StarOfDavid extends Entity {
 		if (x == targetX && y == targetY) // Mine (doesn't move)
 			direction = new Vector2f();
 		else
-			direction = new Vector2f(targetX - x - this.currentImage.getWidth()
-				  / 2, targetY - y - this.currentImage.getWidth() / 2);
+			direction = new Vector2f(targetX - x, targetY - y);
 		direction.normalise();
 	}
 
@@ -43,7 +40,6 @@ public class StarOfDavid extends Entity {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		super.update(gc, delta);
 		image.rotate(10);
-		setGraphic(image);
 
 		x += direction.getX() * moveSpeed * (delta / 1000.0f);
 		y += direction.getY() * moveSpeed * (delta / 1000.0f);
