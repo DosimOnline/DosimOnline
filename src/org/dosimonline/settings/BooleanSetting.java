@@ -18,8 +18,8 @@ public class BooleanSetting extends Setting {
 			throws SlickException {
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
-		checkbox = new CheckBox(x + SETTING_WIDTH - Button.getWidth(":)"), y,
-				defaultValue);
+		checkbox = new CheckBox(x + SETTING_WIDTH - CheckBox.getCheckBoxWidth(),
+			y, defaultValue);
 	}
 
 	@Override

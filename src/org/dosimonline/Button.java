@@ -12,12 +12,12 @@ import org.newdawn.slick.SlickException;
 public class Button {
 	protected int x;
 	protected int y;
-	private String text;
-	private static Image side, sideActive, middle, middleActive;
-	private Font font;
-	private boolean hover = false;
-	private boolean pressed = false;
-	private boolean ready = false;
+	protected String text;
+	protected static Image side, sideActive, middle, middleActive;
+	protected Font font;
+	protected boolean hover = false;
+	protected boolean pressed = false;
+	protected boolean ready = false;
 
 	public Button(int x, int y, String text) throws SlickException {
 		this.x = x;
@@ -36,8 +36,8 @@ public class Button {
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
 
-		hover = (mouseX > x && mouseX < x + Button.getWidth(text))
-				&& (mouseY >= y && mouseY <= y + this.getHeight());
+		hover = (mouseX > x && mouseX < x + getWidth())
+				&& (mouseY >= y && mouseY <= y + getHeight());
 
 		pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
 
@@ -75,7 +75,9 @@ public class Button {
 
 		return active;
 	}
-
+	public int getWidth() {
+		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
+	}
 	public static int getWidth(String text) {
 		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
 	}

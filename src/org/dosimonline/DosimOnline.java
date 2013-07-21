@@ -32,7 +32,7 @@ public class DosimOnline extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		awtFont = new Font("Times New Roman", Font.PLAIN, 28);
+		awtFont = new Font("Times New Roman", Font.PLAIN, 26);
 		font = new TrueTypeFont(awtFont, true);
 		addState(new Menu(1, gc));
 		addState(new Play(2, gc));
