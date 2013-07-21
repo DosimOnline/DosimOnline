@@ -64,29 +64,26 @@ public class Play extends World {
 
 	private void initialize() throws SlickException {
 		this.clear();
+		/*
+		 * We call it "tile" instead of "block" because we don't want too
+		 * many Minecraft easter eggs.
+		 */
 
-		if (!DosimOnline.isServer) {
-			/*
-			 * We call it "tile" instead of "block" because we don't want too
-			 * many Minecraft easter eggs.
-			 */
-
-			for (int x = -1; x < 60; x++) {
-				add(new Grass(x * 128, 464));
-				for (int y = 1; y < 4; y++) {
-					add(new Dirt(x * 128, 464 + 128 * y));
-				}
+		for (int x = -1; x < 60; x++) {
+			add(new Grass(x * 128, 464));
+			for (int y = 1; y < 4; y++) {
+				add(new Dirt(x * 128, 464 + 128 * y));
 			}
-			for (int a = 0, x = 650; a < 9; a++, x += 700) {
-				int numOfFloors = random.nextInt(4);
-				building.add(this, x, 80, numOfFloors);
-			}
-
-			spawnFSM = 0;
-			dos = new Dos(1920, 0);
-			add(dos);
-			setCameraOn(dos);
 		}
+		for (int a = 0, x = 650; a < 9; a++, x += 700) {
+			int numOfFloors = random.nextInt(4);
+			building.add(this, x, 80, numOfFloors);
+		}
+
+		spawnFSM = 0;
+		dos = new Dos(1920, 0);
+		add(dos);
+		setCameraOn(dos);
 	}
 
 	@Override

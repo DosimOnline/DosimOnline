@@ -22,7 +22,6 @@ public class DosimOnline extends StateBasedGame {
 	public static DisplayMode dm;
 	public static Client client;
 	public static Server server;
-	public static boolean isServer;
 	private Font awtFont;
 	public static TrueTypeFont font;
 
