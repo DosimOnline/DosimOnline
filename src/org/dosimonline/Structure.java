@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import org.dosimonline.tiles.RockCeiling;
 import org.dosimonline.tiles.Ladder;
 import org.dosimonline.tiles.Rock;
@@ -66,7 +67,7 @@ public class Structure {
 	}
 
 	public void add(World world, int x, int y, int numOfFloors)
-		  throws SlickException {
+			throws SlickException {
 		for (int i = 0; i < numOfFloors; i++, y -= 448) {
 			add(world, x, y);
 		}

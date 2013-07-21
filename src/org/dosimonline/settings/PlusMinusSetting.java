@@ -1,4 +1,5 @@
 package org.dosimonline.settings;
+
 import org.dosimonline.Button;
 import org.dosimonline.DosimOnline;
 import org.newdawn.slick.GameContainer;
@@ -15,9 +16,9 @@ public class PlusMinusSetting extends Setting {
 	private float minValue, maxValue; // The limits of the setting
 
 	public PlusMinusSetting(String name, String settingText, int x, int y,
-		  float defaultValue, boolean liveApply, ApplySetting applyMethod,
-		  float change, float minValue, float maxValue) throws SlickException {
-		
+			float defaultValue, boolean liveApply, ApplySetting applyMethod,
+			float change, float minValue, float maxValue) throws SlickException {
+
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
 		this.change = change;
@@ -38,11 +39,11 @@ public class PlusMinusSetting extends Setting {
 		// Places the text in the center (according to the width/height of the
 		// text)
 		int textX = x
-			  + DosimOnline.font.getWidth(" - ")
-			  + (SETTING_WIDTH - DosimOnline.font.getWidth("+") - DosimOnline.font.getWidth(" - ")
-			  - g.getFont().getWidth(text)) / 2;
-		int textY = y + (plus.getHeight() - g.getFont().getHeight(text))
-			  / 2;
+				+ DosimOnline.font.getWidth(" - ")
+				+ (SETTING_WIDTH - DosimOnline.font.getWidth("+")
+						- DosimOnline.font.getWidth(" - ") - g.getFont()
+						.getWidth(text)) / 2;
+		int textY = y + (plus.getHeight() - g.getFont().getHeight(text)) / 2;
 
 		g.drawString(text, textX, textY);
 

@@ -1,4 +1,5 @@
 package org.dosimonline.states;
+
 import org.dosimonline.settings.SettingsManager;
 import it.randomtower.engine.World;
 import org.dosimonline.Button;
@@ -21,10 +22,10 @@ public class Settings extends World {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
-		  throws SlickException {
+			throws SlickException {
 		super.init(gc, sbg);
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
-			  DosimOnline.dm.getWidth(), DosimOnline.dm.getHeight());
+				DosimOnline.dm.getWidth(), DosimOnline.dm.getHeight());
 
 		settings = SettingsManager.getInstance();
 
@@ -33,7 +34,7 @@ public class Settings extends World {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-		  throws SlickException {
+			throws SlickException {
 		super.render(gc, sbg, g);
 
 		g.drawImage(hakotel, 0, 0);
@@ -45,7 +46,7 @@ public class Settings extends World {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
-		  throws SlickException {
+			throws SlickException {
 		super.update(gc, sbg, delta);
 
 		back.update(gc.getInput());

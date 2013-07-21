@@ -1,4 +1,5 @@
 package org.dosimonline.states;
+
 import org.dosimonline.tiles.Grass;
 import org.dosimonline.tiles.Dirt;
 import org.dosimonline.entities.Nazi;
@@ -30,7 +31,7 @@ public class Play extends World {
 	private Structure building = new Structure();
 	private int helpDisplayTime = 5000;
 	private int spawnFSM;
-        private NotificationManager notifyManager;
+	private NotificationManager notifyManager;
 	public static final float UPPER_BORDER = -5500f;
 	public static final float LOWER_BORDER = 464f;
 	public static final float RIGHT_BORDER = 7680f;
@@ -45,7 +46,7 @@ public class Play extends World {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
-		  throws SlickException {
+			throws SlickException {
 		super.init(gc, sbg);
 
 		Image cursor = new Image("org/dosimonline/res/scope.png");
@@ -53,11 +54,11 @@ public class Play extends World {
 		gc.setMouseCursor(cursor, cursor.getWidth() / 2, cursor.getHeight() / 2);
 
 		backButton = new Button(20, gc.getHeight() - 20
-			  - DosimOnline.font.getHeight("Back"), "Back");
+				- DosimOnline.font.getHeight("Back"), "Back");
 
 		heart = new Image("org/dosimonline/res/heart.png");
-                notifyManager = new NotificationManager();
-                notifyManager.init(gc, sbg);
+		notifyManager = new NotificationManager();
+		notifyManager.init(gc, sbg);
 		initialize();
 	}
 
@@ -65,9 +66,9 @@ public class Play extends World {
 		this.clear();
 
 		if (!DosimOnline.isServer) {
-			/* 
-			 * We call it "tile" instead of "block" because we don't want too many
-			 * Minecraft easter eggs.
+			/*
+			 * We call it "tile" instead of "block" because we don't want too
+			 * many Minecraft easter eggs.
 			 */
 
 			for (int x = -1; x < 60; x++) {
@@ -90,7 +91,7 @@ public class Play extends World {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-		  throws SlickException {
+			throws SlickException {
 		super.render(gc, sbg, g);
 
 		g.setBackground(backgroundColor);
@@ -105,31 +106,29 @@ public class Play extends World {
 
 		if (helpDisplayTime > 0) {
 			drawCenteredString(
-				  g,
-				  "WAD to move, Left mouse to shoot, Right mouse to place mine",
-				  gc.getWidth() / 2,
-				  gc.getHeight() / 2 - 100);
+					g,
+					"WAD to move, Left mouse to shoot, Right mouse to place mine",
+					gc.getWidth() / 2, gc.getHeight() / 2 - 100);
 		}
 		if (dos.life <= 0) {
-			drawCenteredString(g, "LOL! U DIED!",
-				  gc.getWidth() / 2,
-				  gc.getHeight() / 2);
+			drawCenteredString(g, "LOL! U DIED!", gc.getWidth() / 2,
+					gc.getHeight() / 2);
 
-			drawCenteredString(g, "Hit \"R\" to restart",
-				  gc.getWidth() / 2,
-				  gc.getHeight() / 2 + 20);
+			drawCenteredString(g, "Hit \"R\" to restart", gc.getWidth() / 2,
+					gc.getHeight() / 2 + 20);
 		}
 
 		backButton.render(g);
-                notifyManager.render(g);
+		notifyManager.render(g);
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+	public void update(GameContainer gc, StateBasedGame sbg, int delta)
+			throws SlickException {
 		super.update(gc, sbg, delta);
 		Input input = gc.getInput();
-                notifyManager.update(gc, delta);
-                
+		notifyManager.update(gc, delta);
+
 		int numOfNazis = 0;
 		for (Entity e : getEntities())
 			if (e instanceof Nazi)
@@ -154,10 +153,10 @@ public class Play extends World {
 		// Shoot
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			boolean shot = dos.shoot((float) input.getMouseX() - camera.x,
-				  (float) input.getMouseY() - camera.y);
-                        if(shot)
-                            notifyManager.add("PEW PEW!");
-                }
+					(float) input.getMouseY() - camera.y);
+			if (shot)
+				notifyManager.add("PEW PEW!");
+		}
 
 		// Place mine
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
@@ -195,6 +194,6 @@ public class Play extends World {
 	// Draws a string that its center is x,y
 	public static void drawCenteredString(Graphics g, String s, int x, int y) {
 		g.drawString(s, x - g.getFont().getWidth(s) / 2, y
-			  - g.getFont().getHeight(s) / 2);
+				- g.getFont().getHeight(s) / 2);
 	}
 }

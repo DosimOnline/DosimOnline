@@ -1,4 +1,5 @@
 package org.dosimonline.entities;
+
 import it.randomtower.engine.entity.Entity;
 
 import org.newdawn.slick.GameContainer;
@@ -13,8 +14,8 @@ public class StarOfDavid extends Entity {
 	private float moveSpeed = 1200; // px/s
 	private Dos shootingDos;
 
-	public StarOfDavid(float x, float y, float targetX, float targetY, Dos shootingDos)
-		  throws SlickException {
+	public StarOfDavid(float x, float y, float targetX, float targetY,
+			Dos shootingDos) throws SlickException {
 		super(x, y);
 
 		image = new Image("org/dosimonline/res/starOfDavid.png");

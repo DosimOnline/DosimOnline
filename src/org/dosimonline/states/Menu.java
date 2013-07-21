@@ -1,4 +1,5 @@
 package org.dosimonline.states;
+
 import it.randomtower.engine.World;
 import java.util.Random;
 import org.dosimonline.Button;
@@ -30,14 +31,16 @@ public class Menu extends World {
 	}
 
 	@Override
-	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		SettingsManager.getInstance().apply(gc); // Load the settings and apply them
-		
+	public void init(GameContainer gc, StateBasedGame game)
+			throws SlickException {
+		SettingsManager.getInstance().apply(gc); // Load the settings and apply
+													// them
+
 		gc.setDefaultFont(DosimOnline.font);
 
 		logo = new Image("org/dosimonline/res/logo.png");
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
-			  gc.getWidth(), gc.getHeight());
+				gc.getWidth(), gc.getHeight());
 
 		startButton = new Button(20, gc.getHeight() / 2 - 20, "Start");
 
@@ -54,12 +57,13 @@ public class Menu extends World {
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
+			throws SlickException {
 
 		g.drawImage(hakotel, 0, 0);
 		g.drawImage(heart, heartX, heartY);
 		g.drawImage(logo, gc.getWidth() - logo.getWidth() - 10, gc.getHeight()
-			  / 2 - logo.getHeight() / 2);
+				/ 2 - logo.getHeight() / 2);
 
 		startButton.render(g);
 		creditsButton.render(g);
@@ -69,7 +73,7 @@ public class Menu extends World {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int i)
-		  throws SlickException {
+			throws SlickException {
 		// Traveling heart's stuff
 		if (heartX < gc.getWidth()) {
 			heartX++;
@@ -91,7 +95,8 @@ public class Menu extends World {
 		else if (settingsButton.activated())
 			sbg.enterState(4);
 
-		if (exitButton.activated() || gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+		if (exitButton.activated()
+				|| gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
 			gc.exit();
 		}
 	}

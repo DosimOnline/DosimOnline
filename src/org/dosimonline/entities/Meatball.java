@@ -1,4 +1,5 @@
 package org.dosimonline.entities;
+
 import it.randomtower.engine.entity.Entity;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -11,7 +12,7 @@ public class Meatball extends Entity {
 	private float speed = 800f; // px/s
 
 	public Meatball(float x, float y, float targetX, float targetY)
-		  throws SlickException {
+			throws SlickException {
 		super(x, y);
 		Image image = new Image("org/dosimonline/res/meatball.png");
 		setGraphic(image);
@@ -23,7 +24,7 @@ public class Meatball extends Entity {
 
 	@Override
 	public void update(GameContainer container, int delta)
-		  throws SlickException {
+			throws SlickException {
 		super.update(container, delta);
 
 		x += direction.getX() * speed * (delta / 1000.0f);

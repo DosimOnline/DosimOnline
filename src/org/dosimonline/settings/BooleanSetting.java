@@ -1,4 +1,5 @@
 package org.dosimonline.settings;
+
 import org.dosimonline.Button;
 import org.dosimonline.CheckBox;
 import org.newdawn.slick.GameContainer;
@@ -13,11 +14,12 @@ public class BooleanSetting extends Setting {
 	private boolean oldValue;
 
 	public BooleanSetting(String name, String settingText, int x, int y,
-		  boolean defaultValue, boolean liveApply, ApplySetting applyMethod)
-		  throws SlickException {
+			boolean defaultValue, boolean liveApply, ApplySetting applyMethod)
+			throws SlickException {
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
-		checkbox = new CheckBox(x + SETTING_WIDTH - Button.getWidth(":)"), y, defaultValue);
+		checkbox = new CheckBox(x + SETTING_WIDTH - Button.getWidth(":)"), y,
+				defaultValue);
 	}
 
 	@Override
@@ -30,10 +32,12 @@ public class BooleanSetting extends Setting {
 	public void render(Graphics g) {
 		checkbox.render(g);
 
-		// Places the text in the center (according to the width/height of the text)
+		// Places the text in the center (according to the width/height of the
+		// text)
 		int textX = x + (SETTING_WIDTH - g.getFont().getWidth(settingText)) / 2;
-		int textY = y + (checkbox.getHeight()
-			  - g.getFont().getHeight(settingText)) / 2;
+		int textY = y
+				+ (checkbox.getHeight() - g.getFont().getHeight(settingText))
+				/ 2;
 
 		g.drawString(settingText, textX, textY);
 	}

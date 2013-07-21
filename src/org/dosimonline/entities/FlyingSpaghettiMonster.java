@@ -1,4 +1,5 @@
 package org.dosimonline.entities;
+
 import it.randomtower.engine.entity.Entity;
 import java.util.Random;
 import org.dosimonline.states.Play;
@@ -13,7 +14,8 @@ public class FlyingSpaghettiMonster extends Entity {
 	private final int MAX_SPEED = 50;
 	private final int CHANGE_DIRECTION_TIME = 7000; // 7sec
 	private final int ATTACK_DELAY = 7000;
-	private final int BE_RED_TIME = 200; // 0.1 sec. I know I'm a terrible name picker.
+	private final int BE_RED_TIME = 200; // 0.1 sec. I know I'm a terrible name
+											// picker.
 	private Vector2f direction;
 	private Color hurtColor = new Color(255, 0, 0, 100);
 	private Image image;
@@ -24,8 +26,7 @@ public class FlyingSpaghettiMonster extends Entity {
 	private int redTimeout = 0;
 	private int life = 3;
 
-	public FlyingSpaghettiMonster(float x, float y)
-		  throws SlickException {
+	public FlyingSpaghettiMonster(float x, float y) throws SlickException {
 		super(x, y);
 		image = new Image("org/dosimonline/res/sprites/fsm.png");
 		setGraphic(image);
@@ -40,8 +41,8 @@ public class FlyingSpaghettiMonster extends Entity {
 		for (Entity entity : world.getEntities()) {
 			if (entity instanceof Dos) {
 				if (attackTimeout <= 0 && entity.x > x - 500
-					  && entity.x < x + 500 && entity.y > y - 500
-					  && entity.y < y + 500) {
+						&& entity.x < x + 500 && entity.y > y - 500
+						&& entity.y < y + 500) {
 					world.add(new Meatball(x, y, entity.x, entity.y));
 					attackTimeout = ATTACK_DELAY;
 					return;
@@ -52,7 +53,7 @@ public class FlyingSpaghettiMonster extends Entity {
 
 	@Override
 	public void update(GameContainer container, int delta)
-		  throws SlickException {
+			throws SlickException {
 		super.update(container, delta);
 		changeDirectionTimeout -= delta;
 		attackTimeout -= delta;
@@ -89,15 +90,18 @@ public class FlyingSpaghettiMonster extends Entity {
 			}
 		}
 
-		if (x < Play.LEFT_BORDER || x + this.currentImage.getWidth() > Play.RIGHT_BORDER)
+		if (x < Play.LEFT_BORDER
+				|| x + this.currentImage.getWidth() > Play.RIGHT_BORDER)
 			direction.x *= -1;
 
-		if (y < Play.UPPER_BORDER || y + this.currentImage.getHeight() > Play.LOWER_BORDER)
+		if (y < Play.UPPER_BORDER
+				|| y + this.currentImage.getHeight() > Play.LOWER_BORDER)
 			direction.y *= -1;
 	}
 
 	@Override
-	public void render(GameContainer container, Graphics g) throws SlickException {
+	public void render(GameContainer container, Graphics g)
+			throws SlickException {
 		super.render(container, g);
 		if (redTimeout > 0)
 			g.drawImage(image, x, y, hurtColor);

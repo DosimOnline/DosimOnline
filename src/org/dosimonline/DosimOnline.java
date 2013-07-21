@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import org.dosimonline.states.Menu;
 import org.dosimonline.states.Credits;
 import org.dosimonline.states.Play;
@@ -46,7 +47,7 @@ public class DosimOnline extends StateBasedGame {
 
 		try {
 			AppGameContainer appgc = new AppGameContainer(new DosimOnline(
-				  gamename));
+					gamename));
 			appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
 			appgc.start();
 		} catch (SlickException e) {

@@ -1,4 +1,5 @@
 package org.dosimonline;
+
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -27,7 +28,7 @@ public class Button {
 		sideActive = new Image("org/dosimonline/res/buttons/sideActive.png");
 		middle = new Image("org/dosimonline/res/buttons/middle.png");
 		middleActive = new Image("org/dosimonline/res/buttons/middleActive.png");
-		
+
 		font = DosimOnline.font;
 	}
 
@@ -36,7 +37,7 @@ public class Button {
 		int mouseY = input.getMouseY();
 
 		hover = (mouseX > x && mouseX < x + Button.getWidth(text))
-			  && (mouseY >= y && mouseY <= y + this.getHeight());
+				&& (mouseY >= y && mouseY <= y + this.getHeight());
 
 		pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
 
@@ -50,13 +51,17 @@ public class Button {
 		if (font != null) {
 			if (hover) {
 				g.drawImage(sideActive, x, y);
-				g.drawImage(sideActive.getFlippedCopy(true, false), x + sideActive.getWidth() + font.getWidth(text), y);
-				for (int i = x + side.getWidth(); i < x + side.getWidth() + font.getWidth(text); i++)
+				g.drawImage(sideActive.getFlippedCopy(true, false), x
+						+ sideActive.getWidth() + font.getWidth(text), y);
+				for (int i = x + side.getWidth(); i < x + side.getWidth()
+						+ font.getWidth(text); i++)
 					g.drawImage(middleActive, i, y);
 			} else {
 				g.drawImage(side, x, y);
-				g.drawImage(side.getFlippedCopy(true, false), x + sideActive.getWidth() + font.getWidth(text), y);
-				for (int i = x + side.getWidth(); i < x + side.getWidth() + font.getWidth(text); i++)
+				g.drawImage(side.getFlippedCopy(true, false),
+						x + sideActive.getWidth() + font.getWidth(text), y);
+				for (int i = x + side.getWidth(); i < x + side.getWidth()
+						+ font.getWidth(text); i++)
 					g.drawImage(middle, i, y);
 			}
 			font.drawString(x + side.getWidth(), y, text);
@@ -70,18 +75,16 @@ public class Button {
 
 		return active;
 	}
-	
+
 	public static int getWidth(String text) {
 		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
 	}
-	
-	public int getHeight()
-	{
+
+	public int getHeight() {
 		return middle.getHeight();
 	}
-	
-	public void setText(String text)
-	{
+
+	public void setText(String text) {
 		this.text = text;
 	}
 }

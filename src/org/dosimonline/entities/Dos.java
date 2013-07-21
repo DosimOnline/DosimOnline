@@ -1,4 +1,5 @@
 package org.dosimonline.entities;
+
 import it.randomtower.engine.entity.Entity;
 import org.dosimonline.Debug;
 import org.dosimonline.states.Play;
@@ -31,13 +32,13 @@ public class Dos extends Entity {
 	public Dos(float x, float y) throws SlickException {
 		super(x, y);
 		SpriteSheet dosSheet = new SpriteSheet(
-			  "org/dosimonline/res/sprites/dos.png", 20, 36);
+				"org/dosimonline/res/sprites/dos.png", 20, 36);
 		dosWalkLeft = new Animation();
 		dosWalkLeft.setAutoUpdate(true);
 		dosWalkLeft.addFrame(
-			  dosSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
+				dosSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
 		dosWalkLeft.addFrame(
-			  dosSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
+				dosSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
 
 		dosWalkRight = new Animation();
 		dosWalkRight.setAutoUpdate(true);
@@ -87,7 +88,8 @@ public class Dos extends Entity {
 		super.update(gc, delta);
 
 		// Dos's direction (Only graphical).
-		if (gc.getInput().getMouseX() > this.x + world.camera.x + dosStanding.getWidth() / 2)
+		if (gc.getInput().getMouseX() > this.x + world.camera.x
+				+ dosStanding.getWidth() / 2)
 			lookDirection = 2;
 		else
 			lookDirection = 1;
@@ -97,76 +99,63 @@ public class Dos extends Entity {
 		float nextLeftX = x - moveSpeed * (delta / 1000.0f);
 
 		if (check("right")
-			  && nextRightX + dosStanding.getWidth() < Play.RIGHT_BORDER
-			  && collide("Solid", nextRightX, y) == null) {
+				&& nextRightX + dosStanding.getWidth() < Play.RIGHT_BORDER
+				&& collide("Solid", nextRightX, y) == null) {
 			x = nextRightX;
 		} else if (check("left") && nextLeftX > Play.LEFT_BORDER
-			  && collide("Solid", nextLeftX, y) == null) {
+				&& collide("Solid", nextLeftX, y) == null) {
 			x = nextLeftX;
 		}
-
 
 		if (jumpAllowed && check("up")) // Jump
 		{
 			jumpAllowed = false;
 			velocityY = JUMP_SPEED;
-		}
-		else
+		} else
 		// Update jumpAllowed (true if the dos is standing)
 		{
 			jumpAllowed = collide("Solid", x, y + 0.5f) != null;
 		}
-		
+
 		if (collide("Ladder", x, y) != null) // The dos is on ladder
 		{
 			jumpAllowed = false;
-			
-			if (check("up"))
-			{
+
+			if (check("up")) {
 				velocityY = CLIMB_SPEED;
 				accelerationY = 0;
-			}
-			else
-			{
+			} else {
 				velocityY = -CLIMB_SPEED;
 				accelerationY = 0;
 			}
-		}
-		else if (jumpAllowed && check("up")) // Jump
+		} else if (jumpAllowed && check("up")) // Jump
 		{
 			jumpAllowed = false;
 			velocityY = JUMP_SPEED;
-		}
-		else
-		{
+		} else {
 			if (jumpAllowed == false) // Apply gravity
 			{
 				accelerationY = GRAVITY;
 			}
 		}
-		
+
 		float nextY = y + velocityY * (delta / 1000.0f);
-		
-		if (collide("Solid", x, nextY) != null)
-		{
+
+		if (collide("Solid", x, nextY) != null) {
 			if (velocityY > 0) // The dos is going down
 			{
 				jumpAllowed = true;
-				while (collide("Solid", x, y + 0.5f) == null)
-				{
+				while (collide("Solid", x, y + 0.5f) == null) {
 					y += 0.5f;
 				}
 
 				accelerationY = 0;
 				velocityY = 0;
-			}
-			else // collision with ceiling
+			} else // collision with ceiling
 			{
 				velocityY *= -1;
 			}
-		}
-		else
-		{
+		} else {
 			y = nextY;
 			velocityY += accelerationY * (delta / 1000.0f);
 		}
@@ -189,14 +178,16 @@ public class Dos extends Entity {
 	public boolean shoot(float targetX, float targetY) throws SlickException {
 		if (canAttack()) {
 			world.add(new StarOfDavid(
-				  // Spawn a Star of David at the center of the dos
-				  x - 6, // Dos image width / 2 - Star of David image width / 2
-				  y + 2, // Dos image height / 2 - Star of David image height / 2
-				  targetX, targetY, this));
+			// Spawn a Star of David at the center of the dos
+					x - 6, // Dos image width / 2 - Star of David image width /
+							// 2
+					y + 2, // Dos image height / 2 - Star of David image height
+							// / 2
+					targetX, targetY, this));
 			attackAllowed = ATTACK_DELAY;
-                        return true;
+			return true;
 		}
-                return false;
+		return false;
 	}
 
 	public void placeMine() throws SlickException {
