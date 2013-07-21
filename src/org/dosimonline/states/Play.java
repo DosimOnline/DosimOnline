@@ -57,6 +57,7 @@ public class Play extends World {
 
 		heart = new Image("org/dosimonline/res/heart.png");
                 notifyManager = new NotificationManager();
+                notifyManager.init(gc, sbg);
 		initialize();
 	}
 

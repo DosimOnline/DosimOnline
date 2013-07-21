@@ -1,10 +1,12 @@
 package org.dosimonline;
 
 import java.util.ArrayList;
+import java.awt.Font;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -15,7 +17,7 @@ public class NotificationManager {
     private int screenWidth;
     final class Notification {
         private static final int PADDING = 10;
-        
+        TrueTypeFont font;
         float height, width;
         float x, y, desiredY;
         String text;
@@ -23,27 +25,26 @@ public class NotificationManager {
         
         int dismissDelay, pullOutDelay;
         
-        private Notification(String text, int order, Color color, int screenWidth) {
+        private Notification(String text, int order, Color color,
+                            int screenWidth, TrueTypeFont f) {
             this.text = text;
             this.color = new Color(color);
+            this.font = f;
+            this.width = font.getWidth(text);
+            this.height = font.getHeight(text);
             
-            width = getFont().getWidth(text);
-            height = getFont().getHeight(text);
             setOrder(order);
-            y = desiredY;
-            x = screenWidth - (width + PADDING);
+            this.y = desiredY;
+            this.x = screenWidth - (width + PADDING);
             
-            dismissDelay = 500;
-            pullOutDelay = 100;
+            this.dismissDelay = 500;
+            this.pullOutDelay = 100;
         }
         public boolean isValid () {
             return pullOutDelay > 0;
         }
         public void setOrder(int order) {
             desiredY = order * height + PADDING;
-        }
-        public Font getFont() {
-            return DosimOnline.font;
         }
         public void update(GameContainer gc, int delta) {
             if(desiredY < y) {
@@ -60,11 +61,12 @@ public class NotificationManager {
             
         }
         public void render(Graphics g) {
-            getFont().drawString(x, y, text, color);
+            font.drawString(x, y, text, color);
         }
     }
     
     ArrayList<Notification> notifications;
+    TrueTypeFont font;
     public NotificationManager() {
         notifications = new ArrayList<Notification>();
     }
@@ -72,11 +74,14 @@ public class NotificationManager {
         add(text, Color.white);
     }
     public void add(String text, Color color) {
-        Notification e = new Notification(text, notifications.size(), color, screenWidth);
+        Notification e = new Notification(text, notifications.size(), 
+                color, screenWidth, font);
         notifications.add(e);
     }
     public void init(GameContainer gc, StateBasedGame sbg) {
             screenWidth = gc.getWidth();
+            Font f = new Font("Times New Roman", Font.PLAIN, 14);
+            font = new TrueTypeFont(f, true);
     }
     public void update(GameContainer gc, int delta) {
         if(gc.getWidth() != screenWidth) 
