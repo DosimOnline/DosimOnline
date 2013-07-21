@@ -39,8 +39,8 @@ public class NotificationManager {
 			this.y = desiredY;
 			this.x = screenWidth - (width + PADDING);
 
-			this.dismissDelay = 500;
-			this.pullOutDelay = 100;
+			this.dismissDelay = 5000;
+			this.pullOutDelay = 500;
 		}
 
 		public boolean isValid() {
@@ -57,10 +57,10 @@ public class NotificationManager {
 			}
 
 			if (dismissDelay > 0) {
-				dismissDelay -= delta / 1000f;
+				dismissDelay -= delta;
 			} else {
 				x += delta / 10f;
-				pullOutDelay -= delta / 1000f;
+				pullOutDelay -= delta;
 				color.a -= 0.01f;
 			}
 

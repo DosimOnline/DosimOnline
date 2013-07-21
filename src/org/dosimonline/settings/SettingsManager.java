@@ -93,10 +93,8 @@ public class SettingsManager {
 					Paths.get("settings.txt"), StandardCharsets.UTF_8)
 					.iterator();
 
-			for (Setting s : settings) {
-				s.setFromString(fileSettings.next()); // Set the setting from
-				// each line
-			}
+			for (Setting s : settings)
+				s.setFromString(fileSettings.next());
 
 		} catch (Exception e) {
 			// The read has failed so we creating a new settings file
