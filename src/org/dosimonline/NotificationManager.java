@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.dosimonline;
 
 import java.util.ArrayList;
@@ -9,12 +5,14 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
  * @author gilnaa
  */
 public class NotificationManager {
+    private int screenWidth;
     final class Notification {
         private static final int PADDING = 10;
         
@@ -25,7 +23,7 @@ public class NotificationManager {
         
         int dismissDelay, pullOutDelay;
         
-        public Notification(String text, int order, Color color) {
+        private Notification(String text, int order, Color color, int screenWidth) {
             this.text = text;
             this.color = new Color(color);
             
@@ -33,7 +31,7 @@ public class NotificationManager {
             height = getFont().getHeight(text);
             setOrder(order);
             y = desiredY;
-            x = -1;
+            x = screenWidth - (width + PADDING);
             
             dismissDelay = 500;
             pullOutDelay = 100;
@@ -48,10 +46,6 @@ public class NotificationManager {
             return DosimOnline.font;
         }
         public void update(GameContainer gc, int delta) {
-            if(x < 0) {
-                x = gc.getWidth() - (width + 10);
-            }
-            
             if(desiredY < y) {
                 y -= delta / 10f;
             }
@@ -61,7 +55,7 @@ public class NotificationManager {
             } else {
                 x += delta / 10f;
                 pullOutDelay -= delta / 1000f;
-                color.a -= 0.001f;
+                color.a -= 0.01f;
             }
             
         }
@@ -78,10 +72,16 @@ public class NotificationManager {
         add(text, Color.white);
     }
     public void add(String text, Color color) {
-        Notification e = new Notification(text, notifications.size(), color);
+        Notification e = new Notification(text, notifications.size(), color, screenWidth);
         notifications.add(e);
     }
+    public void init(GameContainer gc, StateBasedGame sbg) {
+            screenWidth = gc.getWidth();
+    }
     public void update(GameContainer gc, int delta) {
+        if(gc.getWidth() != screenWidth) 
+            screenWidth = gc.getWidth();
+        
         ArrayList<Notification> dueToRemoval = new ArrayList<Notification>();
         for(Notification e : notifications) {
             e.update(gc, delta);
