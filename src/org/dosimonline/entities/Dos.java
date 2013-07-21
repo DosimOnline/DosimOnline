@@ -186,7 +186,7 @@ public class Dos extends Entity {
 		return this.attackAllowed <= 0;
 	}
 
-	public void shoot(float targetX, float targetY) throws SlickException {
+	public boolean shoot(float targetX, float targetY) throws SlickException {
 		if (canAttack()) {
 			world.add(new StarOfDavid(
 				  // Spawn a Star of David at the center of the dos
@@ -194,7 +194,9 @@ public class Dos extends Entity {
 				  y + 2, // Dos image height / 2 - Star of David image height / 2
 				  targetX, targetY, this));
 			attackAllowed = ATTACK_DELAY;
+                        return true;
 		}
+                return false;
 	}
 
 	public void placeMine() throws SlickException {

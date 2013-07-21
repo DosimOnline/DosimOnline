@@ -10,6 +10,7 @@ import java.util.Random;
 import org.dosimonline.Button;
 import org.dosimonline.Debug;
 import org.dosimonline.DosimOnline;
+import org.dosimonline.NotificationManager;
 import org.dosimonline.Structure;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -29,6 +30,7 @@ public class Play extends World {
 	private Structure building = new Structure();
 	private int helpDisplayTime = 5000;
 	private int spawnFSM;
+        private NotificationManager notifyManager;
 	public static final float UPPER_BORDER = -5500f;
 	public static final float LOWER_BORDER = 464f;
 	public static final float RIGHT_BORDER = 7680f;
@@ -54,7 +56,7 @@ public class Play extends World {
 			  - DosimOnline.font.getHeight("Back"), "Back");
 
 		heart = new Image("org/dosimonline/res/heart.png");
-
+                notifyManager = new NotificationManager();
 		initialize();
 	}
 
@@ -118,13 +120,15 @@ public class Play extends World {
 		}
 
 		backButton.render(g);
+                notifyManager.render(g);
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		super.update(gc, sbg, delta);
 		Input input = gc.getInput();
-
+                notifyManager.update(gc, delta);
+                
 		int numOfNazis = 0;
 		for (Entity e : getEntities())
 			if (e instanceof Nazi)
@@ -145,9 +149,12 @@ public class Play extends World {
 			camera.x = -(RIGHT_BORDER - gc.getWidth());
 
 		// Shoot
-		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
-			dos.shoot((float) input.getMouseX() - camera.x,
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			boolean shot = dos.shoot((float) input.getMouseX() - camera.x,
 				  (float) input.getMouseY() - camera.y);
+                        if(shot)
+                            notifyManager.add("PEW PEW!");
+                }
 
 		// Place mine
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
