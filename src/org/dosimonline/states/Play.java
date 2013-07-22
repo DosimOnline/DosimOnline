@@ -1,18 +1,18 @@
 package org.dosimonline.states;
 
-import org.dosimonline.tiles.Grass;
-import org.dosimonline.tiles.Dirt;
-import org.dosimonline.entities.Nazi;
-import org.dosimonline.entities.Dos;
-import org.dosimonline.entities.FlyingSpaghettiMonster;
+import org.dosimonline.models.tiles.Grass;
+import org.dosimonline.models.tiles.Dirt;
+import org.dosimonline.models.entities.Nazi;
+import org.dosimonline.models.entities.Dos;
+import org.dosimonline.models.entities.FlyingSpaghettiMonster;
 import it.randomtower.engine.World;
 import it.randomtower.engine.entity.Entity;
 import java.util.Random;
 import org.dosimonline.Button;
 import org.dosimonline.Debug;
 import org.dosimonline.DosimOnline;
-import org.dosimonline.NotificationManager;
-import org.dosimonline.Structure;
+import org.dosimonline.models.NotificationManager;
+import org.dosimonline.models.Structure;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -32,10 +32,8 @@ public class Play extends World {
 	private int helpDisplayTime = 5000;
 	private int spawnFSM;
 	private NotificationManager notifyManager;
-	public static final float UPPER_BORDER = -5500f;
-	public static final float LOWER_BORDER = 464f;
-	public static final float RIGHT_BORDER = 7680f;
-	public static final float LEFT_BORDER = -128f;
+	public static final int LOWER_BORDER = 464 + 5500;
+	public static final int RIGHT_BORDER = 7680 + 128;
 	// time in ms:
 	private static final int SPAWN_NAZI = 5000;
 	private static final int SPAWN_FSM = 60000;
@@ -48,7 +46,8 @@ public class Play extends World {
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		super.init(gc, sbg);
-
+		setWidth(RIGHT_BORDER);
+		setHeight(LOWER_BORDER);
 		Image cursor = new Image("org/dosimonline/res/scope.png");
 
 		gc.setMouseCursor(cursor, cursor.getWidth() / 2, cursor.getHeight() / 2);
@@ -59,6 +58,7 @@ public class Play extends World {
 		heart = new Image("org/dosimonline/res/heart.png");
 		notifyManager = new NotificationManager();
 		notifyManager.init(gc, sbg);
+		
 		initialize();
 	}
 
@@ -69,7 +69,7 @@ public class Play extends World {
 		 * many Minecraft easter eggs.
 		 */
 
-		for (int x = -1; x < 60; x++) {
+		for (int x = 0; x <= 60; x++) {
 			add(new Grass(x * 128, 464));
 			for (int y = 1; y < 4; y++) {
 				add(new Dirt(x * 128, 464 + 128 * y));
@@ -142,10 +142,10 @@ public class Play extends World {
 		Debug.show("Mouse Y= " + input.getMouseY());
 
 		// Keep the camera inside world bounds
-		if (-camera.x < LEFT_BORDER)
-			camera.x = -LEFT_BORDER;
-		if (-camera.x + gc.getWidth() > RIGHT_BORDER)
-			camera.x = -(RIGHT_BORDER - gc.getWidth());
+		if (-camera.x < 0)
+			camera.x = -0;
+		if (-camera.x + gc.getWidth() > getWidth())
+			camera.x = -(getWidth() - gc.getWidth());
 
 		// Shoot
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
