@@ -1,5 +1,5 @@
-Dosim Online
+Dosim Online dev branch
 ===========
 
-A plain game about justice!
-This branch holds the latest stable version of the best game ever. 
+A branch that contains the newest and buggiest version of Dosim Online.
+Every single change will be pushed to this branch.
