@@ -17,13 +17,13 @@ public class Nazi extends Entity {
 	private static final float CLIMB_SPEED = -500;
 	private static final int MAX_VERTICAL_SPEED = 1000;
 
-	private SpriteSheet naziSheet;
-	private Animation naziWalkLeft;
-	private Animation naziWalkRight;
+	private final SpriteSheet naziSheet;
+	private final Animation naziWalkLeft;
+	private final Animation naziWalkRight;
 	private Dos dos;
 	private float velocityY;
 	private boolean spawned;
-	private int lifeAddTimeout;
+	private final int lifeAddTimeout;
 	private static float moveSpeed = INITIAL_SPEED;
 
 	public Nazi(float x, float y) throws SlickException {
@@ -125,16 +125,6 @@ public class Nazi extends Entity {
 		Dos someDos = (Dos) collide("Dos", x, y);
 		if (someDos != null) {
 			someDos.life--;
-			this.destroy();
-		}
-
-		StarOfDavid someStartOfDavid = (StarOfDavid) collide("Semitic Attack",
-				x, y);
-		if (someStartOfDavid != null) {
-			someStartOfDavid.getShootingDos().score += 1;
-			if (lifeAddTimeout == 0) {
-				someStartOfDavid.getShootingDos().life++;
-			}
 			this.destroy();
 		}
 	}
