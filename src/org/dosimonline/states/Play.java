@@ -22,8 +22,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-//DEBUG! TO REMOVE
-//DEBUG! TO REMOVE
 
 public class Play extends World {
 	private final Color backgroundColor = new Color(117, 202, 255);

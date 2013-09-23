@@ -46,7 +46,7 @@ public class Nazi extends Entity {
 		naziWalkRight.addFrame(naziSheet.getSprite(0, 0), 150);
 		naziWalkRight.addFrame(naziSheet.getSprite(1, 0), 150);
 
-		addType("Anti Semitic"); // Gilnaa: lol wut
+		addType("Anti Semitic"); // Gilnaa: lol wut Itay: yeah LOL
 		setHitBox(0, 20, 20, 35);
 	}
 
@@ -121,7 +121,7 @@ public class Nazi extends Entity {
 			velocityY = 0;
 		}
 
-		// Scoring.
+		// life.
 		Dos someDos = (Dos) collide("Dos", x, y);
 		if (someDos != null) {
 			someDos.life--;

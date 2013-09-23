@@ -48,8 +48,6 @@ public class StarOfDavid extends Entity {
 		super.update(gc, delta);
 		image.rotate(10);
 
-		System.out.println(kills);
-
 		x += direction.getX() * moveSpeed * (delta / 1000.0f);
 		y += direction.getY() * moveSpeed * (delta / 1000.0f);
 
@@ -73,9 +71,9 @@ public class StarOfDavid extends Entity {
 		shootingDos.score += (kills > 1 ? kills * 2 : kills);
 
 		if (kills == 2)
-			notifyManager.add("Double Kill!", Color.blue);
+			notifyManager.add("Double Kill!", Color.green);
 		if (kills == 3)
-			notifyManager.add("Triple Kill!!", Color.green);
+			notifyManager.add("Triple Kill!!", Color.blue);
 		if (kills > 3)
 			notifyManager.add("MULTI-KILL!!!", Color.red);
 		super.destroy();
