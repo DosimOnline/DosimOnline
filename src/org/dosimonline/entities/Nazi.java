@@ -23,7 +23,7 @@ public class Nazi extends Entity {
 	private Dos dos;
 	private float velocityY;
 	private boolean spawned;
-	private final int lifeAddTimeout;
+	public final int lifeAddTimeout;
 	private static float moveSpeed = INITIAL_SPEED;
 
 	public Nazi(float x, float y) throws SlickException {

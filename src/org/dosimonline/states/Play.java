@@ -161,19 +161,23 @@ public class Play extends World {
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
 			dos.placeMine();
 
-		if (spawnNazi > 0 && numOfNazis <= 20)
+		if (spawnNazi > 0)
 			spawnNazi -= delta;
 		else {
-			int naziX = random.nextInt(4100) + 600;
-			add(new Nazi(naziX, -7000));
-			spawnNazi = SPAWN_NAZI;
+			if (numOfNazis <= 20) {
+				int naziX = random.nextInt(4100) + 600;
+				add(new Nazi(naziX, -1100));
+				spawnNazi = SPAWN_NAZI;
+			}
 		}
 
-		if (spawnFSM > 0 && numOfFSMs <= 10)
+		if (spawnFSM > 0)
 			spawnFSM -= delta;
 		else {
-			add(new FlyingSpaghettiMonster(1920, -500));
-			spawnFSM = SPAWN_FSM;
+			if (numOfFSMs <= 10) {
+				add(new FlyingSpaghettiMonster(1920, -500));
+				spawnFSM = SPAWN_FSM;
+			}
 		}
 
 		if (dos.life <= 0 && input.isKeyPressed(Input.KEY_R))

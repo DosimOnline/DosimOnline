@@ -53,6 +53,7 @@ public class StarOfDavid extends Entity {
 
 		Nazi someNazi = (Nazi) collide("Anti Semitic", x, y);
 		if (someNazi != null) {
+			shootingDos.life += (someNazi.lifeAddTimeout == 0 ? 1 : 0);
 			someNazi.destroy();
 			kills++;
 		}
