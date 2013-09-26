@@ -1,18 +1,20 @@
 package org.dosimonline.states;
 
-import org.dosimonline.tiles.Grass;
-import org.dosimonline.tiles.Dirt;
-import org.dosimonline.entities.Nazi;
-import org.dosimonline.entities.Dos;
-import org.dosimonline.entities.FlyingSpaghettiMonster;
 import it.randomtower.engine.World;
 import it.randomtower.engine.entity.Entity;
+
 import java.util.Random;
+
 import org.dosimonline.Button;
 import org.dosimonline.Debug;
 import org.dosimonline.DosimOnline;
 import org.dosimonline.NotificationManager;
 import org.dosimonline.Structure;
+import org.dosimonline.entities.Dos;
+import org.dosimonline.entities.FlyingSpaghettiMonster;
+import org.dosimonline.entities.Nazi;
+import org.dosimonline.tiles.Dirt;
+import org.dosimonline.tiles.Grass;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,13 +24,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends World {
-	private Color backgroundColor = new Color(117, 202, 255);
+	private final Color backgroundColor = new Color(117, 202, 255);
 	public Dos dos;
 	private Button backButton;
 	private Image heart;
-	private Random random = new Random();
+	private final Random random = new Random();
 	private int spawnNazi;
-	private Structure building = new Structure();
+	private final Structure building = new Structure();
 	private int helpDisplayTime = 5000;
 	private int spawnFSM;
 	private NotificationManager notifyManager;
@@ -57,7 +59,7 @@ public class Play extends World {
 				- DosimOnline.font.getHeight("Back"), "Back");
 
 		heart = new Image("org/dosimonline/res/heart.png");
-		notifyManager = new NotificationManager();
+		notifyManager = NotificationManager.getInstance();
 		notifyManager.init(gc, sbg);
 		initialize();
 	}
@@ -65,8 +67,8 @@ public class Play extends World {
 	private void initialize() throws SlickException {
 		this.clear();
 		/*
-		 * We call it "tile" instead of "block" because we don't want too
-		 * many Minecraft easter eggs.
+		 * We call it "tile" instead of "block" because we don't want too many
+		 * Minecraft easter eggs.
 		 */
 
 		for (int x = -1; x < 60; x++) {
@@ -149,8 +151,8 @@ public class Play extends World {
 
 		// Shoot
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			boolean shot = dos.shoot((float) input.getMouseX() - camera.x,
-					(float) input.getMouseY() - camera.y);
+			boolean shot = dos.shoot(input.getMouseX() - camera.x,
+					input.getMouseY() - camera.y);
 			if (shot)
 				notifyManager.add("PEW PEW!");
 		}
@@ -159,19 +161,23 @@ public class Play extends World {
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
 			dos.placeMine();
 
-		if (spawnNazi > 0 && numOfNazis <= 20)
+		if (spawnNazi > 0)
 			spawnNazi -= delta;
 		else {
-			int naziX = random.nextInt(4100) + 600;
-			add(new Nazi(naziX, -7000));
-			spawnNazi = SPAWN_NAZI;
+			if (numOfNazis <= 20) {
+				int naziX = random.nextInt(4100) + 600;
+				add(new Nazi(naziX, -1100));
+				spawnNazi = SPAWN_NAZI;
+			}
 		}
 
-		if (spawnFSM > 0 && numOfFSMs <= 10)
+		if (spawnFSM > 0)
 			spawnFSM -= delta;
 		else {
-			add(new FlyingSpaghettiMonster(1920, -500));
-			spawnFSM = SPAWN_FSM;
+			if (numOfFSMs <= 10) {
+				add(new FlyingSpaghettiMonster(1920, -500));
+				spawnFSM = SPAWN_FSM;
+			}
 		}
 
 		if (dos.life <= 0 && input.isKeyPressed(Input.KEY_R))

@@ -1,6 +1,7 @@
 package org.dosimonline.entities;
 
 import it.randomtower.engine.entity.Entity;
+
 import org.dosimonline.Debug;
 import org.dosimonline.states.Play;
 import org.newdawn.slick.Animation;
@@ -12,18 +13,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class Dos extends Entity {
-	private Animation dosWalkLeft;
-	private Animation dosWalkRight;
-	private Image dosStanding;
-	private Image dosJumping;
+	private final Animation dosWalkLeft;
+	private final Animation dosWalkRight;
+	private final Image dosStanding;
+	private final Image dosJumping;
 	private boolean jumpAllowed = true;
-	private float moveSpeed = 600;
+	private final float moveSpeed = 600;
 	public int lookDirection = 1; // 1 is left, 2 is right.
 	public int life;
 	public int score;
 	private int attackAllowed = 0;
-	private float JUMP_SPEED = -500;
-	private float CLIMB_SPEED = -500;
+	private final float JUMP_SPEED = -500;
+	private final float CLIMB_SPEED = -500;
 	private float velocityY;
 	private float accelerationY;
 	private static final float GRAVITY = 1000;
@@ -169,6 +170,8 @@ public class Dos extends Entity {
 
 		Debug.show("Reload: " + attackAllowed);
 		Debug.show("Jump allowed= " + jumpAllowed);
+		Debug.show("X: " + x);
+		Debug.show("Y: " + y);
 	}
 
 	public boolean canAttack() {

@@ -1,11 +1,12 @@
 package org.dosimonline;
 
-import java.util.ArrayList;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -118,5 +119,13 @@ public class NotificationManager {
 		for (Notification e : notifications) {
 			e.render(g);
 		}
+	}
+
+	private static NotificationManager instance = null;
+
+	public static NotificationManager getInstance() throws SlickException {
+		if (instance == null)
+			instance = new NotificationManager();
+		return instance;
 	}
 }
