@@ -1,13 +1,15 @@
 package org.dosimonline;
 
-import org.dosimonline.tiles.RockCeiling;
+import it.randomtower.engine.World;
+
+import java.util.Random;
+
+import org.dosimonline.tiles.BackgroundTile;
+import org.dosimonline.tiles.Brick;
+import org.dosimonline.tiles.BrickCeiling;
 import org.dosimonline.tiles.Ladder;
 import org.dosimonline.tiles.Rock;
-import org.dosimonline.tiles.Brick;
-import org.dosimonline.tiles.BackgroundTile;
-import org.dosimonline.tiles.BrickCeiling;
-import it.randomtower.engine.World;
-import java.util.Random;
+import org.dosimonline.tiles.RockCeiling;
 import org.newdawn.slick.SlickException;
 
 public class Structure {

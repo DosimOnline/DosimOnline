@@ -1,6 +1,5 @@
 package org.dosimonline.settings;
 
-import org.dosimonline.Button;
 import org.dosimonline.CheckBox;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -10,7 +9,7 @@ import org.newdawn.slick.SlickException;
  * @author yashax
  */
 public class BooleanSetting extends Setting {
-	private CheckBox checkbox;
+	private final CheckBox checkbox;
 	private boolean oldValue;
 
 	public BooleanSetting(String name, String settingText, int x, int y,
@@ -18,8 +17,9 @@ public class BooleanSetting extends Setting {
 			throws SlickException {
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
-		checkbox = new CheckBox(x + SETTING_WIDTH - CheckBox.getCheckBoxWidth(),
-			y, defaultValue);
+		checkbox = new CheckBox(
+				x + SETTING_WIDTH - CheckBox.getCheckBoxWidth(), y,
+				defaultValue);
 	}
 
 	@Override

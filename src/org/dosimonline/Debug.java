@@ -11,7 +11,8 @@ import org.newdawn.slick.TrueTypeFont;
  */
 
 public class Debug {
-	private static TrueTypeFont font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, 16), true);
+	private static TrueTypeFont font = new TrueTypeFont(new Font(
+			"Times New Roman", Font.BOLD, 16), true);
 	private static ArrayList<String> debugInfo = new ArrayList<>();
 	private static final int X = 20;
 	private static final int FIRST_Y = 100;
