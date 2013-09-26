@@ -1,7 +1,7 @@
 package org.dosimonline;
 
 import org.dosimonline.states.Menu;
-import org.dosimonline.states.Credits;
+import org.dosimonline.states.About;
 import org.dosimonline.states.Play;
 import org.dosimonline.states.Settings;
 import java.awt.Font;
@@ -17,6 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class DosimOnline extends StateBasedGame {
 	public static String gamename = "Dosim Online";
+	public static String version = "0.7";
 	public static DisplayMode dm;
 	private Font awtFont;
 	public static TrueTypeFont font;
@@ -31,7 +32,7 @@ public class DosimOnline extends StateBasedGame {
 		font = new TrueTypeFont(awtFont, true);
 		addState(new Menu(1, gc));
 		addState(new Play(2, gc));
-		addState(new Credits(3, gc));
+		addState(new About(3, gc));
 		addState(new Settings(4, gc));
 		enterState(1);
 	}

@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class StarOfDavid extends Entity {
 	private final Image image;
 	private Vector2f direction;
-	private int shallIDie = 3500; // milliseconds
+	private int deathTimeout = 2000; // milliseconds
 	private final float moveSpeed = 1200; // px/s
 	private final Dos shootingDos;
 	public int kills;
@@ -61,8 +61,8 @@ public class StarOfDavid extends Entity {
 			this.destroy();
 		}
 
-		if (shallIDie > 0)
-			shallIDie -= delta;
+		if (deathTimeout > 0)
+			deathTimeout -= delta;
 		else
 			this.destroy();
 	}

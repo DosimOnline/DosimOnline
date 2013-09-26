@@ -1,5 +1,4 @@
-Dosim Online dev branch
+Dosim Online
 ===========
 
-A branch that contains the newest and buggiest version of Dosim Online.
-Every single change will be pushed to this branch.
+A plain game about justice!

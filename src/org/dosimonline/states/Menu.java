@@ -23,7 +23,7 @@ public class Menu extends World {
 	private short heartX = 0;
 	private Random random = new Random();
 	private int heartY = random.nextInt(dm.getHeight() - 20) + 10;
-	private Button startButton, creditsButton, exitButton, settingsButton;
+	private Button startButton, aboutButton, exitButton, settingsButton;
 	private Image heart;
 
 	public Menu(int id, GameContainer gc) {
@@ -44,9 +44,9 @@ public class Menu extends World {
 
 		startButton = new Button(20, gc.getHeight() / 2 - 20, "Start");
 
-		creditsButton = new Button(20, gc.getHeight() / 2 + 20, "Credits");
-
-		settingsButton = new Button(20, gc.getHeight() / 2 + 60, "Settings");
+		settingsButton = new Button(20, gc.getHeight() / 2 + 20, "Settings");
+		
+		aboutButton = new Button(20, gc.getHeight() / 2 + 60, "About");
 
 		exitButton = new Button(20, gc.getHeight() / 2 + 100, "Exit :(");
 
@@ -66,7 +66,7 @@ public class Menu extends World {
 				/ 2 - logo.getHeight() / 2);
 
 		startButton.render(g);
-		creditsButton.render(g);
+		aboutButton.render(g);
 		settingsButton.render(g);
 		exitButton.render(g);
 	}
@@ -84,13 +84,13 @@ public class Menu extends World {
 		heart.rotate(0.1f);
 
 		startButton.update(gc.getInput());
-		creditsButton.update(gc.getInput());
+		aboutButton.update(gc.getInput());
 		settingsButton.update(gc.getInput());
 		exitButton.update(gc.getInput());
 
 		if (startButton.activated())
 			sbg.enterState(2);
-		else if (creditsButton.activated())
+		else if (aboutButton.activated())
 			sbg.enterState(3);
 		else if (settingsButton.activated())
 			sbg.enterState(4);

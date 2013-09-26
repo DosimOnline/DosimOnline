@@ -91,7 +91,7 @@ public class NotificationManager {
 
 	public void init(GameContainer gc, StateBasedGame sbg) {
 		screenWidth = gc.getWidth();
-		Font f = new Font("Times New Roman", Font.PLAIN, 14);
+		Font f = new Font("Times New Roman", Font.PLAIN, 18);
 		font = new TrueTypeFont(f, true);
 	}
 

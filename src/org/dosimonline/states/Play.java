@@ -3,6 +3,7 @@ package org.dosimonline.states;
 import it.randomtower.engine.World;
 import it.randomtower.engine.entity.Entity;
 
+import java.awt.Font;
 import java.util.Random;
 
 import org.dosimonline.Button;
@@ -21,6 +22,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Play extends World {
@@ -105,16 +107,16 @@ public class Play extends World {
 
 		if (helpDisplayTime > 0) {
 			drawCenteredString(
-					g,
+					DosimOnline.font,
 					"WAD to move, Left mouse to shoot, Right mouse to place mine",
 					gc.getWidth() / 2, gc.getHeight() / 2 - 100);
 		}
 		if (dos.life <= 0) {
-			drawCenteredString(g, "LOL! U DIED!", gc.getWidth() / 2,
-					gc.getHeight() / 2);
+			drawCenteredString(DosimOnline.font, "LOL! U DIED!",
+					gc.getWidth() / 2, gc.getHeight() / 2);
 
-			drawCenteredString(g, "Hit \"R\" to restart", gc.getWidth() / 2,
-					gc.getHeight() / 2 + 20);
+			drawCenteredString(DosimOnline.font, "Hit \"R\" to restart",
+					gc.getWidth() / 2, gc.getHeight() / 2 + 40);
 		}
 
 		backButton.render(g);
@@ -195,8 +197,14 @@ public class Play extends World {
 	}
 
 	// Draws a string that its center is x,y
-	public static void drawCenteredString(Graphics g, String s, int x, int y) {
-		g.drawString(s, x - g.getFont().getWidth(s) / 2, y
-				- g.getFont().getHeight(s) / 2);
+	public static void drawCenteredString(TrueTypeFont font, String s, int x,
+			int y) {
+		font.drawString(x - font.getWidth(s) / 2, y - font.getHeight() / 2, s);
+	}
+
+	public static void drawCenteredString(TrueTypeFont font, String s, int x,
+			int y, Color color) {
+		font.drawString(x - font.getWidth(s) / 2, y - font.getHeight() / 2, s,
+				color);
 	}
 }

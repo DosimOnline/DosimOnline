@@ -1,28 +1,37 @@
 package org.dosimonline.states;
 
+import java.awt.Font;
+
 import it.randomtower.engine.World;
 import org.dosimonline.Button;
 import org.dosimonline.DosimOnline;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Credits extends World {
+public class About extends World {
 	private Button backButton;
-	private Image heart;
 	private Image hakotel;
+	private TrueTypeFont titleFont, font;
 
-	public Credits(int id, GameContainer gc) throws SlickException {
+	public About(int id, GameContainer gc) throws SlickException {
 		super(id, gc);
 
-		heart = new Image("org/dosimonline/res/heart.png");
 		backButton = new Button(40, DosimOnline.dm.getHeight() - 40, "Back");
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
 				DosimOnline.dm.getWidth(), DosimOnline.dm.getHeight());
+
+		titleFont = new TrueTypeFont(
+				new Font("Arial", Font.BOLD, 56), true);
+
+		font = new TrueTypeFont(new Font("Source Sans Pro", Font.PLAIN, 32),
+				true);
 	}
 
 	@Override
@@ -43,27 +52,26 @@ public class Credits extends World {
 		super.render(gc, sbg, g);
 
 		g.drawImage(hakotel, 0, 0);
-		Play.drawCenteredString(g,
+
+		Play.drawCenteredString(titleFont, "Dosim Online "
+				+ DosimOnline.version, DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 - 250,
+				Color.black);
+		
+		Play.drawCenteredString(font,
 				"Programming: Shpitzick, Itay Rabin, yashax, Gilnaa",
-				DosimOnline.dm.getWidth() / 2, 40);
+				DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 - 130, Color.black);
 
-		Play.drawCenteredString(g,
+		Play.drawCenteredString(font,
 				"Graphics: Tomer Ginzburg, Yinon-David Zadok",
-				DosimOnline.dm.getWidth() / 2, 60);
-		Play.drawCenteredString(g, "Site Management: royysszz, Solainz",
-				gc.getWidth() / 2, 80);
-		Play.drawCenteredString(g,
-				"Testers: Michael Puniansky, Martin Korotkov, StaveMan",
-				DosimOnline.dm.getWidth() / 2, 100);
-		Play.drawCenteredString(g,
+				DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 - 80, Color.black);
+		Play.drawCenteredString(font, "Site Management: royysszz, Solainz",
+				gc.getWidth() / 2, DosimOnline.dm.getHeight() / 2 - 30, Color.black);
+		Play.drawCenteredString(font,
+				"Testers: Michael Puniansky, Martin Korotkov, Oquda",
+				DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 + 20, Color.black);
+		Play.drawCenteredString(font,
 				"Music: Makche (Alleviation is played at the background)",
-				DosimOnline.dm.getWidth() / 2, 120);
-
-		// Draw hearts at the bottom of the screen
-		for (int x = 0; x < DosimOnline.dm.getWidth(); x += heart.getWidth()) {
-			g.drawImage(heart, x,
-					DosimOnline.dm.getHeight() - heart.getHeight());
-		}
+				DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 + 70, Color.black);
 
 		backButton.render(g);
 	}
