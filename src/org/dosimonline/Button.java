@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 /**
  * @author yashax (and Shpitzick, too!)
  */
+
 public class Button {
 	protected int x;
 	protected int y;

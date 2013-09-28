@@ -12,19 +12,18 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Nazi extends Entity {
-	private static final float GRAVITY = 1000;
+
+	private static final float GRAVITY = 8;
+	private static final float SPEED = 10;
 	private static final float INITIAL_SPEED = 66.66f;
 	private static final float CLIMB_SPEED = -500;
 	private static final int MAX_VERTICAL_SPEED = 1000;
-
 	private final SpriteSheet naziSheet;
 	private final Animation naziWalkLeft;
 	private final Animation naziWalkRight;
 	private Dos dos;
-	private float velocityY;
 	private boolean spawned;
 	public final int lifeAddTimeout;
-	private static float moveSpeed = INITIAL_SPEED;
 
 	public Nazi(float x, float y) throws SlickException {
 		super(x, y);
@@ -33,13 +32,13 @@ public class Nazi extends Entity {
 		lifeAddTimeout = new Random().nextInt(30);
 
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
-				55);
+			55);
 		naziWalkLeft = new Animation();
 		naziWalkLeft.setAutoUpdate(true);
 		naziWalkLeft.addFrame(
-				naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
+			naziSheet.getSprite(0, 0).getFlippedCopy(true, false), 150);
 		naziWalkLeft.addFrame(
-				naziSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
+			naziSheet.getSprite(1, 0).getFlippedCopy(true, false), 150);
 
 		naziWalkRight = new Animation();
 		naziWalkRight.setAutoUpdate(true);
@@ -54,16 +53,15 @@ public class Nazi extends Entity {
 		Dos closestDos = null;
 		float closestDosSquaredDis = 0;
 
-		for (Entity entity : world.getEntities()) {
+		for (Entity entity : world.getEntities())
 			if (entity instanceof Dos) {
 				float distanceSquared = new Vector2f(x, y)
-						.distanceSquared(new Vector2f(entity.x, entity.y));
+					.distanceSquared(new Vector2f(entity.x, entity.y));
 				if (distanceSquared > closestDosSquaredDis) {
 					closestDosSquaredDis = distanceSquared;
 					closestDos = (Dos) entity;
 				}
 			}
-		}
 
 		this.dos = closestDos;
 	}
@@ -75,7 +73,7 @@ public class Nazi extends Entity {
 
 	@Override
 	public void update(GameContainer container, int delta)
-			throws SlickException {
+		throws SlickException {
 		super.update(container, delta);
 
 		if (dos == null || dos.active == false) {
@@ -84,42 +82,35 @@ public class Nazi extends Entity {
 				this.destroy();
 		}
 
-		float nextX = x;
-		if (dos.x < x) {
-			nextX -= INITIAL_SPEED * (delta / 1000f);
-		} else if (dos.x > x) {
-			nextX += INITIAL_SPEED * (delta / 1000f);
-		}
-		if (collide("Solid", nextX, y) == null) {
-			x = nextX;
-		}
+		//Gravity.
+		if (collide("Solid", x, y + GRAVITY) == null && collide("Ladder", x, y) == null)
+			y += GRAVITY;
 
-		if (collide("Ladder", x, y) == null) {
-			// Going up
-			if (velocityY < 0) {
-				if (collide("Solid", x, y - velocityY) != null) {
-					velocityY = 0;
-				}
+		//Dos chasing.
+		if (collide("Ladder", x, y) != null) {
+			if (dos.y - 110 > y) {
+				y += GRAVITY;
+				if (dos.x > x)
+					x -= SPEED;
+				else
+					x += SPEED;
 			}
-		} else {
-			if (dos.y > y)
-				velocityY = -CLIMB_SPEED * (delta / 1000f);
-			else if (dos.y < y)
-				velocityY = +CLIMB_SPEED * (delta / 1000f);
+			if (dos.y - 30 < y) {
+				y -= GRAVITY;
+				if (dos.x > x)
+					x -= SPEED;
+				else
+					x += SPEED;
+			}
 		}
-		y += velocityY;
+		if (dos.x > x && collide("Solid", x + SPEED, y) == null)
+			x += SPEED;
+		if (dos.x < x && collide("Solid", x - SPEED, y) == null)
+			x -= SPEED;
 
-		if (isAirborne()) {
-			if (velocityY < MAX_VERTICAL_SPEED)
-				velocityY += 10 * (delta / 1000f);
-		} else {
-			if (velocityY > 0) {
-				y = (int) y;
-				while (collide("Solid", x, y) != null)
-					y -= 1;
-			}
-			velocityY = 0;
-		}
+		//Soft landing.
+		if (collide("Solid", x, y + 36) != null && collide("Solid", x, y + 1) == null)
+			y++;
 
 		// life.
 		Dos someDos = (Dos) collide("Dos", x, y);
@@ -129,26 +120,13 @@ public class Nazi extends Entity {
 		}
 	}
 
-	private boolean isAirborne() {
-		return collide("Solid", x, y) == null
-				&& collide("Ladder", x, y) == null;
-	}
-
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		super.render(gc, g);
 
-		if (dos.x > x && spawned == true && collide("Ladder", x, y) == null) {
+		if (dos.x > x)
 			g.drawAnimation(naziWalkRight, x, y);
-		} else if (dos.x < x && spawned == true
-				&& collide("Ladder", x, y) == null) {
+		else
 			g.drawAnimation(naziWalkLeft, x, y);
-		} else if (dos.x > x) {
-			g.drawImage(naziSheet.getSprite(1, 0), x, y);
-		} else {
-			g.drawImage(naziSheet.getSprite(1, 0).getFlippedCopy(true, false),
-					x, y);
-		}
-
 	}
 }
