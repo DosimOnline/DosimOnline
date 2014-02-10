@@ -3,6 +3,7 @@ package org.dosimonline.entities;
 import it.randomtower.engine.entity.Entity;
 
 import org.dosimonline.NotificationManager;
+import org.dosimonline.states.Play;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -19,18 +20,19 @@ public class StarOfDavid extends Entity {
 	private final NotificationManager notifyManager;
 
 	public StarOfDavid(float x, float y, float targetX, float targetY,
-			Dos shootingDos) throws SlickException {
+		  Dos shootingDos) throws SlickException {
 		super(x, y);
 
 		image = new Image("org/dosimonline/res/starOfDavid.png");
 		setGraphic(image);
 		setHitBox(0, 0, image.getWidth(), image.getHeight());
-		addType("Semitic Attack");
+		addType("Star of David");
 		setCentered(true);
 
 		this.shootingDos = shootingDos;
 
 		if (x == targetX && y == targetY) // Mine (doesn't move)
+
 			direction = new Vector2f();
 		else
 			direction = new Vector2f(targetX - x, targetY - y);
@@ -51,15 +53,14 @@ public class StarOfDavid extends Entity {
 		x += direction.getX() * moveSpeed * (delta / 1000.0f);
 		y += direction.getY() * moveSpeed * (delta / 1000.0f);
 
-		Nazi someNazi = (Nazi) collide("Anti Semitic", x, y);
+		Nazi someNazi = (Nazi) collide("Nazi", x, y);
 		if (someNazi != null) {
 			shootingDos.life += (someNazi.lifeAddTimeout == 0 ? 1 : 0);
 			someNazi.destroy();
 			kills++;
 		}
-		if (collide("Solid", x, y) != null) {
+		if (collide("Solid", x, y) != null)
 			this.destroy();
-		}
 
 		if (deathTimeout > 0)
 			deathTimeout -= delta;
@@ -69,7 +70,8 @@ public class StarOfDavid extends Entity {
 
 	@Override
 	public void destroy() {
-		shootingDos.score += (kills > 1 ? kills * 2 : kills);
+		shootingDos.score += kills > 1 ? kills * 2 : kills;
+		Play.raiseNazisKilled(kills); // No actual impact yet. Debug only.
 
 		if (kills == 2)
 			notifyManager.add("Double Kill!", Color.green);

@@ -1,0 +1,10 @@
+Fixed: Game crashes when a Nazi spawns when no Dos is alive
+Decreased Nazis' speed.
+No more bricked floors- from now on it's a synagogue.
+Notifications are now easier to read, they have a black round rectangle around them.
+Reworked Nazis' skin.
+There is a Rabbi in every synagogue. You can even talk to them and buy health and reload time from them.
+Nazis have names.
+You can choose your name.
+Nazis and FSM's instances will spawn more frequently as the time goes.
+There is no longer a notification when you shoot.

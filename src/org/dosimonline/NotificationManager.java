@@ -11,7 +11,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * 
+ *
  * @author gilnaa
  */
 public class NotificationManager {
@@ -29,7 +29,7 @@ public class NotificationManager {
 		int dismissDelay, pullOutDelay;
 
 		private Notification(String text, int order, Color color,
-				int screenWidth, TrueTypeFont f) {
+			  int screenWidth, TrueTypeFont f) {
 			this.text = text;
 			this.color = new Color(color);
 			this.font = f;
@@ -53,13 +53,12 @@ public class NotificationManager {
 		}
 
 		public void update(GameContainer gc, int delta) {
-			if (desiredY < y) {
+			if (desiredY < y)
 				y -= delta / 10f;
-			}
 
-			if (dismissDelay > 0) {
+			if (dismissDelay > 0)
 				dismissDelay -= delta;
-			} else {
+			else {
 				x += delta / 10f;
 				pullOutDelay -= delta;
 				color.a -= 0.01f;
@@ -85,7 +84,7 @@ public class NotificationManager {
 
 	public void add(String text, Color color) {
 		Notification e = new Notification(text, notifications.size(), color,
-				screenWidth, font);
+			  screenWidth, font);
 		notifications.add(e);
 	}
 
@@ -96,29 +95,25 @@ public class NotificationManager {
 	}
 
 	public void update(GameContainer gc, int delta) {
-		if (gc.getWidth() != screenWidth) {
+		if (gc.getWidth() != screenWidth)
 			screenWidth = gc.getWidth();
-		}
 
 		ArrayList<Notification> dueToRemoval = new ArrayList<Notification>();
 		for (Notification e : notifications) {
 			e.update(gc, delta);
-			if (!e.isValid()) {
+			if (!e.isValid())
 				dueToRemoval.add(e);
-			}
 		}
 		if (dueToRemoval.size() > 0) {
 			notifications.removeAll(dueToRemoval);
-			for (int i = 0; i < notifications.size(); i++) {
+			for (int i = 0; i < notifications.size(); i++)
 				notifications.get(i).setOrder(i);
-			}
 		}
 	}
 
 	public void render(Graphics g) {
-		for (Notification e : notifications) {
+		for (Notification e : notifications)
 			e.render(g);
-		}
 	}
 
 	private static NotificationManager instance = null;

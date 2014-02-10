@@ -8,20 +8,20 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Setting {
 	protected String name; // Unique string that represents the setting (will be
-							// written to settings file)
+	// written to settings file)
 	protected String settingText; // Setting UI text
 	protected int x;
 	protected int y;
 	private Object value;
 	protected boolean applyImmediately; // Whether to apply the setting
-										// immediately or not
+	// immediately or not
 	public static final int SETTING_WIDTH = 333; // Width of each setting in
-													// pixels
+	// pixels
 	private ApplySetting applyMethod; // Callback for application of a setting
 
 	protected Setting(String name, String settingText, int x, int y,
-			Object defaultValue, boolean applyImmediately,
-			ApplySetting applyMethod) {
+		  Object defaultValue, boolean applyImmediately,
+		  ApplySetting applyMethod) {
 		this.name = name;
 		this.settingText = settingText;
 		this.x = x;

@@ -9,10 +9,9 @@ import org.newdawn.slick.TrueTypeFont;
 /**
  * @author yashax
  */
-
 public class Debug {
 	private static TrueTypeFont font = new TrueTypeFont(new Font(
-			"Arial", Font.PLAIN, 18), true);
+		  "Arial", Font.PLAIN, 18), true);
 	private static ArrayList<String> debugInfo = new ArrayList<>();
 	private static final int X = 20;
 	private static final int FIRST_Y = 100;

@@ -6,6 +6,8 @@ import org.dosimonline.states.Play;
 import org.dosimonline.states.Settings;
 import java.awt.Font;
 import java.io.IOException;
+import org.dosimonline.states.EnterName;
+import org.dosimonline.states.Interaction;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -34,6 +36,8 @@ public class DosimOnline extends StateBasedGame {
 		addState(new Play(2, gc));
 		addState(new About(3, gc));
 		addState(new Settings(4, gc));
+		addState(new EnterName(5, gc));
+		addState(new Interaction(6, gc));
 		enterState(1);
 	}
 
@@ -43,7 +47,7 @@ public class DosimOnline extends StateBasedGame {
 
 		try {
 			AppGameContainer appgc = new AppGameContainer(new DosimOnline(
-					gamename));
+				  gamename));
 			appgc.setDisplayMode(dm.getWidth(), dm.getHeight(), true);
 			appgc.start();
 		} catch (SlickException e) {

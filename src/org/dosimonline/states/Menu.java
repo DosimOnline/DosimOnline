@@ -32,20 +32,20 @@ public class Menu extends World {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame game)
-			throws SlickException {
+		  throws SlickException {
 		SettingsManager.getInstance().apply(gc); // Load the settings and apply
-													// them
+		// them
 
 		gc.setDefaultFont(DosimOnline.font);
 
 		logo = new Image("org/dosimonline/res/logo.png");
 		hakotel = new Image("org/dosimonline/res/hakotel.png").getScaledCopy(
-				gc.getWidth(), gc.getHeight());
+			  gc.getWidth(), gc.getHeight());
 
 		startButton = new Button(20, gc.getHeight() / 2 - 20, "Start");
 
 		settingsButton = new Button(20, gc.getHeight() / 2 + 20, "Settings");
-		
+
 		aboutButton = new Button(20, gc.getHeight() / 2 + 60, "About");
 
 		exitButton = new Button(20, gc.getHeight() / 2 + 100, "Exit :(");
@@ -57,13 +57,12 @@ public class Menu extends World {
 	}
 
 	@Override
-	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-			throws SlickException {
-
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		super.render(gc, sbg, g);
 		g.drawImage(hakotel, 0, 0);
 		g.drawImage(heart, heartX, heartY);
 		g.drawImage(logo, gc.getWidth() - logo.getWidth() - 10, gc.getHeight()
-				/ 2 - logo.getHeight() / 2);
+			  / 2 - logo.getHeight() / 2);
 
 		startButton.render(g);
 		aboutButton.render(g);
@@ -72,12 +71,15 @@ public class Menu extends World {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int i)
-			throws SlickException {
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		super.update(gc, sbg, delta);
+		if (gc.getInput().isKeyPressed(Input.KEY_0))
+			sbg.enterState(6);
+
 		// Traveling heart's stuff
-		if (heartX < gc.getWidth()) {
+		if (heartX < gc.getWidth())
 			heartX++;
-		} else {
+		else {
 			heartY = random.nextInt(gc.getHeight() - 50) + 10;
 			heartX = -50;
 		}
@@ -89,15 +91,14 @@ public class Menu extends World {
 		exitButton.update(gc.getInput());
 
 		if (startButton.activated())
-			sbg.enterState(2);
+			sbg.enterState(5);
 		else if (aboutButton.activated())
 			sbg.enterState(3);
 		else if (settingsButton.activated())
 			sbg.enterState(4);
 
 		if (exitButton.activated()
-				|| gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+			  || gc.getInput().isKeyPressed(Input.KEY_ESCAPE))
 			gc.exit();
-		}
 	}
 }

@@ -9,7 +9,6 @@ import org.newdawn.slick.SlickException;
 /**
  * @author yashax (and Shpitzick, too!)
  */
-
 public class Button {
 	protected int x;
 	protected int y;
@@ -38,7 +37,7 @@ public class Button {
 		int mouseY = input.getMouseY();
 
 		hover = (mouseX > x && mouseX < x + getWidth())
-				&& (mouseY >= y && mouseY <= y + getHeight());
+			  && (mouseY >= y && mouseY <= y + getHeight());
 
 		pressed = input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
 
@@ -53,16 +52,16 @@ public class Button {
 			if (hover) {
 				g.drawImage(sideActive, x, y);
 				g.drawImage(sideActive.getFlippedCopy(true, false), x
-						+ sideActive.getWidth() + font.getWidth(text), y);
+					  + sideActive.getWidth() + font.getWidth(text), y);
 				for (int i = x + side.getWidth(); i < x + side.getWidth()
-						+ font.getWidth(text); i++)
+					  + font.getWidth(text); i++)
 					g.drawImage(middleActive, i, y);
 			} else {
 				g.drawImage(side, x, y);
 				g.drawImage(side.getFlippedCopy(true, false),
-						x + sideActive.getWidth() + font.getWidth(text), y);
+					  x + sideActive.getWidth() + font.getWidth(text), y);
 				for (int i = x + side.getWidth(); i < x + side.getWidth()
-						+ font.getWidth(text); i++)
+					  + font.getWidth(text); i++)
 					g.drawImage(middle, i, y);
 			}
 			font.drawString(x + side.getWidth(), y, text);
@@ -76,9 +75,11 @@ public class Button {
 
 		return active;
 	}
+
 	public int getWidth() {
 		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
 	}
+
 	public static int getWidth(String text) {
 		return side.getWidth() * 2 + DosimOnline.font.getWidth(text);
 	}

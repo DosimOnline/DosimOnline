@@ -17,19 +17,19 @@ public class Server extends World {
 	public Server(int id, GameContainer gc) {
 		super(id, gc);
 	}
-	
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sb) {
-		
+
 	}
-	
+
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
-		
+
 	}
-	
+
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) { 
-		
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) {
+
 	}
 }

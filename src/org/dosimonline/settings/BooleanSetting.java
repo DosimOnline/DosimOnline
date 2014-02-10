@@ -13,13 +13,13 @@ public class BooleanSetting extends Setting {
 	private boolean oldValue;
 
 	public BooleanSetting(String name, String settingText, int x, int y,
-			boolean defaultValue, boolean liveApply, ApplySetting applyMethod)
-			throws SlickException {
+		  boolean defaultValue, boolean liveApply, ApplySetting applyMethod)
+		  throws SlickException {
 		super(name, settingText, x, y, defaultValue, liveApply, applyMethod);
 
 		checkbox = new CheckBox(
-				x + SETTING_WIDTH - CheckBox.getCheckBoxWidth(), y,
-				defaultValue);
+			  x + SETTING_WIDTH - CheckBox.getCheckBoxWidth(), y,
+			  defaultValue);
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class BooleanSetting extends Setting {
 		// text)
 		int textX = x + (SETTING_WIDTH - g.getFont().getWidth(settingText)) / 2;
 		int textY = y
-				+ (checkbox.getHeight() - g.getFont().getHeight(settingText))
-				/ 2;
+			  + (checkbox.getHeight() - g.getFont().getHeight(settingText))
+			  / 2;
 
 		g.drawString(settingText, textX, textY);
 	}

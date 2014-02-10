@@ -32,37 +32,39 @@ public class SettingsManager {
 
 		// Defining all game settings:
 		add(new PlusMinusSetting("fps", "Target FPS", settingsX, nextSettingY,
-				60, false, new ApplySetting() {
-					@Override
-					public void apply(GameContainer gc, Object value) {
-						float fps = (float) value;
-						gc.setTargetFrameRate((int) fps);
-					};
+			  60, false, new ApplySetting() {
+				  @Override
+				  public void apply(GameContainer gc, Object value) {
+					  float fps = (float) value;
+					  gc.setTargetFrameRate((int) fps);
+				  }
+			   ;
 				}, 10.0f, 30.0f, 500.0f));
 
 		add(new PlusMinusSetting("volume", "Music volume", settingsX,
-				nextSettingY, 10.0f, true, new ApplySetting() {
-					@Override
-					public void apply(GameContainer gc, Object value) {
-						gc.setMusicVolume(((float) value) / 10.0f);
-					}
-				}, 1, 0, 10));
+			  nextSettingY, 10.0f, true, new ApplySetting() {
+				  @Override
+				  public void apply(GameContainer gc, Object value) {
+					  gc.setMusicVolume(((float) value) / 10.0f);
+				  }
+			  }, 1, 0, 10));
 
 		add(new BooleanSetting("vsync", "Enable VSync", settingsX,
-				nextSettingY, true, true, new ApplySetting() {
-					@Override
-					public void apply(GameContainer gc, Object value) {
-						gc.setVSync((boolean) value);
-					};
-				}));
+			  nextSettingY, true, true, new ApplySetting() {
+				  @Override
+				  public void apply(GameContainer gc, Object value) {
+					  gc.setVSync((boolean) value);
+				  }
+			  ;
+		}));
 
 		add(new BooleanSetting("showdebug", "Show Debug information",
-				settingsX, nextSettingY, false, true, new ApplySetting() {
-					@Override
-					public void apply(GameContainer gc, Object value) {
-						Debug.setVisible((boolean) value);
-					}
-				}));
+			  settingsX, nextSettingY, false, true, new ApplySetting() {
+				  @Override
+				  public void apply(GameContainer gc, Object value) {
+					  Debug.setVisible((boolean) value);
+				  }
+			  }));
 
 		this.loadSettings();
 	}
@@ -90,8 +92,8 @@ public class SettingsManager {
 			// Read all lines of the settings file and get the iterator of the
 			// lines collection
 			Iterator<String> fileSettings = Files.readAllLines(
-					Paths.get("settings.txt"), StandardCharsets.UTF_8)
-					.iterator();
+				  Paths.get("settings.txt"), StandardCharsets.UTF_8)
+				  .iterator();
 
 			for (Setting s : settings)
 				s.setFromString(fileSettings.next());

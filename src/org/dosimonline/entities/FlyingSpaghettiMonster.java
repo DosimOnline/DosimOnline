@@ -15,7 +15,7 @@ public class FlyingSpaghettiMonster extends Entity {
 	private final int CHANGE_DIRECTION_TIME = 7000; // 7sec
 	private final int ATTACK_DELAY = 7000;
 	private final int BE_RED_TIME = 200; // 0.1 sec. I know I'm a terrible name
-											// picker.
+	// picker.
 	private Vector2f direction;
 	private Color hurtColor = new Color(255, 0, 0, 100);
 	private Image image;
@@ -38,22 +38,20 @@ public class FlyingSpaghettiMonster extends Entity {
 	}
 
 	private void shootOnDos() throws SlickException {
-		for (Entity entity : world.getEntities()) {
-			if (entity instanceof Dos) {
+		for (Entity entity : world.getEntities())
+			if (entity instanceof Dos)
 				if (attackTimeout <= 0 && entity.x > x - 500
-						&& entity.x < x + 500 && entity.y > y - 500
-						&& entity.y < y + 500) {
+					  && entity.x < x + 500 && entity.y > y - 500
+					  && entity.y < y + 500) {
 					world.add(new Meatball(x, y, entity.x, entity.y));
 					attackTimeout = ATTACK_DELAY;
 					return;
 				}
-			}
-		}
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
-			throws SlickException {
+		  throws SlickException {
 		super.update(container, delta);
 		changeDirectionTimeout -= delta;
 		attackTimeout -= delta;
@@ -74,8 +72,7 @@ public class FlyingSpaghettiMonster extends Entity {
 		Dos someDos = (Dos) collide("Dos", x, y);
 		if (someDos != null)
 			someDos.life = 0; // No one can touch the FSM and stay alive!
-
-		Entity starOfDavidColl = collide("Semitic Attack", x, y);
+		Entity starOfDavidColl = collide("Star of David", x, y);
 		if (starOfDavidColl != null) // Star of David hit the FSM
 		{
 			starOfDavidColl.destroy();
@@ -91,17 +88,17 @@ public class FlyingSpaghettiMonster extends Entity {
 		}
 
 		if (x < Play.LEFT_BORDER
-				|| x + this.currentImage.getWidth() > Play.RIGHT_BORDER)
+			  || x + this.currentImage.getWidth() > Play.RIGHT_BORDER)
 			direction.x *= -1;
 
 		if (y < Play.UPPER_BORDER
-				|| y + this.currentImage.getHeight() > Play.LOWER_BORDER)
+			  || y + this.currentImage.getHeight() > Play.LOWER_BORDER)
 			direction.y *= -1;
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g)
-			throws SlickException {
+		  throws SlickException {
 		super.render(container, g);
 		if (redTimeout > 0)
 			g.drawImage(image, x, y, hurtColor);
