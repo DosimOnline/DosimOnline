@@ -1,17 +1,21 @@
 package org.dosimonline.entities;
 
 import it.randomtower.engine.entity.Entity;
+import java.util.Random;
 
 import org.dosimonline.NotificationManager;
 import org.dosimonline.states.Play;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public class StarOfDavid extends Entity {
 	private final Image image;
+	private Sound doubleKill, tripleKill, multiKill;
 	private Vector2f direction;
 	private int deathTimeout = 2000; // milliseconds
 	private final float moveSpeed = 1200; // px/s
@@ -20,7 +24,7 @@ public class StarOfDavid extends Entity {
 	private final NotificationManager notifyManager;
 
 	public StarOfDavid(float x, float y, float targetX, float targetY,
-		  Dos shootingDos) throws SlickException {
+			Dos shootingDos) throws SlickException {
 		super(x, y);
 
 		image = new Image("org/dosimonline/res/starOfDavid.png");
@@ -28,6 +32,10 @@ public class StarOfDavid extends Entity {
 		setHitBox(0, 0, image.getWidth(), image.getHeight());
 		addType("Star of David");
 		setCentered(true);
+
+		doubleKill = new Sound("org/dosimonline/res/audio/double_airhorn.ogg");
+		tripleKill = new Sound("org/dosimonline/res/audio/triple_airhorn.ogg");
+		multiKill = new Sound("org/dosimonline/res/audio/wow.ogg");
 
 		this.shootingDos = shootingDos;
 
@@ -66,6 +74,7 @@ public class StarOfDavid extends Entity {
 			deathTimeout -= delta;
 		else
 			this.destroy();
+
 	}
 
 	@Override
@@ -73,12 +82,24 @@ public class StarOfDavid extends Entity {
 		shootingDos.score += kills > 1 ? kills * 2 : kills;
 		Play.raiseNazisKilled(kills); // No actual impact yet. Debug only.
 
-		if (kills == 2)
-			notifyManager.add("Double Kill!", Color.green);
-		if (kills == 3)
-			notifyManager.add("Triple Kill!!", Color.blue);
-		if (kills > 3)
-			notifyManager.add("MULTI-KILL!!!", Color.red);
+		if (kills == 2) {
+			notifyManager.add("wow, double kill!", Color.green);
+			Play.drawMLGText(3500);
+			if (Play.getIsMLG())
+				doubleKill.play();
+		}
+		if (kills == 3) {
+			notifyManager.add("OH BABY A TRIPLE!!", Color.blue);
+			Play.drawMLGText(6000);
+			if (Play.getIsMLG())
+				tripleKill.play();
+		}
+		if (kills > 3) {
+			notifyManager.add("OMG THEY'RE ALL DOWN", Color.red);
+			Play.drawMLGText(10000);
+			if (Play.getIsMLG())
+				multiKill.play();
+		}
 		super.destroy();
 	}
 }

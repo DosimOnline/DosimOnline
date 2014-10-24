@@ -13,13 +13,13 @@ import org.newdawn.slick.geom.Vector2f;
 public class FlyingSpaghettiMonster extends Entity {
 	private final int MAX_SPEED = 50;
 	private final int CHANGE_DIRECTION_TIME = 7000; // 7sec
-	private final int ATTACK_DELAY = 7000;
+	private final int ATTACK_DELAY = 3000;
 	private final int BE_RED_TIME = 200; // 0.1 sec. I know I'm a terrible name
 	// picker.
 	private Vector2f direction;
 	private Color hurtColor = new Color(255, 0, 0, 100);
 	private Image image;
-	private float moveSpeed = 50;
+	private float moveSpeed = 200;
 	private Random random = new Random();
 	private int changeDirectionTimeout = 0;
 	private int attackTimeout = 2000;

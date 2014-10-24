@@ -68,7 +68,7 @@ public class About extends World {
 		drawCenteredString(font, "Site Management: royysszz, Solainz",
 			  gc.getWidth() / 2, DosimOnline.dm.getHeight() / 2 - 30, Color.black);
 		drawCenteredString(font,
-			  "Testers: Michael Puniansky, Martin Korotkov, Oquda",
+			  "Testers: DayWalker, Assassins' Kid, Oquda",
 			  DosimOnline.dm.getWidth() / 2, DosimOnline.dm.getHeight() / 2 + 20, Color.black);
 		drawCenteredString(font,
 			  "Music: Makche (Alleviation is played at the background)",

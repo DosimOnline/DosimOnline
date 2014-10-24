@@ -1,10 +1,10 @@
-Fixed: Game crashes when a Nazi spawns when no Dos is alive
-Decreased Nazis' speed.
-No more bricked floors- from now on it's a synagogue.
-Notifications are now easier to read, they have a black round rectangle around them.
-Reworked Nazis' skin.
-There is a Rabbi in every synagogue. You can even talk to them and buy health and reload time from them.
-Nazis have names.
-You can choose your name.
-Nazis and FSM's instances will spawn more frequently as the time goes.
-There is no longer a notification when you shoot.
+Changed ground textures.
+Centered the notifications.
+Added an option for MLG players who want to take their gaming experience to the next level.
+You are now able to throw a Star of David every 3.5 seconds at the beginning.
+Instances of the FSM are now spawning near the dos. And they move faster! And shoot faster meatballs more frequently!
+Added the ability to purchase an upgrade to climb speed, movement speed and jumping height.
+Increased the chance to heal from killing a nazi to 20% (was 3% before).
+Increased starting HP to 7.
+Reduced the amount of attack speed able to be bought from rabbis and increased its price.
+Disabled the option to change the target FPS due to a bug causing it to change the speed of the actual game, not only visually.

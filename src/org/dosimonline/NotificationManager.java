@@ -38,7 +38,8 @@ public class NotificationManager {
 
 			setOrder(order);
 			this.y = desiredY;
-			this.x = screenWidth - (width + PADDING);
+			//this.x = screenWidth - (width + PADDING);
+			this.x = (screenWidth - width) / 2;
 
 			this.dismissDelay = 5000;
 			this.pullOutDelay = 500;

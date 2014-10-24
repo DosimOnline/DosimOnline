@@ -18,7 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Menu extends World {
 	private Image logo;
 	private Image hakotel;
-	private Music music;
+	public static Music music;
 	private DisplayMode dm = Display.getDesktopDisplayMode();
 	private short heartX = 0;
 	private Random random = new Random();

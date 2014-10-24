@@ -19,14 +19,14 @@ public class Nazi extends Entity {
 	private final Animation walkLeft;
 	private final Animation walkRight;
 	private Dos dos;
-	private int naziWidth, naziHeight;
+	private int naziWidth;
 	public final int lifeAddTimeout;
 
 	public Nazi(float x, float y) throws SlickException {
 		super(x, y);
 
 		dos = null;
-		lifeAddTimeout = new Random().nextInt(30);
+		lifeAddTimeout = new Random().nextInt(5);
 
 		naziSheet = new SpriteSheet("org/dosimonline/res/sprites/nazi.png", 20,
 			  55);
@@ -41,14 +41,15 @@ public class Nazi extends Entity {
 		walkRight.setAutoUpdate(true);
 		walkRight.addFrame(naziSheet.getSprite(0, 0), 150);
 		walkRight.addFrame(naziSheet.getSprite(1, 0), 150);
-		
+
 		// There is no actual reason for picking walkLeft over walkRight; like many things here, it was chosen randomly.
 		naziWidth = walkLeft.getCurrentFrame().getWidth();
-		naziHeight = walkLeft.getCurrentFrame().getHeight();
-		
+		walkLeft.getCurrentFrame().getHeight();
+
 		name = generateName();
-		
-		addType("Nazi"); // Gilnaa: lol wut Itay: yeah LOL
+
+		addType("Nazi"); // Gilnaa: lol wut 
+						 //	Itay: yeah LOL
 		setHitBox(0, 20, 20, 35);
 	}
 
@@ -84,22 +85,20 @@ public class Nazi extends Entity {
 				y += GRAVITY;
 
 			//Dos chasing.
-			if (collide("Ladder", x, y) != null) {
+			if (collide("Ladder", x, y) != null)
 				if (dos.y - 110 > y) {
 					y += GRAVITY;
 					if (dos.x > x)
 						x -= SPEED;
 					else
 						x += SPEED;
-				}
-				else if (dos.y - 30 < y) {
+				} else if (dos.y - 30 < y) {
 					y -= GRAVITY;
 					if (dos.x > x)
 						x -= SPEED;
 					else
 						x += SPEED;
 				}
-			}
 			if (dos.x > x && collide("Solid", x + SPEED, y) == null)
 				x += SPEED;
 			if (dos.x < x && collide("Solid", x - SPEED, y) == null)
@@ -122,14 +121,14 @@ public class Nazi extends Entity {
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		super.render(gc, g);
 		Play.drawCenteredString(name, g, (int) x + naziWidth / 2, (int) y - naziWidth);
-		
+
 		if (dos != null)
 			if (dos.x > x)
 				g.drawAnimation(walkRight, x, y);
 			else
 				g.drawAnimation(walkLeft, x, y);
 	}
-	
+
 	private String generateName() {
 		String names[] = {
 			"NO JEWZ PLZ",
@@ -140,8 +139,7 @@ public class Nazi extends Entity {
 			"NO NIGGAZ PLS",
 			"SUP NIGGA",
 			"BLACK AINT MA COLOUR",
-			"HOW GISPY",
-		};
+			"HOW GISPY",};
 
 		Random random = new Random();
 		return names[random.nextInt(names.length)];

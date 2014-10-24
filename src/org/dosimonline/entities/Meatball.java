@@ -9,7 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Meatball extends Entity {
 	private Vector2f direction;
 	private int shallDie = 6666; // ms
-	private float speed = 800f; // px/s
+	private float speed = 1200f; // px/s
 
 	public Meatball(float x, float y, float targetX, float targetY)
 		  throws SlickException {

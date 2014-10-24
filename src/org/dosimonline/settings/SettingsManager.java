@@ -7,9 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.dosimonline.Debug;
 import org.dosimonline.DosimOnline;
-
+import org.dosimonline.states.Play;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -31,40 +32,49 @@ public class SettingsManager {
 		settings = new ArrayList<Setting>();
 
 		// Defining all game settings:
-		add(new PlusMinusSetting("fps", "Target FPS", settingsX, nextSettingY,
-			  60, false, new ApplySetting() {
-				  @Override
-				  public void apply(GameContainer gc, Object value) {
-					  float fps = (float) value;
-					  gc.setTargetFrameRate((int) fps);
-				  }
-			   ;
-				}, 10.0f, 30.0f, 500.0f));
+
+		// Changing the target FPS is currently bugged and also affects the
+		// speed of the actual game, not only visually.
+		/**
+		 * add(new PlusMinusSetting("fps", "Target FPS", settingsX,
+		 * nextSettingY, 60, false, new ApplySetting() {
+		 * 
+		 * @Override public void apply(GameContainer gc, Object value) { float
+		 *           fps = (float) value; gc.setTargetFrameRate((int) fps); };
+		 *           }, 10.0f, 30.0f, 500.0f));
+		 **/
 
 		add(new PlusMinusSetting("volume", "Music volume", settingsX,
-			  nextSettingY, 10.0f, true, new ApplySetting() {
-				  @Override
-				  public void apply(GameContainer gc, Object value) {
-					  gc.setMusicVolume(((float) value) / 10.0f);
-				  }
-			  }, 1, 0, 10));
+				nextSettingY, 10.0f, true, new ApplySetting() {
+					@Override
+					public void apply(GameContainer gc, Object value) {
+						gc.setMusicVolume(((float) value) / 10.0f);
+					}
+				}, 1, 0, 10));
+
+		add(new BooleanSetting("mlg", "MLG mode", settingsX, nextSettingY,
+				false, true, new ApplySetting() {
+					@Override
+					public void apply(GameContainer gc, Object value) {
+						Play.setMLG((boolean) value);
+					}
+				}));
 
 		add(new BooleanSetting("vsync", "Enable VSync", settingsX,
-			  nextSettingY, true, true, new ApplySetting() {
-				  @Override
-				  public void apply(GameContainer gc, Object value) {
-					  gc.setVSync((boolean) value);
-				  }
-			  ;
-		}));
+				nextSettingY, true, true, new ApplySetting() {
+					@Override
+					public void apply(GameContainer gc, Object value) {
+						gc.setVSync((boolean) value);
+					};
+				}));
 
 		add(new BooleanSetting("showdebug", "Show Debug information",
-			  settingsX, nextSettingY, false, true, new ApplySetting() {
-				  @Override
-				  public void apply(GameContainer gc, Object value) {
-					  Debug.setVisible((boolean) value);
-				  }
-			  }));
+				settingsX, nextSettingY, false, true, new ApplySetting() {
+					@Override
+					public void apply(GameContainer gc, Object value) {
+						Debug.setVisible((boolean) value);
+					};
+				}));
 
 		this.loadSettings();
 	}
@@ -92,14 +102,14 @@ public class SettingsManager {
 			// Read all lines of the settings file and get the iterator of the
 			// lines collection
 			Iterator<String> fileSettings = Files.readAllLines(
-				  Paths.get("settings.txt"), StandardCharsets.UTF_8)
-				  .iterator();
+					Paths.get("settings.txt"), StandardCharsets.UTF_8)
+					.iterator();
 
 			for (Setting s : settings)
 				s.setFromString(fileSettings.next());
 
 		} catch (Exception e) {
-			// The read has failed so we creating a new settings file
+			// The read has failed so we are creating a new settings file
 			this.writeSettings();
 		}
 	}

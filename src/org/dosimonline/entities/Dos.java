@@ -17,17 +17,17 @@ public class Dos extends Entity {
 	private final Image standingImage;
 	private final Image jumpingImage;
 	private boolean jumpAllowed = true;
-	private final float moveSpeed = 600;
+	public float moveSpeed = 600;
 	public int lookDirection = 1; // 1 is left, 2 is right.
 	public int life;
 	public int score;
 	private int attackAllowed = 0;
-	private final float JUMP_SPEED = -500;
-	private final float CLIMB_SPEED = -500;
+	public float jumpSpeed = -500;
+	public float climbSpeed = -500;
 	private float velocityY;
 	private float accelerationY;
 	private static final float GRAVITY = 1000;
-	public int ATTACK_DELAY = 1800;
+	public int ATTACK_DELAY = 3500;
 	private int dosWidth, dosHeight;
 
 	public Dos(float x, float y) throws SlickException {
@@ -58,7 +58,7 @@ public class Dos extends Entity {
 		dosHeight = walkLeft.getCurrentFrame().getHeight();
 
 		score = 0;
-		life = 5;
+		life = 7;
 		velocityY = 0;
 		jumpAllowed = false;
 	}
@@ -91,7 +91,7 @@ public class Dos extends Entity {
 		if (jumpAllowed && check("up")) // Jump
 		{
 			jumpAllowed = false;
-			velocityY = JUMP_SPEED;
+			velocityY = jumpSpeed;
 		} else // Update jumpAllowed (true if the dos is standing)
 
 			jumpAllowed = collide("Solid", x, y + 0.5f) != null;
@@ -101,16 +101,16 @@ public class Dos extends Entity {
 			jumpAllowed = false;
 
 			if (check("up")) {
-				velocityY = CLIMB_SPEED;
+				velocityY = climbSpeed;
 				accelerationY = 0;
 			} else {
-				velocityY = -CLIMB_SPEED;
+				velocityY = -climbSpeed;
 				accelerationY = 0;
 			}
 		} else if (jumpAllowed && check("up")) // Jump
 		{
 			jumpAllowed = false;
-			velocityY = JUMP_SPEED;
+			velocityY = jumpSpeed;
 		} else if (jumpAllowed == false) // Apply gravity
 
 			accelerationY = GRAVITY;
