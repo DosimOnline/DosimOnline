@@ -1,4 +1,4 @@
 Dosim Online
 ===========
 
-A plain game about justice!
+D E A D  G A M E
